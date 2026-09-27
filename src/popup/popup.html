@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineForge</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>CineForge</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="historyBtn" title="Histórico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" title="Configurações">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- License check overlay -->
+    <div class="overlay" id="licenseOverlay">
+      <div class="overlay-content">
+        <div class="overlay-icon">🎬</div>
+        <h2>Ative o CineForge</h2>
+        <p>Insira sua chave de licença para começar a gerar vídeos com IA.</p>
+        <input type="text" id="licenseInput" placeholder="CF-XXXX-XXXX-XXXX-XXXX" class="license-input">
+        <button class="btn btn-primary full-width" id="activateBtn">Ativar</button>
+        <a href="https://cineforge.app/pricing" target="_blank" class="link">Obter licença →</a>
+      </div>
+    </div>
+
+    <!-- Main content (shown after license) -->
+    <main class="main" id="mainContent">
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="create">Criar</button>
+        <button class="tab" data-tab="queue">Fila <span class="badge" id="queueBadge">0</span></button>
+        <button class="tab" data-tab="results">Prontos</button>
+      </div>
+
+      <!-- Tab: Create -->
+      <div class="tab-content active" id="tab-create">
+
+        <!-- Step 1: Prompt -->
+        <div class="step" id="step-prompt">
+          <label class="label">Descreva seu vídeo</label>
+          <textarea
+            id="promptInput"
+            class="textarea"
+            placeholder="Ex: Vídeo de apresentação de produto para loja de joias, tom sofisticado, 30 segundos, narração feminina..."
+            rows="4"
+          ></textarea>
+
+          <!-- Context capture -->
+          <div class="context-bar">
+            <button class="context-btn" id="capturePageBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Usar página atual
+            </button>
+            <button class="context-btn" id="captureSelectionBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Usar seleção
+            </button>
+          </div>
+
+          <!-- Video settings -->
+          <div class="settings-row">
+            <div class="select-group">
+              <label class="mini-label">Duração</label>
+              <select id="durationSelect" class="select-sm">
+                <option value="15">15s</option>
+                <option value="30" selected>30s</option>
+                <option value="60">1min</option>
+                <option value="90">1:30</option>
+                <option value="120">2min</option>
+              </select>
+            </div>
+            <div class="select-group">
+              <label class="mini-label">Formato</label>
+              <select id="formatSelect" class="select-sm">
+                <option value="16:9" selected>16:9 (YouTube)</option>
+                <option value="9:16">9:16 (Reels/TikTok)</option>
+                <option value="1:1">1:1 (Feed)</option>
+                <option value="4:5">4:5 (Instagram)</option>
+              </select>
+            </div>
+            <div class="select-group">
+              <label class="mini-label">Provedor</label>
+              <select id="providerSelect" class="select-sm">
+                <option value="heygen">HeyGen</option>
+                <option value="higgsfield">Higgsfield</option>
+                <option value="motion">Motion</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary full-width" id="generateScriptBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Gerar com IA
+          </button>
+        </div>
+
+        <!-- Step 2: Script review -->
+        <div class="step hidden" id="step-script">
+          <div class="step-header">
+            <button class="back-btn" id="backToPromptBtn">← Voltar</button>
+            <span class="step-label">Roteiro gerado</span>
+          </div>
+
+          <div class="script-container">
+            <div class="script-meta" id="scriptMeta"></div>
+            <div class="script-content" id="scriptContent"></div>
+          </div>
+
+          <div class="script-actions">
+            <button class="btn btn-secondary" id="editScriptBtn">Editar</button>
+            <button class="btn btn-primary" id="generateVideoBtn">
+              Gerar Vídeo →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Generating -->
+        <div class="step hidden" id="step-generating">
+          <div class="generating-ui">
+            <div class="spinner-ring"></div>
+            <p class="generating-title" id="generatingTitle">Processando...</p>
+            <p class="generating-sub" id="generatingSub"></p>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">0%</p>
+          </div>
+        </div>
+
+        <!-- Step 4: Done -->
+        <div class="step hidden" id="step-done">
+          <div class="done-ui">
+            <div class="done-icon">✅</div>
+            <h3 id="doneTitle">Vídeo pronto!</h3>
+            <div class="video-preview" id="videoPreview"></div>
+            <div class="done-actions">
+              <button class="btn btn-secondary" id="downloadBtn">⬇ Download</button>
+              <button class="btn btn-primary" id="newVideoBtn">Novo vídeo</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tab: Queue -->
+      <div class="tab-content hidden" id="tab-queue">
+        <div class="empty-state" id="queueEmpty">
+          <p>Nenhum vídeo em processamento.</p>
+        </div>
+        <div class="job-list" id="jobList"></div>
+      </div>
+
+      <!-- Tab: Results -->
+      <div class="tab-content hidden" id="tab-results">
+        <div class="empty-state" id="resultsEmpty">
+          <p>Seus vídeos prontos aparecerão aqui.</p>
+        </div>
+        <div class="results-list" id="resultsList"></div>
+      </div>
+
+    </main>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
