@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineForge – Configurações</title>
+  <style>
+    :root {
+      --bg: #0d0d0f; --bg2: #17171a; --bg3: #1f1f23;
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f3; --text2: #9999aa; --text3: #55556a;
+      --accent: #7c6af7; --accent2: #9d8fff;
+      --success: #34d399; --error: #f87171;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .container { width: 100%; max-width: 560px; }
+    .header { margin-bottom: 32px; }
+    .header h1 { font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+    .header p { color: var(--text2); margin-top: 6px; font-size: 13px; }
+    .section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .section-title {
+      padding: 14px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text2);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+    }
+    .field { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .field:last-child { border-bottom: none; }
+    .field-label { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+    .field-hint { font-size: 11px; color: var(--text2); margin-top: 4px; }
+    .field-row { display: flex; gap: 8px; align-items: center; }
+    input[type="text"], input[type="password"] {
+      flex: 1;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 150ms;
+      font-family: monospace;
+    }
+    input:focus { border-color: var(--accent); }
+    .toggle-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 9px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn {
+      padding: 9px 20px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-danger { background: transparent; border: 1px solid var(--error); color: var(--error); }
+    .btn-danger:hover { background: rgba(248,113,113,0.08); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .status-badge.active { background: rgba(52,211,153,0.12); color: var(--success); }
+    .status-badge.inactive { background: rgba(248,113,113,0.12); color: var(--error); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .save-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      font-size: 13px;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      z-index: 100;
+      display: none;
+    }
+    .toast.show { display: block; }
+    a { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎬 CineForge — Configurações</h1>
+      <p>Configure suas chaves de API e preferências.</p>
+    </div>
+
+    <!-- License -->
+    <div class="section">
+      <div class="section-title">Licença</div>
+      <div class="field">
+        <div class="field-label">Status da licença</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+          <span class="status-badge" id="licenseStatus">
+            <span class="dot"></span>
+            Verificando...
+          </span>
+          <button class="btn btn-danger" id="revokeLicenseBtn" style="padding:6px 14px;font-size:12px">Revogar</button>
+        </div>
+        <p class="field-hint" id="licenseInfo"></p>
+      </div>
+    </div>
+
+    <!-- Claude API -->
+    <div class="section">
+      <div class="section-title">Claude AI (Anthropic)</div>
+      <div class="field">
+        <div class="field-label">Chave API Claude</div>
+        <div class="field-row">
+          <input type="password" id="claudeApiKey" placeholder="sk-ant-api03-...">
+          <button class="toggle-btn" data-target="claudeApiKey">👁</button>
+        </div>
+        <p class="field-hint">Obtenha em <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+      </div>
+    </div>
+
+    <!-- Video providers -->
+    <div class="section">
+      <div class="section-title">Provedores de Vídeo</div>
+
+      <div class="field">
+        <div class="field-label">HeyGen API Key</div>
+        <div class="field-row">
+          <input type="password" id="heygenApiKey" placeholder="...">
+          <button class="toggle-btn" data-target="heygenApiKey">👁</button>
+        </div>
+        <p class="field-hint">Plano pago em <a href="https://app.heygen.com" target="_blank">app.heygen.com</a></p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Higgsfield API Key</div>
+        <div class="field-row">
+          <input type="password" id="higgsApiKey" placeholder="...">
+          <button class="toggle-btn" data-target="higgsApiKey">👁</button>
+        </div>
+        <p class="field-hint"><a href="https://app.higgsfield.ai" target="_blank">app.higgsfield.ai</a></p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Motion API Key</div>
+        <div class="field-row">
+          <input type="password" id="motionApiKey" placeholder="...">
+          <button class="toggle-btn" data-target="motionApiKey">👁</button>
+        </div>
+        <p class="field-hint"><a href="https://usemotion.com" target="_blank">usemotion.com</a></p>
+      </div>
+    </div>
+
+    <!-- Defaults -->
+    <div class="section">
+      <div class="section-title">Padrões</div>
+      <div class="field">
+        <div class="field-label">Provedor padrão</div>
+        <select id="defaultProvider" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:13px;outline:none;width:100%">
+          <option value="heygen">HeyGen</option>
+          <option value="higgsfield">Higgsfield</option>
+          <option value="motion">Motion</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="field-label">Idioma do roteiro</div>
+        <select id="scriptLanguage" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:13px;outline:none;width:100%">
+          <option value="pt-BR">Português (Brasil)</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Save bar -->
+    <div class="save-bar">
+      <span style="color:var(--text2)">Configurações</span>
+      <button class="btn btn-primary" id="saveBtn">Salvar alterações</button>
+      <button class="btn btn-ghost" id="clearDataBtn">Limpar dados</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = $(btn.dataset.target);
+        input.type = input.type === 'password' ? 'text' : 'password';
+      });
+    });
+
+    // Load saved config
+    async function loadConfig() {
+      const { config = {}, license } = await chrome.storage.local.get(['config', 'license']);
+
+      if (config.claudeApiKey) $('claudeApiKey').value = config.claudeApiKey;
+      if (config.heygenApiKey) $('heygenApiKey').value = config.heygenApiKey;
+      if (config.higgsApiKey) $('higgsApiKey').value = config.higgsApiKey;
+      if (config.motionApiKey) $('motionApiKey').value = config.motionApiKey;
+      if (config.defaultProvider) $('defaultProvider').value = config.defaultProvider;
+      if (config.scriptLanguage) $('scriptLanguage').value = config.scriptLanguage;
+
+      // License status
+      const statusEl = $('licenseStatus');
+      if (license?.active) {
+        statusEl.className = 'status-badge active';
+        statusEl.innerHTML = '<span class="dot"></span> Ativa';
+        $('licenseInfo').textContent = license.plan ? `Plano: ${license.plan}` : `Chave: ${license.key?.slice(0, 8)}...`;
+      } else {
+        statusEl.className = 'status-badge inactive';
+        statusEl.innerHTML = '<span class="dot"></span> Inativa';
+      }
+    }
+
+    // Save
+    $('saveBtn').addEventListener('click', async () => {
+      const config = {
+        claudeApiKey: $('claudeApiKey').value.trim(),
+        heygenApiKey: $('heygenApiKey').value.trim(),
+        higgsApiKey: $('higgsApiKey').value.trim(),
+        motionApiKey: $('motionApiKey').value.trim(),
+        defaultProvider: $('defaultProvider').value,
+        scriptLanguage: $('scriptLanguage').value,
+      };
+
+      await chrome.storage.local.set({ config });
+      showToast('Configurações salvas! ✓');
+    });
+
+    // Revoke license
+    $('revokeLicenseBtn').addEventListener('click', async () => {
+      if (!confirm('Tem certeza? Você precisará reativar sua licença.')) return;
+      await chrome.storage.local.remove('license');
+      loadConfig();
+      showToast('Licença removida');
+    });
+
+    // Clear data
+    $('clearDataBtn').addEventListener('click', async () => {
+      if (!confirm('Isso apagará todo o histórico de vídeos. Continuar?')) return;
+      await chrome.storage.local.remove('jobs');
+      showToast('Histórico limpo');
+    });
+
+    function showToast(msg) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    loadConfig();
+  </script>
+</body>
+</html>
