@@ -9,7 +9,9 @@
     "activeTab",
     "scripting",
     "contextMenus",
-    "notifications"
+    "notifications",
+    "alarms",
+    "downloads"
   ],
   "host_permissions": [
     "https://api.anthropic.com/*",
