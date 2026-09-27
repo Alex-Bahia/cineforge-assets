@@ -1,7 +1,3 @@
-/**
- * Content script — enables context capture from any page
- */
-
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'GET_PAGE_CONTENT') {
     sendResponse({
