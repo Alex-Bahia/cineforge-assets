@@ -209,12 +209,31 @@ yt-dlp --cookies ~/cookies.txt \
 
 ---
 
+## ✅ Concluído nesta sessão
+
+- [x] FFmpeg 9.0.2 instalado via Homebrew
+- [x] Repositório `hotmart-course-downloader` clonado em `~/hotmart-downloader/`
+- [x] `config_cursos.py` configurado com `CURSOS_SUBDOMINIOS = ["ramon-roque-de-assis-40247765848"]`
+- [x] Dependências Python instaladas (`pip install m3u8 beautifulsoup4 youtube_dl requests`)
+- [x] Pasta `Canais Dark Youtube Music/` criada no repositório com estrutura completa
+- [x] MEMORY.md criado e commitado no repositório
+
+## ⚠️ Problema Identificado
+
+O script `hotmark.py` falha na autenticação porque a **Hotmart exige 2FA** (código enviado por email).
+O script não consegue lidar com isso automaticamente.
+
+### Solução pendente — autenticar via cookies:
+1. Fazer login manual no Hotmart pelo Chrome (incluindo código 2FA do email)
+2. Instalar extensão **"Get cookies.txt LOCALLY"** no Chrome
+3. Exportar cookies com a aba do Hotmart aberta
+4. Salvar como `~/cookies.txt`
+5. Passar os cookies para o script (próximo chat vai orientar o comando exato)
+
 ## 📋 Próximos Passos
 
-- [ ] Aguardar FFmpeg terminar de instalar (`brew install ffmpeg`)
-- [ ] Instalar dependências Python do hotmart-downloader
-- [ ] Configurar `config_cursos.py` com o subdomínio correto
-- [ ] Rodar `python hotmark.py` e baixar as 29 aulas
+- [ ] Exportar cookies do Hotmart (ver seção acima)
+- [ ] Rodar `python hotmark.py` com cookies e baixar as 29 aulas
 - [ ] Assistir Módulo 1 completo (67% → 100%)
 - [ ] Completar Módulo 2 — Engenharia Reversa do Lucro
 - [ ] Configurar primeira ferramenta de geração de música (Suno AI)
