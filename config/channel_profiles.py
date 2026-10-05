@@ -24,13 +24,23 @@ class ChannelProfile:
     tts_voice_female: str
     tts_rate: str        # e.g. "-5%" (slower) or "+0%"
     tts_pitch: str       # e.g. "-10Hz" (deeper)
-    niche: str           # dark | sports | kids | tech | finance | health | cooking | education | entertainment | news
+    niche: str           # dark | sports | kids | tech | finance | health | cooking | education | entertainment | news | finance_dark
     audience: str        # e.g. "Brazilian adults 18-45"
     content_style: str   # e.g. "dark, investigative, dramatic"
     content_rating: str  # general | teen | mature
     yt_category_id: str  # YouTube category ID
     region_code: str     # for YouTube API trending
     extra_tags: list[str] = field(default_factory=list)
+    # Premium TTS (ElevenLabs)
+    tts_tier: str = "free"                          # "free" (edge-tts) | "premium" (ElevenLabs)
+    elevenlabs_voice_id: Optional[str] = None       # override ElevenLabs voice
+    # Character consistency (Método Grid)
+    character_name: str = ""
+    character_description: str = ""
+    character_contact_sheet_path: Optional[str] = None
+    # Veo3 AI video generation
+    veo3_enabled: bool = False
+    veo3_tier: str = "fast"                         # lite | fast | standard
 
 
 # ── Profiles registry ──────────────────────────────────────────────────────────
@@ -291,6 +301,74 @@ PROFILES: dict[str, ChannelProfile] = {
         yt_category_id="26",
         region_code="US",
         extra_tags=["health", "fitness", "nutrition", "wellness", "diet", "exercise"],
+    ),
+
+    # ── FINANCE DARK — High-RPM hybrid True Crime + Finance ($15-45 CPM) ────────
+
+    "br_finance_dark": ChannelProfile(
+        id="br_finance_dark",
+        name="Finance Dark BR",
+        market="BR",
+        language="pt-BR",
+        tts_voice="pt-BR-AntonioNeural",
+        tts_voice_female="pt-BR-FranciscaNeural",
+        tts_rate="-8%",
+        tts_pitch="-15Hz",
+        niche="finance_dark",
+        audience="Brasileiros adultos 25-50, investidores e curiosos por crimes financeiros",
+        content_style="investigativo, segunda pessoa imersiva, true crime + finanças, dramático",
+        content_rating="mature",
+        yt_category_id="27",
+        region_code="BR",
+        extra_tags=["crime financeiro", "fraude", "esquema", "golpe", "fraude financeira", "true crime finanças"],
+        tts_tier="premium",
+        elevenlabs_voice_id="pNInz6obpgDQGcFmaJgB",  # Adam deep narration pt-BR
+        veo3_enabled=True,
+        veo3_tier="fast",
+    ),
+
+    "us_finance_dark": ChannelProfile(
+        id="us_finance_dark",
+        name="Finance Dark US",
+        market="US",
+        language="en-US",
+        tts_voice="en-US-GuyNeural",
+        tts_voice_female="en-US-JennyNeural",
+        tts_rate="-8%",
+        tts_pitch="-15Hz",
+        niche="finance_dark",
+        audience="American adults 25-55, investors and true crime fans, highest CPM audience",
+        content_style="investigative, second-person immersive, true crime + finance, thriller",
+        content_rating="mature",
+        yt_category_id="27",
+        region_code="US",
+        extra_tags=["financial crime", "fraud", "scam", "ponzi scheme", "true crime finance", "wall street crime"],
+        tts_tier="premium",
+        elevenlabs_voice_id="onwK4e9ZLuTAKqWW03F9",  # Daniel deep narrative en-US
+        veo3_enabled=True,
+        veo3_tier="fast",
+    ),
+
+    "gb_finance_dark": ChannelProfile(
+        id="gb_finance_dark",
+        name="Finance Dark UK",
+        market="GB",
+        language="en-GB",
+        tts_voice="en-GB-RyanNeural",
+        tts_voice_female="en-GB-SoniaNeural",
+        tts_rate="-8%",
+        tts_pitch="-15Hz",
+        niche="finance_dark",
+        audience="British adults 25-55, investors and true crime enthusiasts",
+        content_style="investigative, second-person immersive, City of London scandals, BBC documentary tone",
+        content_rating="mature",
+        yt_category_id="27",
+        region_code="GB",
+        extra_tags=["financial crime UK", "city of london", "LIBOR scandal", "fraud UK", "true crime finance"],
+        tts_tier="premium",
+        elevenlabs_voice_id="VR6AewLTigWG4xSOukaG",  # Arnold British
+        veo3_enabled=True,
+        veo3_tier="fast",
     ),
 
     # ── EUROPE — United Kingdom ────────────────────────────────────────────────

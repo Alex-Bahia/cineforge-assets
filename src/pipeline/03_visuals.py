@@ -11,6 +11,13 @@ import requests
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import OUTPUT, PEXELS_API_KEY, PIXABAY_API_KEY
 
+try:
+    from src.providers.veo3_provider import get_veo3_provider
+    from src.character.consistency_manager import CharacterConsistencyManager
+    _VEO3_AVAILABLE = True
+except ImportError:
+    _VEO3_AVAILABLE = False
+
 log = logging.getLogger(__name__)
 
 PEXELS_VIDEO_URL   = "https://api.pexels.com/videos/search"
@@ -146,6 +153,26 @@ def fetch_visual_for_scene(scene: dict, video_id: str, prefer_video: bool = True
     # Deterministic filename based on query hash to enable caching
     query_hash = hashlib.md5(query.encode()).hexdigest()[:8]
 
+    # 0. Try Veo3 AI generation (priority over stock footage)
+    if _VEO3_AVAILABLE and prefer_video:
+        veo3 = get_veo3_provider()
+        if veo3.is_available():
+            veo3_tier = scene.get("veo3_tier", "lite")
+            dest_veo3 = img_dir / f"scene_{scene_id:03d}_{query_hash}_veo3.mp4"
+            if dest_veo3.exists():
+                return dest_veo3
+            result = veo3.generate_video(
+                prompt=query,
+                scene_id=scene_id,
+                video_id=video_id,
+                tier=veo3_tier,
+                duration_seconds=scene.get("duracao_segundos", 5),
+                output_dir=img_dir,
+            )
+            if result:
+                log.info("Scene %d: Veo3 AI video ✓ [%s]", scene_id, veo3_tier)
+                return result
+
     # 1. Try Pexels video
     if prefer_video:
         url = _pexels_video(query)
@@ -219,6 +246,40 @@ def fetch_all_visuals(script: dict, video_id: str, prefer_video: bool = True) ->
         path = fetch_visual_for_scene(scene, video_id, prefer_video)
         visuals.append(path)
         time.sleep(0.3)  # avoid rate limiting
+    return visuals
+
+
+def fetch_visuals_with_character(
+    script: dict,
+    video_id: str,
+    character_manager=None,
+    prefer_video: bool = True,
+    veo3_tier: str = "fast",
+) -> list:
+    """Fetch visuals using character consistency when a manager is provided."""
+    if character_manager is None:
+        return fetch_all_visuals(script, video_id, prefer_video)
+
+    visuals = []
+    total = len(script["cenas"])
+    for i, scene in enumerate(script["cenas"]):
+        log.info("Fetching character visual %d/%d", i + 1, total)
+        result = character_manager.generate_scene_visual(
+            scene=scene,
+            scene_id=scene["id"],
+            video_id=video_id,
+            output_dir=OUTPUT / "images" / video_id,
+            use_veo3=True,
+            veo3_tier=veo3_tier,
+        )
+        if result:
+            visuals.append(result)
+        else:
+            augmented_scene = dict(scene)
+            augmented_scene["prompt_visual"] = character_manager.get_visual_prompt_with_character(scene)
+            path = fetch_visual_for_scene(augmented_scene, video_id, prefer_video)
+            visuals.append(path)
+        time.sleep(0.3)
     return visuals
 
 

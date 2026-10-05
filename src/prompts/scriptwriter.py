@@ -290,3 +290,69 @@ Descreva em inglês um prompt detalhado para gerar a thumbnail do vídeo "{title
 A thumbnail deve ser: dramática, alto contraste, com face expressiva ou símbolo visual forte.
 Retorne apenas JSON: {{"prompt_thumbnail": "descrição detalhada em inglês"}}
 """
+
+
+# ── Finance Dark integration ───────────────────────────────────────────────────
+
+try:
+    from src.prompts.finance_dark import (
+        get_finance_dark_system_prompt,
+        get_finance_dark_script_prompt,
+        get_finance_dark_topics,
+        get_finance_dark_hooks,
+        FINANCE_DARK_SYSTEM_PROMPT,
+    )
+    NICHE_PERSONAS["finance_dark"] = {
+        "pt-BR": FINANCE_DARK_SYSTEM_PROMPT,
+        "en-US": FINANCE_DARK_SYSTEM_PROMPT,
+        "en-GB": FINANCE_DARK_SYSTEM_PROMPT,
+    }
+    DEFAULT_TONE["finance_dark"] = "thriller financeiro imersivo em segunda pessoa"
+    DEFAULT_TONE_EN["finance_dark"] = "immersive second-person financial thriller"
+    THUMBNAIL_STYLES["finance_dark"] = (
+        "dark finance aesthetic, dramatic lighting, money/fraud symbols, "
+        "shocked face or empty vault, high contrast, urgent and alarming"
+    )
+    _FINANCE_DARK_LOADED = True
+except ImportError:
+    _FINANCE_DARK_LOADED = False
+
+
+def get_script_prompt_for_niche(
+    topic: str,
+    niche: str,
+    duration_min: int,
+    audience: str,
+    content_style: str,
+    language: str,
+    market: str = "BR",
+    content_rating: str = "general",
+) -> tuple:
+    """
+    Returns (system_prompt, user_prompt) for any niche.
+    Finance dark uses specialized second-person prompts.
+    """
+    if niche == "finance_dark" and _FINANCE_DARK_LOADED:
+        system = get_finance_dark_system_prompt()
+        user = get_finance_dark_script_prompt(
+            topic=topic,
+            duration_min=duration_min,
+            audience=audience,
+            language=language,
+            market=market,
+            content_rating="mature",
+        )
+        return system, user
+
+    system = get_system_prompt(niche, language)
+    user = get_script_prompt(
+        topic=topic,
+        tone=DEFAULT_TONE.get(niche, "engaging"),
+        duration_min=duration_min,
+        audience=audience,
+        content_style=content_style,
+        language=language,
+        niche=niche,
+        content_rating=content_rating,
+    )
+    return system, user

@@ -7,6 +7,11 @@ import sys
 from pathlib import Path
 
 import edge_tts
+try:
+    from src.providers.elevenlabs_provider import get_elevenlabs_provider
+    _ELEVENLABS_AVAILABLE = True
+except ImportError:
+    _ELEVENLABS_AVAILABLE = False
 import pysrt
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -52,6 +57,101 @@ def synthesize_scene(scene_text: str, scene_id: int, video_id: str,
 
     asyncio.run(_synthesize(scene_text, voice, rate, pitch, mp3, srt))
     return mp3, srt
+
+
+def synthesize_scene_premium(
+    scene_text: str,
+    scene_id: int,
+    video_id: str,
+    voice_id: str = None,
+    niche: str = "dark",
+    tts_tier: str = "free",
+) -> tuple:
+    """Synthesize with tier selection. 'premium' uses ElevenLabs; 'free' uses edge-tts."""
+    if tts_tier == "premium" and _ELEVENLABS_AVAILABLE:
+        provider = get_elevenlabs_provider()
+        if provider.is_available():
+            audio_dir = OUTPUT / "audio" / video_id
+            mp3 = provider.synthesize(
+                text=scene_text,
+                scene_id=scene_id,
+                video_id=video_id,
+                voice_id=voice_id,
+                niche=niche,
+                output_dir=audio_dir,
+            )
+            if mp3:
+                log.info("Scene %d: ElevenLabs premium TTS ✓", scene_id)
+                srt = _generate_approximate_srt(mp3, scene_text, scene_id, video_id)
+                return mp3, srt
+
+    return synthesize_scene(scene_text, scene_id, video_id)
+
+
+def _generate_approximate_srt(mp3_path, text: str, scene_id: int, video_id: str):
+    """Generate approximate SRT timing from MP3 duration and word count."""
+    import math
+    sub_dir = OUTPUT / "subtitles" / video_id
+    sub_dir.mkdir(parents=True, exist_ok=True)
+    srt = sub_dir / f"scene_{scene_id:03d}.srt"
+
+    try:
+        duration = get_audio_duration(mp3_path)
+        words = text.split()
+        words_per_sub = 4
+        sub_duration = duration / max(1, math.ceil(len(words) / words_per_sub))
+
+        lines = []
+        for i, chunk_start in enumerate(range(0, len(words), words_per_sub)):
+            chunk = " ".join(words[chunk_start:chunk_start + words_per_sub])
+            t_start = chunk_start / max(1, len(words)) * duration
+            t_end = min(t_start + sub_duration, duration)
+
+            def fmt_time(t):
+                h, rem = divmod(t, 3600)
+                m, s = divmod(rem, 60)
+                ms = int((s % 1) * 1000)
+                return f"{int(h):02d}:{int(m):02d}:{int(s):02d},{ms:03d}"
+
+            lines.extend([str(i + 1), f"{fmt_time(t_start)} --> {fmt_time(t_end)}", chunk, ""])
+
+        srt.write_text("\n".join(lines), encoding="utf-8")
+    except Exception as e:
+        log.warning("Could not generate approximate SRT: %s", e)
+        srt.write_text("", encoding="utf-8")
+
+    return srt
+
+
+def synthesize_full_script_with_tier(
+    script: dict,
+    video_id: str,
+    tts_tier: str = "free",
+    voice: str = TTS_VOICE,
+    rate: str = TTS_RATE,
+    pitch: str = TTS_PITCH,
+    elevenlabs_voice_id: str = None,
+    niche: str = "dark",
+) -> list:
+    """Synthesize all scenes with tier selection (free=edge-tts, premium=ElevenLabs)."""
+    results = []
+    for scene in script["cenas"]:
+        if tts_tier == "premium":
+            mp3, srt = synthesize_scene_premium(
+                scene["texto_narracao"],
+                scene["id"],
+                video_id,
+                voice_id=elevenlabs_voice_id,
+                niche=niche,
+                tts_tier=tts_tier,
+            )
+        else:
+            mp3, srt = synthesize_scene(
+                scene["texto_narracao"], scene["id"], video_id, voice, rate, pitch
+            )
+        results.append({"scene": scene, "mp3": mp3, "srt": srt})
+        log.info("Scene %d/%d narrated [%s]", scene["id"], len(script["cenas"]), tts_tier)
+    return results
 
 
 def synthesize_full_script(script: dict, video_id: str,

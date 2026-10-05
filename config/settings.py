@@ -24,6 +24,10 @@ for d in [OUTPUT/"videos", OUTPUT/"audio", OUTPUT/"images",
 GEMINI_API_KEY        = os.getenv("GEMINI_API_KEY", "")
 PEXELS_API_KEY        = os.getenv("PEXELS_API_KEY", "")
 PIXABAY_API_KEY       = os.getenv("PIXABAY_API_KEY", "")
+GOOGLE_CLOUD_PROJECT  = os.getenv("GOOGLE_CLOUD_PROJECT", "")     # Veo3 via Vertex AI
+ELEVENLABS_API_KEY    = os.getenv("ELEVENLABS_API_KEY", "")        # premium TTS
+VEO3_TIER             = os.getenv("VEO3_TIER", "lite")             # lite|fast|standard
+TTS_TIER              = os.getenv("TTS_TIER", "free")              # free|premium
 YOUTUBE_CLIENT_ID     = os.getenv("YOUTUBE_CLIENT_ID", "")
 YOUTUBE_CLIENT_SECRET = os.getenv("YOUTUBE_CLIENT_SECRET", "")
 GOOGLE_SHEETS_CREDS   = os.getenv("GOOGLE_SHEETS_CREDS_JSON", "")  # path to JSON

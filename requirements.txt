@@ -15,6 +15,9 @@ aiofiles>=23.2.1
 pysrt>=1.1.2
 numpy>=1.26.0
 tqdm>=4.66.0
+# ── AI Video & Voice Providers ────────────────────────────────────────────────
+google-cloud-aiplatform>=1.60.0  # Vertex AI — Veo3 video generation
+# elevenlabs>=1.3.0             # ElevenLabs premium TTS (pip install elevenlabs)
 colorama>=0.4.6
 schedule>=1.2.0
 
