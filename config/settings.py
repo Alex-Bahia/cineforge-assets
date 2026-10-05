@@ -8,7 +8,9 @@ load_dotenv()
 # ── Project Paths ──────────────────────────────────────────────────────────────
 ROOT = Path(__file__).parent.parent
 OUTPUT = ROOT / "output"
-ASSETS = ROOT / "assets"
+ASSETS      = ROOT / "assets"
+CANAL_DIR   = ROOT / "Canal Dark Automação"
+MUSIC_DIR   = CANAL_DIR / "Canais Dark Youtube Music"
 BATCH = ROOT / "batch"
 LOGS = ROOT / "logs"
 

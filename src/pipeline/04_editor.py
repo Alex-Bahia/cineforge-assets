@@ -20,7 +20,7 @@ from pydub import AudioSegment, silence
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import (
-    ASSETS, OUTPUT,
+    ASSETS, OUTPUT, MUSIC_DIR,
     VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_FPS, VIDEO_BITRATE, AUDIO_BITRATE,
     SILENCE_THRESHOLD, BACKGROUND_MUSIC_VOLUME,
     SUBTITLE_FONTSIZE, SUBTITLE_COLOR, SUBTITLE_STROKE_COLOR, SUBTITLE_STROKE_WIDTH,
@@ -142,8 +142,9 @@ def build_visual_clip(asset_path: Path, duration: float,
 # ── Music bed ─────────────────────────────────────────────────────────────────
 
 def get_background_music(total_duration: float) -> AudioFileClip | None:
-    """Pick a random music file from assets/music, loop to fill duration."""
-    music_dir = ASSETS / "music"
+    """Pick a random music file from Canal Dark Automação/Canais Dark Youtube Music."""
+    music_dir = MUSIC_DIR
+    music_dir.mkdir(parents=True, exist_ok=True)
     files = list(music_dir.glob("*.mp3")) + list(music_dir.glob("*.wav"))
     if not files:
         log.warning("No music files in assets/music — video will have no background music.")

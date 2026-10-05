@@ -63,7 +63,7 @@ echo "✅ Setup complete!"
 echo ""
 echo "Next steps:"
 echo "  1. Edit .env and add your API keys"
-echo "  2. Add music files to assets/music/ (MP3/WAV from YouTube Audio Library)"
+echo "  2. Add music files to 'Canal Dark Automação/Canais Dark Youtube Music/' (MP3/WAV from YouTube Audio Library)"
 echo "  3. Run a test video:"
 echo "     source .venv/bin/activate"
 echo '     python run_pipeline.py "O assassino serial mais misterioso do Brasil"'

@@ -86,7 +86,13 @@ Edite o arquivo `.env` (criado automaticamente pelo setup):
 
 ### 4. Adicionar músicas de fundo
 
-Baixe trilhas **gratuitas e sem copyright** da [YouTube Audio Library](https://www.youtube.com/audiolibrary) e coloque em `assets/music/` (formato MP3 ou WAV).
+Baixe trilhas **gratuitas e sem copyright** da [YouTube Audio Library](https://www.youtube.com/audiolibrary) e coloque na pasta:
+
+```
+Canal Dark Automação/Canais Dark Youtube Music/
+```
+
+Formatos aceitos: MP3 ou WAV. O sistema escolhe uma faixa aleatória a cada vídeo e mistura no volume baixo (8%) para não cobrir a narração.
 
 ---
 
@@ -178,8 +184,9 @@ cineforge-assets/
 │       ├── sheets.py            ← lê Google Sheets ou CSV
 │       ├── video_id.py          ← gerador de IDs únicos
 │       └── logger.py            ← logs coloridos + arquivo
+├── Canal Dark Automação/
+│   └── Canais Dark Youtube Music/  ← coloque suas trilhas aqui (MP3/WAV)
 ├── assets/
-│   ├── music/               ← coloque suas trilhas aqui (MP3/WAV)
 │   └── fonts/               ← Anton.ttf (baixado pelo setup.sh)
 └── output/                  ← gerado automaticamente
     ├── scripts/             ← roteiros JSON
@@ -235,7 +242,7 @@ MAX_PARALLEL=2
 | Erro | Solução |
 |---|---|
 | `GEMINI_API_KEY not set` | Preencha `.env` com sua chave do AI Studio |
-| `No music files in assets/music` | Adicione MP3s na pasta `assets/music/` |
+| `No music files in ...` | Adicione MP3s em `Canal Dark Automação/Canais Dark Youtube Music/` |
 | `FFmpeg not found` | `sudo apt install ffmpeg` ou `brew install ffmpeg` |
 | `YouTube auth failed` | Delete `config/youtube_token.json` e re-autorize |
 | `Pexels returns empty` | A query do visual está muito específica; o Pollinations.ai entra automaticamente |
