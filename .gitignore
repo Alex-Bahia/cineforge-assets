@@ -1,0 +1,14 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+output/
+logs/
+config/client_secrets.json
+config/youtube_token.json
+config/sheets_credentials.json
+assets/music/
+assets/fonts/*.ttf
+*.DS_Store
