@@ -53,6 +53,8 @@ def upload_video(
     privacy: str = YT_PRIVACY,
     publish_at: str | None = None,        # ISO 8601 e.g. "2024-12-25T09:00:00Z"
     client_secrets_file: str = "config/client_secrets.json",
+    category_id: str = YT_CATEGORY_ID,
+    language: str = "",                   # e.g. "pt", "en", "fr", "de", "es", "it"
 ) -> str:
     """
     Upload video to YouTube. Returns the YouTube video ID.
@@ -64,14 +66,17 @@ def upload_video(
     if publish_at:
         privacy = "private"
 
+    # Auto-detect language code from full locale
+    lang_code = language.split("-")[0] if language else "pt"
+
     body = {
         "snippet": {
             "title": title[:100],
             "description": description[:5000],
             "tags": tags[:500],
-            "categoryId": YT_CATEGORY_ID,
-            "defaultLanguage": "pt",
-            "defaultAudioLanguage": "pt",
+            "categoryId": category_id,
+            "defaultLanguage": lang_code,
+            "defaultAudioLanguage": lang_code,
         },
         "status": {
             "privacyStatus": privacy,

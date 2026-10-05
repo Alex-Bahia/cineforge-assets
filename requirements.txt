@@ -17,3 +17,16 @@ numpy>=1.26.0
 tqdm>=4.66.0
 colorama>=0.4.6
 schedule>=1.2.0
+
+# ── Research / Trend Monitor ───────────────────────────────────────────────────
+feedparser>=6.0.10         # RSS parsing (YouTube channel feeds + Google News)
+yt-dlp>=2024.3.10          # yt-dlp: bulk channel metadata extraction (no API key)
+# praw>=7.7.1              # Optional: Reddit PRAW (Reddit public JSON is used by default)
+# notebooklm-py>=0.5.0    # Optional: unofficial NotebookLM SDK (pip install notebooklm-py)
+# notebooklm-mcp>=0.3.0   # Optional: NotebookLM MCP bridge (uv add notebooklm-mcp)
+# tavily-python>=0.3.0    # Optional: Tavily premium search (pip install tavily-python)
+# serpapi>=0.1.5           # Optional: SerpAPI client
+
+# ── Opportunity Scanner (new) ─────────────────────────────────────────────────
+APScheduler>=3.10.0        # 24/7 background scheduler (cron + interval triggers)
+# python-telegram-bot>=20.0  # Optional: richer Telegram bot SDK (simple HTTP is used by default)

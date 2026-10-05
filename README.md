@@ -1,7 +1,11 @@
-# CineForge — Dark YouTube Channel Automation
+# CineForge — Universal YouTube Channel Automation
 
-Sistema completo de piloto automático para criar vídeos de canais dark no YouTube.
+Sistema completo de piloto automático para criar vídeos de YouTube em **qualquer nicho e qualquer mercado**.
 **Você só precisa: criar o e-mail do Google → configurar as chaves de API → rodar.**
+
+Suporta **Brasil 🇧🇷 | USA 🇺🇸 | UK 🇬🇧 | França 🇫🇷 | Alemanha 🇩🇪 | Espanha 🇪🇸 | Itália 🇮🇹**
+
+Suporta qualquer nicho: **dark/crime · esportes · infantil · tecnologia · finanças · educação · saúde · culinária · entretenimento · notícias**
 
 ---
 
@@ -98,17 +102,53 @@ Formatos aceitos: MP3 ou WAV. O sistema escolhe uma faixa aleatória a cada víd
 
 ## Como Usar
 
-### Vídeo único (teste)
+### Ver todos os perfis de canal disponíveis
+
+```bash
+python run_pipeline.py --list-profiles
+```
+
+### Vídeo único — Canal dark BR (padrão)
 
 ```bash
 source .venv/bin/activate
 python run_pipeline.py "O assassino serial mais misterioso do Brasil"
 ```
 
+### Vídeo único — USA dark channel
+
+```bash
+python run_pipeline.py "The most disturbing unsolved murder in America" --profile us_dark
+```
+
+### Vídeo único — Canal esportes BR
+
+```bash
+python run_pipeline.py "Os 10 gols mais bonitos do Brasileirão" --profile br_sports
+```
+
+### Vídeo único — Canal finanças USA
+
+```bash
+python run_pipeline.py "How to invest $1000 in the S&P 500" --profile us_finance
+```
+
+### Vídeo único — Canal dark França
+
+```bash
+python run_pipeline.py "Le crime parfait qui fascina la France" --profile fr_dark
+```
+
+### Vídeo único — Canal kids BR
+
+```bash
+python run_pipeline.py "Por que o céu é azul? Explicando para crianças" --profile br_kids
+```
+
 ### Vídeo único + upload para YouTube (privado)
 
 ```bash
-python run_pipeline.py "O crime que dividiu o Brasil" --upload
+python run_pipeline.py "O crime que dividiu o Brasil" --upload --profile br_dark
 ```
 
 ### Vídeo agendado para publicação específica
@@ -129,6 +169,18 @@ python run_pipeline.py --batch
 python run_pipeline.py --batch --upload --auto-schedule
 ```
 
+### Descobrir novas oportunidades — Brasil
+
+```bash
+python run_pipeline.py --hunt --region BR
+```
+
+### Descobrir novas oportunidades — USA
+
+```bash
+python run_pipeline.py --hunt --region US --language en-US
+```
+
 ### Agendador diário automático (roda todo dia às 06:00)
 
 ```bash
@@ -138,20 +190,56 @@ nohup python run_pipeline.py --schedule > logs/scheduler.log 2>&1 &
 
 ---
 
+## Perfis de Canal (Multi-mercado e Multi-nicho)
+
+O CineForge suporta perfis pré-configurados para criar canais em qualquer mercado e nicho:
+
+| Perfil | Mercado | Idioma | Nicho | Voz TTS |
+|---|---|---|---|---|
+| `br_dark` | 🇧🇷 Brasil | pt-BR | Dark/Crime | Antonio Neural |
+| `br_sports` | 🇧🇷 Brasil | pt-BR | Esportes | Antonio Neural |
+| `br_kids` | 🇧🇷 Brasil | pt-BR | Infantil | Francisca Neural |
+| `br_tech` | 🇧🇷 Brasil | pt-BR | Tecnologia | Antonio Neural |
+| `br_finance` | 🇧🇷 Brasil | pt-BR | Finanças | Antonio Neural |
+| `br_education` | 🇧🇷 Brasil | pt-BR | Educação | Antonio Neural |
+| `br_health` | 🇧🇷 Brasil | pt-BR | Saúde | Francisca Neural |
+| `us_dark` | 🇺🇸 USA | en-US | Dark/Crime | Guy Neural |
+| `us_sports` | 🇺🇸 USA | en-US | Sports | Guy Neural |
+| `us_kids` | 🇺🇸 USA | en-US | Kids | Ana Neural |
+| `us_tech` | 🇺🇸 USA | en-US | Technology | Guy Neural |
+| `us_finance` | 🇺🇸 USA | en-US | Finance | Guy Neural |
+| `us_education` | 🇺🇸 USA | en-US | Education | Guy Neural |
+| `gb_dark` | 🇬🇧 UK | en-GB | Dark/Crime | Ryan Neural |
+| `gb_education` | 🇬🇧 UK | en-GB | Education | Ryan Neural |
+| `fr_dark` | 🇫🇷 France | fr-FR | Dark/Crime | Henri Neural |
+| `fr_education` | 🇫🇷 France | fr-FR | Education | Henri Neural |
+| `de_dark` | 🇩🇪 Germany | de-DE | Dark/Crime | Conrad Neural |
+| `de_tech` | 🇩🇪 Germany | de-DE | Technology | Conrad Neural |
+| `es_dark` | 🇪🇸 Spain | es-ES | Dark/Crime | Alvaro Neural |
+| `es_education` | 🇪🇸 Spain | es-ES | Education | Alvaro Neural |
+| `it_dark` | 🇮🇹 Italy | it-IT | Dark/Crime | Diego Neural |
+
+**Ver todos:** `python run_pipeline.py --list-profiles`
+
+---
+
 ## Editar a Fila de Vídeos
 
 Abra `batch/topics.csv` e adicione seus temas:
 
 ```csv
-topic,tone,minutes,status,youtube_id
-Meu novo tema dark,suspense e terror,8,,
-Outro tema assustador,investigativo,10,,
+topic,tone,minutes,profile,status,youtube_id
+Meu novo tema dark,suspense e terror,8,br_dark,,
+How to invest in crypto for beginners,,8,us_finance,,
+The most haunting unsolved murder in UK,,,9,gb_dark,,
+Les 5 recettes françaises incontournables,,8,fr_education,,
 ```
 
 **Colunas:**
-- `topic` — tema do vídeo (em português)
-- `tone` — tom da narração (suspense / terror / investigativo / mistério)
+- `topic` — tema do vídeo (no idioma do mercado alvo)
+- `tone` — tom da narração (deixe vazio para usar o padrão do perfil)
 - `minutes` — duração alvo em minutos (8–15 recomendado)
+- `profile` — ID do perfil de canal (ex: `br_dark`, `us_sports`). Veja `--list-profiles`
 - `status` — deixe vazio; o sistema preenche automaticamente
 - `youtube_id` — preenchido automaticamente após upload
 

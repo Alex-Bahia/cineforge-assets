@@ -55,12 +55,14 @@ def synthesize_scene(scene_text: str, scene_id: int, video_id: str,
 
 
 def synthesize_full_script(script: dict, video_id: str,
-                            voice: str = TTS_VOICE) -> list[dict]:
+                            voice: str = TTS_VOICE,
+                            rate: str = TTS_RATE,
+                            pitch: str = TTS_PITCH) -> list[dict]:
     """Synthesize all scenes. Returns list of {scene, mp3, srt} dicts."""
     results = []
     for scene in script["cenas"]:
         mp3, srt = synthesize_scene(
-            scene["texto_narracao"], scene["id"], video_id, voice
+            scene["texto_narracao"], scene["id"], video_id, voice, rate, pitch
         )
         results.append({"scene": scene, "mp3": mp3, "srt": srt})
         log.info("Scene %d/%d narrated", scene["id"], len(script["cenas"]))
