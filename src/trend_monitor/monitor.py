@@ -106,6 +106,7 @@ class Opportunity:
     recency_hours: float = 72.0   # how recent (lower = fresher)
     keyword_match: int = 0        # dark seed keywords found in title/body
     url: str = ""
+    niche: str = "dark"
     raw_title: str = ""
     suggested_title_pt: str = ""
     tags: list[str] = field(default_factory=list)
@@ -211,7 +212,7 @@ class TrendMonitor:
         Returns the path written.
         """
         csv_path = csv_path or (self.output_dir / "topics.csv")
-        fieldnames = ["topic", "tone", "duration_min", "source", "score", "url", "status"]
+        fieldnames = ["topic", "tone", "duration_min", "source", "score", "url", "status", "niche"]
 
         # Read existing topics to avoid duplicate entries
         existing: set[str] = set()
@@ -231,6 +232,7 @@ class TrendMonitor:
                     "score": round(op.score, 2),
                     "url": op.url,
                     "status": "pending",
+                    "niche": op.niche,
                 })
                 existing.add(op.topic.lower())
 

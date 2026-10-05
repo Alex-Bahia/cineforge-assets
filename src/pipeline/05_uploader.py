@@ -55,6 +55,7 @@ def upload_video(
     client_secrets_file: str = "config/client_secrets.json",
     category_id: str = YT_CATEGORY_ID,
     language: str = "",                   # e.g. "pt", "en", "fr", "de", "es", "it"
+    made_for_kids: bool = None,           # overrides YT_MADE_FOR_KIDS when set
 ) -> str:
     """
     Upload video to YouTube. Returns the YouTube video ID.
@@ -69,6 +70,8 @@ def upload_video(
     # Auto-detect language code from full locale
     lang_code = language.split("-")[0] if language else "pt"
 
+    _made_for_kids = made_for_kids if made_for_kids is not None else YT_MADE_FOR_KIDS
+
     body = {
         "snippet": {
             "title": title[:100],
@@ -80,8 +83,8 @@ def upload_video(
         },
         "status": {
             "privacyStatus": privacy,
-            "madeForKids": YT_MADE_FOR_KIDS,
-            "selfDeclaredMadeForKids": YT_MADE_FOR_KIDS,
+            "madeForKids": _made_for_kids,
+            "selfDeclaredMadeForKids": _made_for_kids,
         },
     }
 
