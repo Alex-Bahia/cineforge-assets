@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CineForge Studio</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 360px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f1a;
+    color: #e0e0e0;
+    font-size: 13px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 16px;
+    border-bottom: 2px solid #e94560;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header h1 { font-size: 16px; font-weight: 700; color: #fff; }
+  .header .version { font-size: 10px; color: #888; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #444; }
+  .status-dot.online { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+  .status-dot.offline { background: #e94560; }
+
+  .section { padding: 12px 16px; border-bottom: 1px solid #1e1e3a; }
+  .section h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #888; margin-bottom: 10px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat-card {
+    background: #1a1a2e;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #2a2a4a;
+  }
+  .stat-card .num { font-size: 22px; font-weight: 700; color: #e94560; }
+  .stat-card .lbl { font-size: 10px; color: #666; margin-top: 2px; }
+
+  select, input {
+    width: 100%;
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 4px;
+    color: #e0e0e0;
+    padding: 7px 10px;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  select:focus, input:focus { outline: none; border-color: #e94560; }
+
+  .btn {
+    width: 100%;
+    padding: 9px;
+    border-radius: 5px;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: #e94560; color: #fff; }
+  .btn-secondary { background: #1e1e3a; color: #aaa; border: 1px solid #2a2a4a; }
+  .btn-sm { padding: 5px 10px; font-size: 11px; width: auto; }
+
+  .job-list { max-height: 160px; overflow-y: auto; }
+  .job-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #1a1a2e;
+    font-size: 11px;
+  }
+  .job-item .topic { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #ccc; }
+  .badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+    flex-shrink: 0;
+  }
+  .badge-running { background: #1d4ed8; color: #93c5fd; }
+  .badge-done { background: #14532d; color: #4ade80; }
+  .badge-failed { background: #7f1d1d; color: #fca5a5; }
+  .badge-pending { background: #1a1a2e; color: #6b7280; }
+
+  .toast {
+    position: fixed; bottom: 12px; left: 12px; right: 12px;
+    background: #4ade80; color: #000;
+    padding: 8px 12px; border-radius: 6px;
+    font-weight: 600; font-size: 12px;
+    display: none; z-index: 999;
+  }
+  .toast.error { background: #e94560; color: #fff; }
+
+  #add-form { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="status-dot" id="status-dot"></div>
+  <div>
+    <h1>CineForge Studio</h1>
+    <div class="version">v1.0 — Automação em massa</div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="section">
+  <h2>Fila de Produção</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="num" id="stat-running">—</div>
+      <div class="lbl">Em produção</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="stat-pending">—</div>
+      <div class="lbl">Aguardando</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="stat-done">—</div>
+      <div class="lbl">Concluídos</div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Add -->
+<div class="section">
+  <h2>Adicionar Vídeo</h2>
+  <div>
+    <select id="niche-select">
+      <option value="finance_dark">💰 Finance Dark (CPM $15-45)</option>
+      <option value="dark" selected>🔎 Dark / True Crime</option>
+      <option value="kids">🎨 Kids (Infantil)</option>
+      <option value="tech">💻 Tech / IA</option>
+      <option value="education">📚 Educação</option>
+    </select>
+    <input type="text" id="topic-input" placeholder="Tópico do vídeo (ou deixe vazio para auto-detectar)">
+    <div style="display:flex;gap:6px;">
+      <button class="btn btn-primary" id="btn-add">🎬 Adicionar à Fila</button>
+      <button class="btn btn-secondary btn-sm" id="btn-scan">🔍 Scan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Jobs -->
+<div class="section">
+  <h2>Jobs Recentes</h2>
+  <div class="job-list" id="job-list">
+    <div style="color:#555;text-align:center;padding:20px 0;">Carregando…</div>
+  </div>
+</div>
+
+<!-- Cost -->
+<div class="section" style="display:flex;justify-content:space-between;align-items:center;">
+  <span style="color:#666;font-size:11px;">Custo acumulado:</span>
+  <span id="total-cost" style="color:#4ade80;font-weight:700;">$0.00</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>
