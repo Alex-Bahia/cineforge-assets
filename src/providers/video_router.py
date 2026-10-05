@@ -1,17 +1,18 @@
 """
 VideoRouter — roteamento inteligente entre provedores de geração de vídeo.
 
-Hierarquia de provedores por qualidade/custo (outubro 2025):
-  Tier 1 Premium  → Veo3 Fast ($0.15/seg) — dark/finance clips hero
-  Tier 2 Padrão   → Kling 2.5 Turbo 720p ($0.042/seg) — dark/finance padrão
-  Tier 3 Volume   → Higgsfield MCP ($0.05-0.08/seg) — fallback, já integrado
-  Tier 4 Budget   → Kling 2.5 Turbo 720p com prompt simplificado
+Hierarquia de provedores por qualidade/custo (outubro 2026):
+  Tier 1 Ultra     → Veo3.1 via fal.ai ($0.40-0.60/seg) — hero clips premium
+  Tier 2 Premium   → Kling 3.0 via fal.ai ($0.084/seg) — dark/finance padrão
+  Tier 3 Budget    → LTX-2.5 Fast via fal.ai ($0.04/seg) — volume alto
+  Tier 4 Free      → Wan 2.1 via fal.ai ($0.04/seg) — kids/education
+  Fallback         → Higgsfield MCP — sem quota, pago por uso
 
 Roteamento por nicho:
-  dark/finance premium → Tier 1 (Veo3) ou Tier 2 (Kling standard_1080p)
-  dark/finance padrão  → Tier 2 (Kling turbo_720p)
-  kids                 → Tier 2 (Kling turbo_720p) ou Higgsfield
-  tech/education       → Tier 2 ou Tier 3
+  finance_dark  → Tier 2 (Kling) para cenas padrão, Tier 1 (Veo3) para hero 20%
+  dark          → Tier 2 (Kling) ou Tier 3 (LTX)
+  kids          → Tier 4 (Wan) ou Tier 3 (LTX)
+  tech/education → Tier 3 (LTX Fast) como padrão
 """
 import logging
 from dataclasses import dataclass
@@ -81,6 +82,7 @@ class VideoRouter:
 
         self._veo3 = None
         self._kling = None
+        self._fal = None
         self._higgsfield_available = False
 
         self._init_providers()
@@ -97,6 +99,12 @@ class VideoRouter:
             self._kling = get_kling_provider(tier=self.routing.get("kling_tier", "turbo_720p"))
         except Exception:
             pass
+
+        try:
+            from .fal_provider import get_fal_provider
+            self._fal = get_fal_provider()
+        except Exception:
+            self._fal = None
 
     def _is_hero_scene(self, scene: dict, scene_index: int, total_scenes: int) -> bool:
         emotion = scene.get("emocao", "").lower()
@@ -182,6 +190,22 @@ class VideoRouter:
                 cost = self._kling.cost_per_second(tier) * duration
                 log.info("VideoRouter: scene %d via Kling %s ($%.3f)", scene_id, tier, cost)
                 return VideoGenerationResult(path=result, provider_used=f"kling_{tier}", cost_estimate=cost, scene_id=scene_id)
+
+        # Try fal.ai as fallback (LTX Fast — mais barato, ~$0.04/s)
+        if self._fal and self._fal.is_available():
+            fal_model = self._fal.select_model(self.niche, quality="standard")
+            result = self._fal.generate_video(
+                prompt=prompt,
+                model_key=fal_model,
+                duration_seconds=duration,
+                scene_id=scene_id,
+                video_id=video_id,
+                output_dir=output_dir,
+            )
+            if result:
+                cost = self._fal.cost_per_second(fal_model) * duration
+                log.info("VideoRouter: scene %d via fal.ai/%s ($%.3f)", scene_id, fal_model, cost)
+                return VideoGenerationResult(path=result, provider_used=f"fal_{fal_model}", cost_estimate=cost, scene_id=scene_id)
 
         log.warning("VideoRouter: todos os provedores falharam para scene %d — sem vídeo gerado", scene_id)
         return VideoGenerationResult(path=None, provider_used="none", cost_estimate=0.0, scene_id=scene_id)
