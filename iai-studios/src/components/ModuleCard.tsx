@@ -1,27 +1,25 @@
-import styles from "./ModuleCard.module.css"
+import { memo } from 'react'
 
-interface Props {
-  label: string
-  icon: string
-  value: string
-  status: "active" | "idle" | "offline"
+interface ModuleCardProps {
+  name: string
+  hint: string
+  index: number
+  side: 'left' | 'right'
+  onClick: () => void
 }
 
-const STATUS_CLASS = {
-  active: styles.active,
-  idle: styles.idle,
-  offline: styles.offline,
-} as const
-
-export default function ModuleCard({ label, icon, value, status }: Props) {
+export default memo(function ModuleCard({ name, hint, index, side, onClick }: ModuleCardProps) {
   return (
-    <div className={`${styles.card} ${STATUS_CLASS[status]}`}>
-      <div className={styles.corner_tl} />
-      <div className={styles.corner_br} />
-      <div className={styles.icon}>{icon}</div>
-      <div className={styles.label}>{label}</div>
-      <div className={styles.value}>{value}</div>
-      <div className={styles.badge}>{status.toUpperCase()}</div>
+    <div onClick={onClick} className="mod-card-system transform-gpu">
+      <div className={side === 'right' ? 'txt-r' : 'txt-l'}>
+        <div className="mod-top-row">
+          <span className="mod-id-tag">MOD.${String(index + 1).padStart(2, '0')}</span>
+          <span className="mod-count-tag">{index < 6 ? index + 1 : index - 5}/06</span>
+        </div>
+        <h3 className="mod-title-text">{name}</h3>
+        <p className="mod-hint-text">{hint}</p>
+        <div className={`mod-visual-bar ${side === 'right' ? 'bar-r' : 'bar-l'}`} />
+      </div>
     </div>
   )
-}
+})
