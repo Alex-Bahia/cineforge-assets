@@ -227,7 +227,7 @@ export default function App() {
             playsInline
             loop={modIdx > 2}
             className="v-brief-bg"
-            src={modIdx <= 2 ? `/videos/briefing/card${modIdx}/${videoFrame}.webm` : `/videos/briefing/card${modIdx}/1.webm`}
+            src={modIdx <= 2 ? `/videos/briefing/card${modIdx}/${videoFrame}.webm` : `/videos/briefing/card2/1.webm`}
             onEnded={() => { if (modIdx <= 2 && videoFrame < 6) setVideoFrame(v => v + 1) }}
           />
           <div style={{ position: 'relative', zIndex: 10, borderLeft: '15px solid #00FF41', paddingLeft: '30px', marginTop: '5vh' }}>
