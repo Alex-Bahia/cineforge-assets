@@ -1,0 +1,78 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cyan: #00ffff;
+  --cyan-dim: rgba(0, 255, 255, 0.15);
+  --cyan-glow: rgba(0, 255, 255, 0.4);
+  --amber: #ffaa00;
+  --amber-dim: rgba(255, 170, 0, 0.2);
+  --red: #ff2244;
+  --green: #00ff88;
+  --bg: #020b14;
+  --bg2: #041624;
+  --border: rgba(0, 255, 255, 0.2);
+  --text: #c8e8ff;
+  --font-hud: "Orbitron", monospace;
+  --font-title: "Black Ops One", monospace;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-hud);
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+@keyframes scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: var(--border); }
+  50% { border-color: var(--cyan-glow); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.6; }
+  94% { opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes counter-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes progress-bar {
+  from { width: 0%; }
+  to { width: 100%; }
+}

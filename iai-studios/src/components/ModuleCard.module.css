@@ -1,0 +1,93 @@
+.card {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 0.6rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  animation: pulse-border 4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.3s);
+}
+
+.card:hover {
+  box-shadow: 0 0 16px var(--cyan-dim);
+}
+
+.active {
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan-dim);
+  animation: none;
+}
+
+.idle {
+  border-color: var(--border);
+}
+
+.offline {
+  border-color: rgba(255, 34, 68, 0.2);
+  opacity: 0.5;
+}
+
+/* corner decorations — CSS only */
+.corner_tl,
+.corner_br {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: inherit;
+  border-style: solid;
+}
+
+.corner_tl {
+  top: 3px;
+  left: 3px;
+  border-width: 1px 0 0 1px;
+}
+
+.corner_br {
+  bottom: 3px;
+  right: 3px;
+  border-width: 0 1px 1px 0;
+}
+
+.icon {
+  font-size: 1rem;
+  color: var(--cyan);
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.label {
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.value {
+  font-size: 0.75rem;
+  color: var(--cyan);
+  font-weight: 700;
+  margin-top: auto;
+}
+
+.badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.38rem;
+  letter-spacing: 0.1em;
+  opacity: 0.4;
+}
+
+.active .badge {
+  opacity: 0.8;
+  color: var(--green);
+}
+
+.offline .badge {
+  color: var(--red);
+}
