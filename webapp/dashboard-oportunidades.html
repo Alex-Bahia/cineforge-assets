@@ -1,0 +1,1004 @@
+<title>CineForge Oportunidades</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+/* ── Layout: full-width dashboard, max 1200px ── */
+:root {
+  --bg: #F2F5FA;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --border: #DDE3EE;
+  --accent: #0284C7;
+  --accent-soft: #E0F2FE;
+  --opp: #D97706;
+  --opp-soft: #FEF3C7;
+  --positive: #059669;
+  --positive-soft: #D1FAE5;
+  --danger: #DC2626;
+  --fg: #0F172A;
+  --fg-2: #475569;
+  --fg-3: #94A3B8;
+  --scanner: #6D28D9;
+  --scanner-soft: #EDE9FE;
+  --tag-bg: #F1F5F9;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070C18;
+    --surface: #0D1526;
+    --card: #111D33;
+    --border: #1E2D45;
+    --accent: #38BDF8;
+    --accent-soft: #0C2D40;
+    --opp: #F59E0B;
+    --opp-soft: #2D1E00;
+    --positive: #34D399;
+    --positive-soft: #022C22;
+    --danger: #F87171;
+    --fg: #E2E8F0;
+    --fg-2: #94A3B8;
+    --fg-3: #475569;
+    --scanner: #A78BFA;
+    --scanner-soft: #1E1040;
+    --tag-bg: #1A2540;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #070C18;
+  --surface: #0D1526;
+  --card: #111D33;
+  --border: #1E2D45;
+  --accent: #38BDF8;
+  --accent-soft: #0C2D40;
+  --opp: #F59E0B;
+  --opp-soft: #2D1E00;
+  --positive: #34D399;
+  --positive-soft: #022C22;
+  --danger: #F87171;
+  --fg: #E2E8F0;
+  --fg-2: #94A3B8;
+  --fg-3: #475569;
+  --scanner: #A78BFA;
+  --scanner-soft: #1E1040;
+  --tag-bg: #1A2540;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 0 16px 48px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+.logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+.logo span { color: var(--fg-2); font-weight: 400; font-size: 13px; margin-left: 4px; font-family: 'IBM Plex Sans', sans-serif; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.theme-btn {
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--fg-2);
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.theme-btn:hover { background: var(--border); }
+.scanner-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--scanner);
+  background: var(--scanner-soft);
+  padding: 5px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.pulse { width: 6px; height: 6px; background: var(--scanner); border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(0.7)} }
+
+/* ALERT CARD */
+.alert-card {
+  background: var(--opp-soft);
+  border: 1.5px solid var(--opp);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.alert-left { display: flex; gap: 16px; align-items: flex-start; flex: 1; min-width: 0; }
+.alert-icon {
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.alert-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--opp);
+  margin-bottom: 4px;
+}
+.alert-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--fg);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  text-wrap: balance;
+}
+.alert-meta { font-size: 12px; color: var(--fg-2); }
+.alert-meta b { color: var(--fg); }
+.score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--opp);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 20px;
+  flex-shrink: 0;
+}
+.score-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+.score-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: .85; margin-top: 2px; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+.tab {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.tab:hover { color: var(--fg); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* PANELS */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* METRIC GRID */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.metric-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+.metric-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.metric-delta {
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.metric-delta.up { color: var(--positive); }
+.metric-delta.warn { color: var(--opp); }
+
+/* CHARTS GRID */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.chart-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-2);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 14px;
+}
+.chart-wrap { position: relative; width: 100%; }
+
+/* WHY SECTION */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.why-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.why-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.why-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.why-title { font-size: 13px; font-weight: 600; }
+.why-subtitle { font-size: 11px; color: var(--fg-2); }
+.bar-list { display: flex; flex-direction: column; gap: 8px; }
+.bar-item { }
+.bar-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+.bar-label span:first-child { color: var(--fg-2); }
+.bar-label span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+.bar-track { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.bar-fill.accent { background: var(--accent); }
+.bar-fill.opp { background: var(--opp); }
+.bar-fill.green { background: var(--positive); }
+.bar-fill.highlight { background: linear-gradient(90deg, var(--opp), #F97316); }
+
+/* INSIGHT BOX */
+.insight {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 12px;
+  color: var(--fg);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.insight strong { color: var(--accent); }
+
+/* PLAN SECTION */
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) { .plan-grid { grid-template-columns: 1fr; } }
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.plan-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.plan-card h4 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--fg-2);
+  margin-bottom: 12px;
+}
+.stack-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  gap: 8px;
+}
+.stack-row:last-child { border-bottom: none; }
+.stack-name { color: var(--fg-2); }
+.stack-tool { font-weight: 600; }
+.stack-cost {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.cost-free { background: var(--positive-soft); color: var(--positive); }
+.cost-paid { background: var(--tag-bg); color: var(--fg-2); }
+
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 16px;
+  position: relative;
+}
+.tl-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.tl-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.tl-content { flex: 1; min-width: 0; }
+.tl-month { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 2px; }
+.tl-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.tl-desc { font-size: 11px; color: var(--fg-2); line-height: 1.5; }
+
+/* PROJECTIONS */
+.proj-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.proj-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--fg-3);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.proj-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-2);
+}
+.proj-table tr:last-child td { border-bottom: none; }
+.proj-table td:first-child { color: var(--fg); font-weight: 500; }
+.proj-table td.revenue { color: var(--positive); font-weight: 600; }
+.proj-table tr.milestone td { background: var(--opp-soft); }
+.proj-table tr.milestone td:first-child { color: var(--opp); }
+.mini-bar {
+  display: inline-block;
+  height: 6px;
+  background: var(--positive);
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-right: 6px;
+  opacity: .7;
+}
+.mini-bar.zero { background: var(--border); opacity: 1; }
+.table-wrap { overflow-x: auto; }
+
+/* BIG CHART */
+.big-chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+/* FOOTER NOTE */
+.footer-note {
+  font-size: 11px;
+  color: var(--fg-3);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 24px;
+  line-height: 1.6;
+}
+</style>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    CineForge
+    <span>/ Detector de Oportunidades</span>
+  </div>
+  <div class="header-right">
+    <div class="scanner-badge">
+      <div class="pulse"></div>
+      Scanner ativo
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</div>
+
+<!-- ALERT CARD -->
+<div class="alert-card">
+  <div class="alert-left">
+    <div class="alert-icon">⚡</div>
+    <div>
+      <div class="alert-eyebrow">Oportunidade detectada · 07 out 2026 · 14:32</div>
+      <div class="alert-title">Saúde &amp; Bem-Estar Feminino 35+</div>
+      <div class="alert-meta">
+        Plataformas: <b>YouTube Shorts + TikTok</b> &nbsp;·&nbsp;
+        RPM estimado: <b>R$38–62/mil views</b> &nbsp;·&nbsp;
+        Concorrência: <b>Baixa–Média</b>
+      </div>
+    </div>
+  </div>
+  <div class="score-badge">
+    <div class="score-num">94</div>
+    <div class="score-label">Score / 100</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('why', this)">Por que este nicho?</button>
+  <button class="tab" onclick="switchTab('plan', this)">Plano de Canal</button>
+  <button class="tab" onclick="switchTab('proj', this)">Projeções Financeiras</button>
+</div>
+
+<!-- PANEL 1: POR QUE -->
+<div class="panel active" id="panel-why">
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-eyebrow">RPM do nicho</div>
+      <div class="metric-val">R$48</div>
+      <div class="metric-delta up">▲ 3,2× acima da média</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-eyebrow">Crescimento de busca</div>
+      <div class="metric-val">+127%</div>
+      <div class="metric-delta up">▲ Últimos 12 meses</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-eyebrow">Saturação de canais</div>
+      <div class="metric-val">38%</div>
+      <div class="metric-delta warn">⚠ Gap de conteúdo em PT-BR</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-eyebrow">Potencial mensal</div>
+      <div class="metric-val">R$8.400</div>
+      <div class="metric-delta up">▲ Projeção 12 meses</div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <strong>Por que o scanner sinalizou este nicho:</strong> Volume de busca crescendo +127% em PT-BR com apenas 38% de canais ativos cobrindo a audiência. RPM histórico do segmento é 3,2× a média do YouTube Brasil. Conteúdo em inglês domina, criando gap direto para criador PT-BR com abordagem localizada.
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-header">
+        <div class="why-icon" style="background:var(--accent-soft)">💰</div>
+        <div>
+          <div class="why-title">RPM por Nicho (R$/mil views)</div>
+          <div class="why-subtitle">Saúde 35+ se compara a finanças</div>
+        </div>
+      </div>
+      <div class="bar-list">
+        <div class="bar-item">
+          <div class="bar-label"><span>Finanças Pessoais</span><span>R$62</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:100%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>⭐ Saúde 35+ (este nicho)</span><span>R$48</span></div>
+          <div class="bar-track"><div class="bar-fill highlight" style="width:77%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Tech &amp; Software</span><span>R$31</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:50%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Fitness Geral</span><span>R$24</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:39%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Motivação / Lifestyle</span><span>R$14</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:23%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Entretenimento</span><span>R$6</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:10%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-header">
+        <div class="why-icon" style="background:var(--positive-soft)">📈</div>
+        <div>
+          <div class="why-title">Volume de Busca PT-BR (%)</div>
+          <div class="why-subtitle">Crescimento mês a mês vs. ano anterior</div>
+        </div>
+      </div>
+      <div class="bar-list">
+        <div class="bar-item">
+          <div class="bar-label"><span>Out/2025</span><span>+12%</span></div>
+          <div class="bar-track"><div class="bar-fill green" style="width:9%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Jan/2026</span><span>+34%</span></div>
+          <div class="bar-track"><div class="bar-fill green" style="width:27%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Abr/2026</span><span>+68%</span></div>
+          <div class="bar-track"><div class="bar-fill green" style="width:54%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Jul/2026</span><span>+98%</span></div>
+          <div class="bar-track"><div class="bar-fill green" style="width:78%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>⭐ Out/2026 (agora)</span><span>+127%</span></div>
+          <div class="bar-track"><div class="bar-fill highlight" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-header">
+        <div class="why-icon" style="background:var(--scanner-soft)">🎯</div>
+        <div>
+          <div class="why-title">Gap de Conteúdo PT-BR</div>
+          <div class="why-subtitle">Demanda vs. oferta de canais ativos</div>
+        </div>
+      </div>
+      <div class="bar-list">
+        <div class="bar-item">
+          <div class="bar-label"><span>Demanda (buscas)</span><span>100%</span></div>
+          <div class="bar-track"><div class="bar-fill highlight" style="width:100%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Canais PT-BR ativos</span><span>38%</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:38%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Conteúdo postado/sem.</span><span>22%</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:22%"></div></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:10px 12px;background:var(--opp-soft);border-radius:8px;font-size:11px;color:var(--fg);">
+        <strong style="color:var(--opp)">Gap de 62%</strong> — demanda sem cobertura em português. Janela de entrada favorável antes da saturação.
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="why-header">
+        <div class="why-icon" style="background:var(--opp-soft)">🧭</div>
+        <div>
+          <div class="why-title">Comparativo de Nichos</div>
+          <div class="why-subtitle">Score combinado RPM × Crescimento × Gap</div>
+        </div>
+      </div>
+      <div class="bar-list">
+        <div class="bar-item">
+          <div class="bar-label"><span>⭐ Saúde 35+ (este)</span><span>94</span></div>
+          <div class="bar-track"><div class="bar-fill highlight" style="width:94%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Finanças para Jovens</span><span>81</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:81%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Receitas Low Carb</span><span>74</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:74%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Produtividade Pessoal</span><span>68</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:68%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Pets e Animais</span><span>55</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:55%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 2: PLANO -->
+<div class="panel" id="panel-plan">
+  <div class="plan-grid">
+    <div>
+      <div class="section-title">Stack Recomendada</div>
+      <div class="plan-card">
+        <h4>Ferramentas · Custo Inicial R$0/mês</h4>
+        <div class="stack-row">
+          <span class="stack-name">LLM (roteiros)</span>
+          <span class="stack-tool">Agnes 3.0 Flash</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Voz PT-BR</span>
+          <span class="stack-tool">Edge TTS Francisca</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Imagens</span>
+          <span class="stack-tool">Agnes Image 2.5</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Geração de vídeo</span>
+          <span class="stack-tool">Agnes Video Flash</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Montagem</span>
+          <span class="stack-tool">FFmpeg (Verticals v3)</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Publicação</span>
+          <span class="stack-tool">YouTube API v3</span>
+          <span class="stack-cost cost-free">R$0</span>
+        </div>
+        <div style="margin-top:14px;padding:10px 12px;background:var(--positive-soft);border-radius:8px;font-size:11px;">
+          <strong style="color:var(--positive)">Upgrade sugerido no Mês 4:</strong> ElevenLabs Starter (R$22/mês) para qualidade de voz premium quando o canal começar a gerar receita.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Frequência de Conteúdo</div>
+      <div class="plan-card">
+        <h4>Calendário de Publicação</h4>
+        <div class="stack-row">
+          <span class="stack-name">YouTube Shorts</span>
+          <span class="stack-tool">1× por dia</span>
+          <span class="stack-cost cost-paid">30/mês</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">YouTube Longo</span>
+          <span class="stack-tool">2× por semana</span>
+          <span class="stack-cost cost-paid">8/mês</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">TikTok</span>
+          <span class="stack-tool">1× por dia</span>
+          <span class="stack-cost cost-paid">30/mês</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-name">Revisão humana</span>
+          <span class="stack-tool">10-15 min/vídeo</span>
+          <span class="stack-cost cost-free">Compliance YPP</span>
+        </div>
+        <div style="margin-top:14px;padding:10px 12px;background:var(--scanner-soft);border-radius:8px;font-size:11px;">
+          <strong style="color:var(--scanner)">Política YouTube jul/2025:</strong> Revisão humana obrigatória antes do upload. O CineForge gera o conteúdo; você aprova em 10 min.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Timeline de Execução</div>
+  <div class="plan-card" style="margin-bottom:16px">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--accent-soft);color:var(--accent)">M1</div>
+        <div class="tl-content">
+          <div class="tl-month" style="color:var(--accent)">Mês 1–2 · Setup e Aquecimento</div>
+          <div class="tl-title">Lançamento do canal e publicação consistente</div>
+          <div class="tl-desc">Configurar stack gratuita. 30 Shorts + 8 vídeos longos. Foco em SEO e thumbnails. Meta: 500 inscritos.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--opp-soft);color:var(--opp)">M3</div>
+        <div class="tl-content">
+          <div class="tl-month" style="color:var(--opp)">Mês 3–4 · Crescimento Orgânico</div>
+          <div class="tl-title">Identificar vídeos virais e replicar formato</div>
+          <div class="tl-desc">Scanner analisa quais vídeos tiveram mais tração. Dobra produção dos formatos ganhadores. Ativação da Monetização Básica (500 subs + 3k horas).</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--positive-soft);color:var(--positive)">M6</div>
+        <div class="tl-content">
+          <div class="tl-month" style="color:var(--positive)">Mês 5–7 · Monetização</div>
+          <div class="tl-title">Ativação YPP e primeiras receitas</div>
+          <div class="tl-desc">Atingir 1.000 inscritos + 4.000 horas (AdSense completo). Adicionar link de afiliado em descrições. Primeira receita estimada: R$280–520/mês.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--scanner-soft);color:var(--scanner)">M12</div>
+        <div class="tl-content">
+          <div class="tl-month" style="color:var(--scanner)">Mês 8–12 · Escala</div>
+          <div class="tl-title">Canal consolidado + receita passiva</div>
+          <div class="tl-desc">14.000+ inscritos. Parcerias com marcas do nicho (suplementos, wellness). Meta: R$4.800–8.400/mês combinando AdSense + afiliados + patrocínios.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 3: PROJEÇÕES -->
+<div class="panel" id="panel-proj">
+  <div class="big-chart-card">
+    <div class="chart-title">Projeção de Receita Mensal (R$) — 12 meses</div>
+    <div class="chart-wrap" style="height:260px">
+      <canvas id="revenueChart"></canvas>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Crescimento de Inscritos</div>
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="subsChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Fontes de Receita (Mês 12)</div>
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="sourcesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Tabela de Projeções Detalhadas</div>
+  <div class="plan-card">
+    <div class="table-wrap">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Inscritos</th>
+            <th>Views/mês</th>
+            <th>AdSense</th>
+            <th>Afiliados</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Mês 1</td><td>150</td><td>4.200</td><td class="revenue">R$0</td><td class="revenue">R$0</td><td class="revenue">R$0</td></tr>
+          <tr><td>Mês 2</td><td>380</td><td>9.800</td><td class="revenue">R$0</td><td class="revenue">R$0</td><td class="revenue">R$0</td></tr>
+          <tr><td>Mês 3</td><td>720</td><td>18.500</td><td class="revenue">R$0</td><td class="revenue">R$45</td><td class="revenue">R$45</td></tr>
+          <tr class="milestone"><td>⭐ Mês 4</td><td>1.250</td><td>31.000</td><td class="revenue">R$80</td><td class="revenue">R$90</td><td class="revenue">R$170</td></tr>
+          <tr><td>Mês 5</td><td>2.100</td><td>52.000</td><td class="revenue">R$180</td><td class="revenue">R$160</td><td class="revenue">R$340</td></tr>
+          <tr><td>Mês 6</td><td>3.200</td><td>78.000</td><td class="revenue">R$340</td><td class="revenue">R$240</td><td class="revenue">R$580</td></tr>
+          <tr><td>Mês 7</td><td>4.800</td><td>112.000</td><td class="revenue">R$520</td><td class="revenue">R$360</td><td class="revenue">R$880</td></tr>
+          <tr><td>Mês 8</td><td>6.500</td><td>148.000</td><td class="revenue">R$760</td><td class="revenue">R$480</td><td class="revenue">R$1.240</td></tr>
+          <tr><td>Mês 9</td><td>8.400</td><td>195.000</td><td class="revenue">R$1.080</td><td class="revenue">R$620</td><td class="revenue">R$1.700</td></tr>
+          <tr><td>Mês 10</td><td>10.500</td><td>248.000</td><td class="revenue">R$1.520</td><td class="revenue">R$780</td><td class="revenue">R$2.300</td></tr>
+          <tr><td>Mês 11</td><td>12.200</td><td>298.000</td><td class="revenue">R$2.100</td><td class="revenue">R$960</td><td class="revenue">R$3.060</td></tr>
+          <tr class="milestone"><td>⭐ Mês 12</td><td>14.000</td><td>360.000</td><td class="revenue">R$2.800</td><td class="revenue">R$1.200</td><td class="revenue">R$4.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <span style="font-size:11px;color:var(--fg-3)">RPM usado: R$7,78/mil views (AdSense YT Brasil, nicho saúde)</span>
+      <span style="font-size:11px;color:var(--fg-3)">·</span>
+      <span style="font-size:11px;color:var(--fg-3)">Afiliados: comissão média 8% sobre produtos no nicho</span>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <strong>Metodologia das projeções:</strong> Crescimento orgânico baseado em curva mediana de canais dark PT-BR com publicação consistente (1 short/dia + 2 vídeos longos/semana). RPM de R$7,78/mil views usa histórico Ahrefs/vidIQ para nicho saúde. Cenário conservador: não inclui patrocínios diretos. Mês 4 marcado com ⭐ = ativação YPP esperada.
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'proj') setTimeout(initCharts, 50);
+}
+
+function toggleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme');
+  r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  if (window._chartsInited) {
+    setTimeout(() => { destroyCharts(); initCharts(); }, 50);
+  }
+}
+
+window._chartsInited = false;
+let revenueC, subsC, sourcesC;
+function destroyCharts() {
+  if (revenueC) { revenueC.destroy(); revenueC = null; }
+  if (subsC) { subsC.destroy(); subsC = null; }
+  if (sourcesC) { sourcesC.destroy(); sourcesC = null; }
+  window._chartsInited = false;
+}
+
+function getColor(v) {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (!document.documentElement.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  return dark ? v.d : v.l;
+}
+
+function initCharts() {
+  if (window._chartsInited) return;
+  window._chartsInited = true;
+
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (!document.documentElement.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  const fg2 = dark ? '#94A3B8' : '#475569';
+  const border = dark ? '#1E2D45' : '#DDE3EE';
+  const accent = dark ? '#38BDF8' : '#0284C7';
+  const opp = dark ? '#F59E0B' : '#D97706';
+  const green = dark ? '#34D399' : '#059669';
+  const greenAlpha = dark ? 'rgba(52,211,153,0.15)' : 'rgba(5,150,105,0.1)';
+
+  Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.color = fg2;
+
+  const months = ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'];
+  const revenues = [0, 0, 45, 170, 340, 580, 880, 1240, 1700, 2300, 3060, 4000];
+  const subscribers = [150, 380, 720, 1250, 2100, 3200, 4800, 6500, 8400, 10500, 12200, 14000];
+
+  // Revenue Chart
+  revenueC = new Chart(document.getElementById('revenueChart'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Receita Total (R$)',
+        data: revenues,
+        backgroundColor: months.map((_, i) => i === 11 ? opp : (i >= 3 ? green + '99' : border)),
+        borderColor: months.map((_, i) => i === 11 ? opp : (i >= 3 ? green : border)),
+        borderWidth: 1.5,
+        borderRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => `R$ ${ctx.raw.toLocaleString('pt-BR')}` }
+      }},
+      scales: {
+        x: { grid: { color: border + '44' }, ticks: { color: fg2 } },
+        y: { grid: { color: border + '44' }, ticks: { color: fg2, callback: v => 'R$' + v.toLocaleString('pt-BR') } }
+      }
+    }
+  });
+
+  // Subscribers Chart
+  subsC = new Chart(document.getElementById('subsChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Inscritos',
+        data: subscribers,
+        borderColor: accent,
+        backgroundColor: dark ? 'rgba(56,189,248,0.1)' : 'rgba(2,132,199,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: accent,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: border + '44' } },
+        y: { grid: { color: border + '44' }, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v } }
+      }
+    }
+  });
+
+  // Sources Chart
+  sourcesC = new Chart(document.getElementById('sourcesChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['AdSense YT', 'Afiliados', 'Patrocínio (projeção)'],
+      datasets: [{
+        data: [2800, 1200, 400],
+        backgroundColor: [accent, green, opp],
+        borderColor: dark ? '#111D33' : '#FFFFFF',
+        borderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, boxWidth: 10, font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => `R$ ${ctx.raw.toLocaleString('pt-BR')}` } }
+      }
+    }
+  });
+}
+</script>
