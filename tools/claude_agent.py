@@ -15,9 +15,14 @@ Uso rápido:
 import os
 import json
 import logging
+import subprocess
 from typing import Optional
 
-import anthropic
+try:
+    import anthropic
+    _ANTHROPIC_AVAILABLE = True
+except ImportError:
+    _ANTHROPIC_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -82,9 +87,17 @@ class CineForgeAgent:
         model: str = MODEL,
         max_tokens: int = MAX_TOK,
     ):
-        self.client = anthropic.Anthropic(
-            api_key=api_key or os.environ.get("ANTHROPIC_API_KEY")
-        )
+        resolved_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        if resolved_key and _ANTHROPIC_AVAILABLE:
+            self.client = anthropic.Anthropic(api_key=resolved_key)
+            self._mode = "api"
+        else:
+            self.client = None
+            self._mode  = "cli"
+            logger.info(
+                "ANTHROPIC_API_KEY não configurada — usando 'claude' CLI como backend. "
+                "Garanta que o Claude Code CLI esteja instalado e autenticado."
+            )
         self.model      = model
         self.max_tokens = max_tokens
 
@@ -99,13 +112,35 @@ class CineForgeAgent:
         as_json: bool = False,
     ) -> str | dict:
         """Envia uma mensagem ao Claude e retorna a resposta."""
-        resp = self.client.messages.create(
-            model=self.model,
-            max_tokens=self.max_tokens,
-            system=system,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        text = resp.content[0].text
+        if self._mode == "api":
+            resp = self.client.messages.create(
+                model=self.model,
+                max_tokens=self.max_tokens,
+                system=system,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            text = resp.content[0].text
+        else:
+            # Fallback: chama o CLI `claude -p` (usa a autenticação do Claude Code)
+            full_prompt = f"{system}\n\n---\n\n{prompt}"
+            try:
+                result = subprocess.run(
+                    ["claude", "-p", full_prompt],
+                    capture_output=True,
+                    text=True,
+                    timeout=180,
+                )
+                if result.returncode != 0:
+                    raise RuntimeError(result.stderr.strip() or "claude CLI retornou erro")
+                text = result.stdout.strip()
+            except FileNotFoundError:
+                raise RuntimeError(
+                    "Backend indisponível: ANTHROPIC_API_KEY não configurada e "
+                    "'claude' CLI não encontrado no PATH.\n"
+                    "Soluções:\n"
+                    "  1. Configure ANTHROPIC_API_KEY no arquivo .env\n"
+                    "  2. Instale o Claude Code CLI: https://claude.ai/code"
+                )
 
         if as_json:
             # Extrai JSON da resposta (que pode vir dentro de markdown ```json ```)

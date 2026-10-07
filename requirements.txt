@@ -39,3 +39,7 @@ yt-dlp>=2024.3.10          # yt-dlp: bulk channel metadata extraction (no API ke
 # ── Opportunity Scanner (new) ─────────────────────────────────────────────────
 APScheduler>=3.10.0        # 24/7 background scheduler (cron + interval triggers)
 # python-telegram-bot>=20.0  # Optional: richer Telegram bot SDK (simple HTTP is used by default)
+
+# ── Webhook Server (integração CREAO / Make / n8n) ───────────────────────────
+# fastapi>=0.110.0           # Optional: servidor HTTP para expor o agente Claude como API
+# uvicorn>=0.29.0            # Optional: ASGI server para o webhook_server.py
