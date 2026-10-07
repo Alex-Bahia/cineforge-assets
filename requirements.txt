@@ -21,6 +21,12 @@ google-cloud-aiplatform>=1.60.0  # Vertex AI — Veo3 video generation
 colorama>=0.4.6
 schedule>=1.2.0
 
+# ── Claude / Anthropic API ────────────────────────────────────────────────────
+anthropic>=0.40.0             # Claude API — roteiro, nichos, SEO, chat
+
+# ── CREAO Integration ─────────────────────────────────────────────────────────
+# (usa requests já listado acima)
+
 # ── Research / Trend Monitor ───────────────────────────────────────────────────
 feedparser>=6.0.10         # RSS parsing (YouTube channel feeds + Google News)
 yt-dlp>=2024.3.10          # yt-dlp: bulk channel metadata extraction (no API key)
