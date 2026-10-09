@@ -1,0 +1,398 @@
+{
+  "name": "CineForge Frankenstein Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Agendador (Seg-Sex 7h)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Tópicos",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "pendente"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "id": "a1b2c3d4-0002-0002-0002-000000000002",
+      "name": "Google Sheets — Buscar Tópico",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [460, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CONFIGURE_CREDENCIAL_GOOGLE",
+          "name": "Google Sheets (sua conta)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-topic",
+              "leftValue": "={{ $json.topico }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "a1b2c3d4-0003-0003-0003-000000000003",
+      "name": "Tem tópico?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8765/claude/pipeline",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "topico",
+              "value": "={{ $('Google Sheets — Buscar Tópico').item.json.topico }}"
+            },
+            {
+              "name": "plataformas",
+              "value": "={{ $('Google Sheets — Buscar Tópico').item.json.plataformas || 'youtube,tiktok,instagram' }}"
+            },
+            {
+              "name": "gerar_video",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 300000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "a1b2c3d4-0004-0004-0004-000000000004",
+      "name": "CineForge — Gerar Vídeo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "id": "check-video",
+              "leftValue": "={{ $json.video_path }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "a1b2c3d4-0005-0005-0005-000000000005",
+      "name": "Vídeo gerado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.POSTIZ_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": {{ $('Google Sheets — Buscar Tópico').item.json.topico | json }},\n  \"content\": {{ $('CineForge — Gerar Vídeo').item.json.descricao || $('Google Sheets — Buscar Tópico').item.json.topico | json }},\n  \"tags\": {{ $('CineForge — Gerar Vídeo').item.json.hashtags || [] | json }},\n  \"media\": [\n    {\n      \"path\": {{ $('CineForge — Gerar Vídeo').item.json.video_path | json }},\n      \"type\": \"video\"\n    }\n  ],\n  \"platforms\": {{ ($('Google Sheets — Buscar Tópico').item.json.plataformas || 'youtube,tiktok,instagram').split(',') | json }},\n  \"publishDate\": {{ $now.plus(1, 'hour').toISO() | json }}\n}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "a1b2c3d4-0006-0006-0006-000000000006",
+      "name": "Postiz — Agendar Publicação",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 120]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $env.GOOGLE_SHEET_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Tópicos",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "publicado",
+            "data_publicacao": "={{ $now.toISO() }}",
+            "video_path": "={{ $('CineForge — Gerar Vídeo').item.json.video_path }}",
+            "postiz_id": "={{ $json.id }}"
+          },
+          "matchingColumns": ["topico"],
+          "schema": []
+        }
+      },
+      "id": "a1b2c3d4-0007-0007-0007-000000000007",
+      "name": "Google Sheets — Marcar Publicado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [1560, 120],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CONFIGURE_CREDENCIAL_GOOGLE",
+          "name": "Google Sheets (sua conta)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $env.TELEGRAM_CHAT_ID }}"
+            },
+            {
+              "name": "text",
+              "value": "=✅ *Vídeo publicado!*\n\n📌 Tópico: {{ $('Google Sheets — Buscar Tópico').item.json.topico }}\n🎬 Arquivo: {{ $('CineForge — Gerar Vídeo').item.json.video_path }}\n📅 Publicado em: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+            },
+            {
+              "name": "parse_mode",
+              "value": "Markdown"
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0008-0008-0008-000000000008",
+      "name": "Telegram — Notificar Sucesso",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $env.TELEGRAM_CHAT_ID }}"
+            },
+            {
+              "name": "text",
+              "value": "=❌ *Erro na geração do vídeo*\n\n📌 Tópico: {{ $('Google Sheets — Buscar Tópico').item.json.topico }}\n🕐 {{ $now.format('dd/MM HH:mm') }}\n\nVerifique os logs: `docker logs cineforge`"
+            },
+            {
+              "name": "parse_mode",
+              "value": "Markdown"
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0009-0009-0009-000000000009",
+      "name": "Telegram — Notificar Erro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 320]
+    },
+    {
+      "parameters": {
+        "content": "## 📋 Sem tópicos pendentes\nNenhuma linha com status='pendente' encontrada.\nAdicione tópicos na planilha.",
+        "height": 80,
+        "width": 280
+      },
+      "id": "a1b2c3d4-0010-0010-0010-000000000010",
+      "name": "Nota — Sem tópicos",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [900, 400]
+    }
+  ],
+  "connections": {
+    "Agendador (Seg-Sex 7h)": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets — Buscar Tópico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets — Buscar Tópico": {
+      "main": [
+        [
+          {
+            "node": "Tem tópico?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem tópico?": {
+      "main": [
+        [
+          {
+            "node": "CineForge — Gerar Vídeo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "CineForge — Gerar Vídeo": {
+      "main": [
+        [
+          {
+            "node": "Vídeo gerado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vídeo gerado?": {
+      "main": [
+        [
+          {
+            "node": "Postiz — Agendar Publicação",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram — Notificar Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postiz — Agendar Publicação": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets — Marcar Publicado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets — Marcar Publicado": {
+      "main": [
+        [
+          {
+            "node": "Telegram — Notificar Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "meta": {
+    "instanceId": "cineforge-hermes"
+  },
+  "pinData": {},
+  "versionId": "1.0.0",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2026-10-08T00:00:00.000Z",
+      "updatedAt": "2026-10-08T00:00:00.000Z",
+      "id": "frankenstein-tag",
+      "name": "frankenstein"
+    }
+  ]
+}

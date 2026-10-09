@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "CineForge Studio",
+  "version": "1.0.0",
+  "description": "Geração automática de vídeos YouTube via CineForge — dispare o pipeline diretamente do YouTube Studio",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://studio.youtube.com/*",
+    "https://www.youtube.com/*",
+    "http://localhost:8765/*",
+    "https://api.cineforge.local/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://studio.youtube.com/*"],
+      "js": ["src/content.js"],
+      "css": ["src/panel.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "CineForge Studio"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

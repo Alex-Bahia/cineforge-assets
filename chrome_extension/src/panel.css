@@ -1,0 +1,101 @@
+/* CineForge Studio — Painel injetado no YouTube Studio */
+
+#cineforge-panel {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 240px;
+  background: #0f0f1a;
+  border: 1px solid #e94560;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(233, 69, 96, 0.3);
+  z-index: 99999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #e0e0e0;
+  overflow: hidden;
+}
+
+#cf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 8px 12px;
+  border-bottom: 1px solid #e94560;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: move;
+}
+
+#cf-header button {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+}
+
+#cf-body {
+  padding: 10px 12px;
+}
+
+#cf-stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #888;
+}
+
+.cf-stat span {
+  font-weight: 700;
+  color: #e94560;
+  font-size: 14px;
+}
+
+#cineforge-panel select,
+#cineforge-panel input {
+  width: 100%;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 4px;
+  color: #e0e0e0;
+  padding: 6px 8px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+#cineforge-panel select:focus,
+#cineforge-panel input:focus {
+  outline: none;
+  border-color: #e94560;
+}
+
+.cf-btn {
+  flex: 1;
+  padding: 7px 8px;
+  border-radius: 4px;
+  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.cf-btn:hover { opacity: 0.85; }
+
+.cf-primary { background: #e94560; color: #fff; }
+.cf-secondary {
+  background: #1e1e3a;
+  color: #aaa;
+  border: 1px solid #2a2a4a;
+}
+
+#cf-msg {
+  font-size: 10px;
+  margin-top: 6px;
+  min-height: 14px;
+  text-align: center;
+}

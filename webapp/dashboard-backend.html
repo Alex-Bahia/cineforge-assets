@@ -1,0 +1,1171 @@
+<title>CineForge OS</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+/* ── CineForge OS — Cyberpunk dark-first, single-theme ── */
+:root {
+  --bg:          #030810;
+  --surface:     #070E1C;
+  --card:        #0A1428;
+  --card-hi:     #0D1A34;
+  --border:      #162340;
+  --border-hi:   #1E3260;
+  --cyan:        #00D4FF;
+  --cyan-dim:    rgba(0, 212, 255, 0.12);
+  --cyan-glow:   rgba(0, 212, 255, 0.35);
+  --violet:      #8B5CF6;
+  --violet-dim:  rgba(139, 92, 246, 0.12);
+  --green:       #00E896;
+  --green-dim:   rgba(0, 232, 150, 0.12);
+  --amber:       #FFB020;
+  --amber-dim:   rgba(255, 176, 32, 0.12);
+  --red:         #FF4060;
+  --red-dim:     rgba(255, 64, 96, 0.12);
+  --fg:          #D6E4F7;
+  --fg-2:        #5A7EA0;
+  --fg-3:        #2C4060;
+  --sidebar-w:   220px;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* ── Scanline texture ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Layout ── */
+.os-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: 48px 1fr;
+  height: 100%;
+}
+
+/* ── Topbar ── */
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--violet), transparent);
+  opacity: 0.6;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+.logo-mark {
+  width: 24px; height: 24px;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  flex-shrink: 0;
+}
+
+.topbar-spacer { flex: 1; }
+
+.status-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--fg-2);
+  text-transform: uppercase;
+}
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+  50%       { opacity: 0.5; box-shadow: 0 0 16px var(--green); }
+}
+
+.live-clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--fg-3);
+  letter-spacing: 0.05em;
+  min-width: 64px;
+  text-align: right;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.nav-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 8px 20px 4px;
+  margin-top: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  position: relative;
+}
+.nav-item:hover {
+  color: var(--fg);
+  background: var(--cyan-dim);
+}
+.nav-item.active {
+  color: var(--cyan);
+  border-left-color: var(--cyan);
+  background: var(--cyan-dim);
+  font-weight: 500;
+}
+.nav-item svg { flex-shrink: 0; opacity: 0.7; }
+.nav-item.active svg { opacity: 1; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--violet-dim);
+  color: var(--violet);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 20px;
+  border: 1px solid rgba(139,92,246,0.3);
+}
+.nav-badge.alert {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border-color: rgba(255,176,32,0.3);
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+.agent-card {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px;
+}
+.agent-avatar {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--violet), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+.agent-name { font-weight: 500; color: var(--fg); }
+.agent-role { font-size: 10px; color: var(--fg-2); }
+
+/* ── Main content ── */
+.main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* ── Page header ── */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.page-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--fg-2);
+  margin-top: 2px;
+}
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.btn-ghost {
+  background: var(--card);
+  color: var(--fg-2);
+  border-color: var(--border);
+}
+.btn-ghost:hover { color: var(--fg); border-color: var(--border-hi); background: var(--card-hi); }
+.btn-primary {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border-color: rgba(0,212,255,0.3);
+}
+.btn-primary:hover { background: rgba(0,212,255,0.2); box-shadow: 0 0 16px var(--cyan-glow); }
+
+/* ── KPI Grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+.kpi-card:nth-child(1)::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+.kpi-card:nth-child(2)::before { background: linear-gradient(90deg, var(--violet), transparent); }
+.kpi-card:nth-child(3)::before { background: linear-gradient(90deg, var(--green), transparent); }
+.kpi-card:nth-child(4)::before { background: linear-gradient(90deg, var(--amber), transparent); }
+.kpi-card:hover { border-color: var(--border-hi); }
+
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-bottom: 10px;
+}
+.kpi-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.kpi-sub {
+  font-size: 11px;
+  color: var(--fg-2);
+  margin-top: 6px;
+  display: flex; align-items: center; gap: 4px;
+}
+.kpi-trend-up   { color: var(--green); }
+.kpi-trend-down { color: var(--red); }
+.kpi-icon {
+  position: absolute;
+  bottom: 12px; right: 14px;
+  opacity: 0.08;
+}
+
+/* ── Two-col layout ── */
+.row-2 { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.02em;
+}
+.card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.tag-live {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(0,232,150,0.3);
+}
+.tag-cyan {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid rgba(0,212,255,0.3);
+}
+.card-body { padding: 16px; }
+
+/* ── Pipeline flow ── */
+.pipeline-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 20px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pipeline-flow::-webkit-scrollbar { display: none; }
+
+.pipe-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+.pipe-icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--card-hi);
+  position: relative;
+  transition: all 0.2s;
+}
+.pipe-icon.active {
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+  box-shadow: 0 0 20px var(--cyan-glow);
+}
+.pipe-icon.active::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 12px;
+  border: 1px solid var(--cyan);
+  opacity: 0.3;
+  animation: ring-pulse 2s ease-in-out infinite;
+}
+@keyframes ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50%       { transform: scale(1.08); opacity: 0.1; }
+}
+.pipe-icon.done { border-color: var(--green); background: var(--green-dim); }
+.pipe-icon.queued { border-color: var(--border); background: var(--card); opacity: 0.5; }
+
+.pipe-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  text-align: center;
+}
+.pipe-label.active { color: var(--cyan); }
+.pipe-label.done   { color: var(--green); }
+
+.pipe-arrow {
+  flex: 1;
+  display: flex; align-items: center;
+  min-width: 32px;
+  padding: 0 4px;
+  position: relative;
+}
+.pipe-arrow-line {
+  height: 2px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--border);
+  border-radius: 1px;
+}
+.pipe-arrow-flow {
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  animation: flow-anim 1.8s linear infinite;
+}
+@keyframes flow-anim {
+  to { left: 100%; }
+}
+.pipe-arrow-line.slow .pipe-arrow-flow { animation-duration: 3s; }
+.pipe-arrow-line.idle .pipe-arrow-flow { display: none; }
+
+/* ── Chart wrapper ── */
+.chart-wrap {
+  position: relative;
+  height: 180px;
+}
+
+/* ── Scanner alerts ── */
+.alert-list { display: flex; flex-direction: column; gap: 8px; }
+.alert-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--card-hi);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.alert-item:hover { border-color: var(--border-hi); }
+.alert-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 34px;
+  text-align: center;
+}
+.score-high { color: var(--green); }
+.score-mid  { color: var(--amber); }
+.alert-info { flex: 1; min-width: 0; }
+.alert-niche {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.alert-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--fg-2);
+  margin-top: 2px;
+  display: flex; gap: 8px;
+}
+.alert-badge {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.badge-new { background: var(--cyan-dim); color: var(--cyan); }
+.badge-seen { background: var(--card); color: var(--fg-3); }
+
+/* ── Jobs table ── */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-2);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--card-hi); color: var(--fg); }
+.td-name { color: var(--fg); font-weight: 500; }
+.td-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-variant-numeric: tabular-nums; }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.06em;
+}
+.pill-running { background: var(--cyan-dim); color: var(--cyan); }
+.pill-done    { background: var(--green-dim); color: var(--green); }
+.pill-queued  { background: var(--amber-dim); color: var(--amber); }
+.pill-error   { background: var(--red-dim); color: var(--red); }
+
+.progress-bar {
+  height: 4px; border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+  min-width: 80px;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  transition: width 0.3s;
+}
+
+/* ── Mini stat row ── */
+.mini-stats { display: flex; gap: 0; }
+.mini-stat {
+  flex: 1;
+  padding: 12px 14px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.mini-stat:last-child { border-right: none; }
+.mini-stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.mini-stat-label {
+  font-size: 10px;
+  color: var(--fg-2);
+}
+
+/* ── Service status cards ── */
+.service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; }
+.service-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--card-hi);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.service-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.service-dot.up     { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.service-dot.warn   { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.service-dot.down   { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.service-name { font-size: 11px; font-weight: 500; color: var(--fg); flex: 1; }
+.service-lat  {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--fg-2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar { display: none; }
+  .os-shell { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .row-2    { grid-template-columns: 1fr; }
+  .row-3    { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .main { padding: 12px; }
+}
+</style>
+
+<div class="os-shell">
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-mark"></div>
+      CineForge
+    </div>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--fg-3);text-transform:uppercase;">OS v0.9.1</span>
+    <div class="topbar-spacer"></div>
+    <div class="status-chip">
+      <div class="pulse-dot"></div>
+      ALL SYSTEMS ONLINE
+    </div>
+    <div style="width:1px;height:20px;background:var(--border);margin:0 8px;"></div>
+    <div class="live-clock" id="clock">--:--:--</div>
+  </header>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="nav-section-label">Core</div>
+
+    <div class="nav-item active">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5h13M7.5 1v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2" opacity=".4"/><rect x="8" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2" opacity=".4"/></svg>
+      Pipeline
+    </div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 3.5v4l2.5 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Scanner
+      <span class="nav-badge alert">3</span>
+    </div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 3V2M10 3V2M1 6.5h13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Canais
+      <span class="nav-badge">7</span>
+    </div>
+
+    <div class="nav-section-label">Dados</div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 11.5L5 7.5L8 10L12 5L14 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Analytics
+    </div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 4h13M1 7.5h9M1 11h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Relatórios
+    </div>
+
+    <div class="nav-section-label">Sistema</div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.9 2.9l1.4 1.4M10.7 10.7l1.4 1.4M2.9 12.1l1.4-1.4M10.7 4.3l1.4-1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5" stroke="currentColor" stroke-width="1.2"/></svg>
+      Integrações
+    </div>
+    <div class="nav-item">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 13c0-2.5 2.5-4.5 5.5-4.5S13 10.5 13 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Configurações
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="agent-card">
+        <div class="agent-avatar">AB</div>
+        <div>
+          <div class="agent-name">Alex B.</div>
+          <div class="agent-role">Admin · Pro</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <div class="page-title">Pipeline Central</div>
+        <div class="page-subtitle">// CINEFORGE_PIPELINE · OCT 2026 · CYCLE_847</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v5M6 6l3-2M6 6L3 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 8v2a1 1 0 001 1h8a1 1 0 001-1V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Exportar
+        </button>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M6 3v3l2 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Novo Job
+        </button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Vídeos Gerados</div>
+        <div class="kpi-value" id="kpi-videos">247</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">↑ 18%</span> vs. semana passada</div>
+        <svg class="kpi-icon" width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="12" width="30" height="24" rx="4" stroke="currentColor" stroke-width="2"/><path d="M34 18l10-6v24l-10-6V18z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Nichos Escaneados</div>
+        <div class="kpi-value" id="kpi-niches">1.842</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">↑ 3 alertas hoje</span></div>
+        <svg class="kpi-icon" width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="3" fill="currentColor"/></svg>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Receita Estimada</div>
+        <div class="kpi-value" id="kpi-rev">R$4.2k</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">↑ 31%</span> MoM</div>
+        <svg class="kpi-icon" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8v4M24 36v4M12 24H8M40 24h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="2"/><path d="M19 22h6a2 2 0 010 4h-6a2 2 0 010 4h6M24 18v2M24 28v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Uptime do Pipeline</div>
+        <div class="kpi-value" id="kpi-uptime">99.7%</div>
+        <div class="kpi-sub"><span style="color:var(--fg-3)">Último restart: 14d atrás</span></div>
+        <svg class="kpi-icon" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 8a16 16 0 100 32A16 16 0 0024 8z" stroke="currentColor" stroke-width="2"/><path d="M24 16v8l6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+
+    <!-- Pipeline visual -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Fluxo do Pipeline</div>
+        <span class="card-tag tag-live">● LIVE</span>
+      </div>
+      <div class="pipeline-flow">
+        <div class="pipe-step">
+          <div class="pipe-icon done">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#00E896" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#00E896" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pipe-label done">Scanner</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon done">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="#00E896" stroke-width="1.5"/><path d="M6 8h8M6 11h5" stroke="#00E896" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="pipe-label done">Roteiro LLM</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon active">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10c0 0 2-5 6-5s6 5 6 5-2 5-6 5-6-5-6-5z" stroke="#00D4FF" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="#00D4FF"/></svg>
+          </div>
+          <div class="pipe-label active">Edge TTS</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line slow"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon queued">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8l4 2-4 2V8z" fill="currentColor" opacity=".5"/></svg>
+          </div>
+          <div class="pipe-label queued">Agnes Img</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line idle"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon queued">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="11" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M13 8l5-3v6l-5-3z" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="pipe-label queued">Agnes Vid</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line idle"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon queued">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12v8H4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 16l2-4h12l2 4H2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pipe-label queued">FFmpeg</div>
+        </div>
+        <div class="pipe-arrow">
+          <div class="pipe-arrow-line idle"><div class="pipe-arrow-flow"></div></div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon queued">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7-7-3.13-7-7z" stroke="currentColor" stroke-width="1.5"/><path d="M8 7l5 3-5 3V7z" fill="currentColor" opacity=".4"/></svg>
+          </div>
+          <div class="pipe-label queued">Upload YT</div>
+        </div>
+      </div>
+      <!-- Mini stats bar -->
+      <div class="mini-stats" style="border-top:1px solid var(--border);">
+        <div class="mini-stat">
+          <div class="mini-stat-val" style="color:var(--green)">12</div>
+          <div class="mini-stat-label">Concluídos hoje</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val" style="color:var(--cyan)">3</div>
+          <div class="mini-stat-label">Em execução</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val" style="color:var(--amber)">8</div>
+          <div class="mini-stat-label">Na fila</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val" style="color:var(--fg-2)">~4min</div>
+          <div class="mini-stat-label">Tempo médio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: chart + scanner alerts -->
+    <div class="row-2">
+
+      <!-- Chart: produção 30 dias -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Produção de Vídeos — 30 dias</div>
+          <span class="card-tag tag-cyan">+18% MoM</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-wrap">
+            <canvas id="chartVideos"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scanner alerts -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Alertas do Scanner</div>
+          <span class="card-tag" style="background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,176,32,0.3)">3 NOVOS</span>
+        </div>
+        <div class="card-body">
+          <div class="alert-list">
+            <div class="alert-item">
+              <div class="alert-score score-high">94</div>
+              <div class="alert-info">
+                <div class="alert-niche">Saúde & Bem-Estar Feminino 35+</div>
+                <div class="alert-meta"><span>RPM R$38–62</span><span>+127% busca</span></div>
+              </div>
+              <span class="alert-badge badge-new">NOVO</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-score score-high">89</div>
+              <div class="alert-info">
+                <div class="alert-niche">Culinária Fit para Diabéticos</div>
+                <div class="alert-meta"><span>RPM R$29–45</span><span>+84% busca</span></div>
+              </div>
+              <span class="alert-badge badge-new">NOVO</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-score score-high">86</div>
+              <div class="alert-info">
+                <div class="alert-niche">Finanças Pessoais para MEI</div>
+                <div class="alert-meta"><span>RPM R$52–78</span><span>+61% busca</span></div>
+              </div>
+              <span class="alert-badge badge-new">NOVO</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-score score-mid">71</div>
+              <div class="alert-info">
+                <div class="alert-niche">Tecnologia para Idosos</div>
+                <div class="alert-meta"><span>RPM R$18–31</span><span>+43% busca</span></div>
+              </div>
+              <span class="alert-badge badge-seen">VISTO</span>
+            </div>
+            <div class="alert-item">
+              <div class="alert-score score-mid">68</div>
+              <div class="alert-info">
+                <div class="alert-niche">Jardim em Apartamento</div>
+                <div class="alert-meta"><span>RPM R$22–38</span><span>+39% busca</span></div>
+              </div>
+              <span class="alert-badge badge-seen">VISTO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: jobs table + services -->
+    <div class="row-2">
+
+      <!-- Jobs table -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Jobs Ativos</div>
+          <span class="card-tag tag-cyan">23 total</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Job</th>
+                <th>Canal</th>
+                <th>Status</th>
+                <th>Progresso</th>
+                <th>ETA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-name td-mono">#J-0847</td>
+                <td>Saúde 35+</td>
+                <td><span class="status-pill pill-running">● RODANDO</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div>
+                </td>
+                <td class="td-mono">~2min</td>
+              </tr>
+              <tr>
+                <td class="td-name td-mono">#J-0846</td>
+                <td>MEI Finanças</td>
+                <td><span class="status-pill pill-running">● RODANDO</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:38%"></div></div>
+                </td>
+                <td class="td-mono">~5min</td>
+              </tr>
+              <tr>
+                <td class="td-name td-mono">#J-0845</td>
+                <td>Culinária Fit</td>
+                <td><span class="status-pill pill-running">● RODANDO</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:91%"></div></div>
+                </td>
+                <td class="td-mono">~30s</td>
+              </tr>
+              <tr>
+                <td class="td-name td-mono">#J-0844</td>
+                <td>Tech Idosos</td>
+                <td><span class="status-pill pill-done">✓ PRONTO</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div>
+                </td>
+                <td class="td-mono" style="color:var(--green)">Publicado</td>
+              </tr>
+              <tr>
+                <td class="td-name td-mono">#J-0843</td>
+                <td>Jardim Apê</td>
+                <td><span class="status-pill pill-queued">⏳ FILA</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                </td>
+                <td class="td-mono">~12min</td>
+              </tr>
+              <tr>
+                <td class="td-name td-mono">#J-0839</td>
+                <td>MEI Finanças</td>
+                <td><span class="status-pill pill-error">✕ ERRO</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress-fill" style="width:22%;background:var(--red)"></div></div>
+                </td>
+                <td class="td-mono" style="color:var(--red)">TTS timeout</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Services status -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Status dos Serviços</div>
+          <span class="card-tag" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(0,232,150,0.3)">5/6 UP</span>
+        </div>
+        <div class="service-grid">
+          <div class="service-item">
+            <div class="service-dot up"></div>
+            <div>
+              <div class="service-name">Agnes LLM</div>
+              <div class="service-lat">24ms · apihub</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-dot up"></div>
+            <div>
+              <div class="service-name">Agnes Image</div>
+              <div class="service-lat">182ms · apihub</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-dot up"></div>
+            <div>
+              <div class="service-name">Edge TTS</div>
+              <div class="service-lat">89ms · ms edge</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-dot warn"></div>
+            <div>
+              <div class="service-name">Agnes Video</div>
+              <div class="service-lat">~8s · degradado</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-dot up"></div>
+            <div>
+              <div class="service-name">FFmpeg</div>
+              <div class="service-lat">local · hermes</div>
+            </div>
+          </div>
+          <div class="service-item">
+            <div class="service-dot up"></div>
+            <div>
+              <div class="service-name">YouTube API</div>
+              <div class="service-lat">44ms · v3</div>
+            </div>
+          </div>
+        </div>
+        <!-- Mini chart placeholder -->
+        <div style="padding:0 14px 14px;">
+          <div class="card-title" style="margin-bottom:10px;font-size:11px;color:var(--fg-2)">Distribuição de Plataformas</div>
+          <div class="chart-wrap" style="height:120px;">
+            <canvas id="chartPlatforms"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── Clock ── */
+function tick() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent =
+    pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+}
+tick();
+setInterval(tick, 1000);
+
+/* ── Counter animation ── */
+function animateCounter(el, target, suffix, duration) {
+  let start = null;
+  const step = ts => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(ease * target);
+    el.textContent = (val >= 1000 ? (val/1000).toFixed(1)+'k' : val) + (suffix||'');
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── Chart defaults ── */
+Chart.defaults.color = '#5A7EA0';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const gridColor = 'rgba(22,35,64,0.8)';
+const borderColor = 'rgba(26,40,69,1)';
+
+/* ── Videos line chart ── */
+const days = Array.from({length:30}, (_,i) => {
+  const d = new Date();
+  d.setDate(d.getDate() - (29 - i));
+  return d.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+});
+
+const videoData = [3,4,2,5,6,4,7,5,8,6,9,7,10,8,11,9,12,10,11,13,10,12,14,11,15,12,14,16,13,15];
+
+const ctxV = document.getElementById('chartVideos').getContext('2d');
+const gradV = ctxV.createLinearGradient(0, 0, 0, 180);
+gradV.addColorStop(0, 'rgba(0,212,255,0.3)');
+gradV.addColorStop(1, 'rgba(0,212,255,0)');
+
+new Chart(ctxV, {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [{
+      data: videoData,
+      borderColor: '#00D4FF',
+      backgroundColor: gradV,
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      pointHoverBackgroundColor: '#00D4FF',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    animation: { duration: 1200, easing: 'easeOutQuart' },
+    plugins: { legend: { display: false }, tooltip: {
+      backgroundColor: 'rgba(10,20,40,0.95)',
+      borderColor: '#162340',
+      borderWidth: 1,
+      titleColor: '#5A7EA0',
+      bodyColor: '#D6E4F7',
+      callbacks: {
+        label: ctx => ' ' + ctx.parsed.y + ' vídeos'
+      }
+    }},
+    scales: {
+      x: { grid: { color: gridColor, drawBorder: false }, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
+      y: { grid: { color: gridColor, drawBorder: false }, ticks: { stepSize: 4, callback: v => v+'v' } }
+    }
+  }
+});
+
+/* ── Platform doughnut ── */
+const ctxP = document.getElementById('chartPlatforms').getContext('2d');
+new Chart(ctxP, {
+  type: 'doughnut',
+  data: {
+    labels: ['YouTube Shorts', 'TikTok', 'Instagram', 'GBP'],
+    datasets: [{
+      data: [54, 22, 16, 8],
+      backgroundColor: ['#00D4FF','#8B5CF6','#00E896','#FFB020'],
+      borderColor: '#0A1428',
+      borderWidth: 3,
+      hoverOffset: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '68%',
+    animation: { duration: 1000, easing: 'easeOutBack' },
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { boxWidth: 8, boxHeight: 8, padding: 10, color: '#5A7EA0', font: { size: 10 } }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(10,20,40,0.95)',
+        borderColor: '#162340',
+        borderWidth: 1,
+        callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%' }
+      }
+    }
+  }
+});
+
+/* ── Animate KPIs on load ── */
+setTimeout(() => {
+  document.getElementById('kpi-uptime').textContent = '99.7%';
+  document.getElementById('kpi-rev').textContent = 'R$4.2k';
+}, 200);
+
+/* ── Progress bars live animation ── */
+function animateBars() {
+  document.querySelectorAll('.progress-fill').forEach(bar => {
+    const target = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.transition = 'width 1s cubic-bezier(.4,0,.2,1)'; bar.style.width = target; }, 300);
+  });
+}
+animateBars();
+</script>

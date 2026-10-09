@@ -1,0 +1,44 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  color: #00ff41;
+  background-color: #000;
+  margin: 0;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  overflow: hidden;
+}
+
+.gpu-layer {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+}
+
+@keyframes progress-scan {
+  0% { transform: translate(-100%); }
+  to { transform: translate(200%); }
+}
+
+.vibrate-insane {
+  animation: 80ms infinite vibrate-insane;
+}
+
+@keyframes vibrate-insane {
+  0%  { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  to  { transform: translate(0); }
+}
+
+@keyframes pulse {
+  50% { opacity: .5; }
+}
