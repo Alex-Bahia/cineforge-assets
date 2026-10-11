@@ -92,28 +92,37 @@ def _find_font(size: int) -> ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
-def buscar_imagem_ia(prompt_imagem: str, caminho: Path) -> bool:
-    """Busca imagem da Pollinations.ai (gratuito, sem chave). Retorna True se OK."""
+def buscar_imagem_ia(prompt_imagem: str, caminho: Path, tentativas: int = 3) -> bool:
+    """Busca imagem da Pollinations.ai (gratuito, sem chave). Retorna True se OK.
+    Faz até `tentativas` retries com backoff exponencial para evitar rate-limit 402.
+    """
     import time, random
-    # Aguarda entre requests para evitar rate-limit 402
-    time.sleep(random.uniform(2, 4))
-    try:
-        prompt_enc = urllib.parse.quote(prompt_imagem)
-        url = POLLINATIONS_URL.format(prompt=prompt_enc, w=SLIDE_W, h=SLIDE_H)
-        req = urllib.request.Request(url, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; CineForge/1.0)"
-        })
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = resp.read()
-        if len(data) < 1000:
-            raise ValueError("Resposta muito pequena — provável erro")
-        with open(caminho, "wb") as f:
-            f.write(data)
-        Image.open(caminho).verify()
-        return True
-    except Exception as e:
-        print(f"  ⚠️  Pollinations falhou ({e}), usando slide texto.")
-        return False
+    for tentativa in range(1, tentativas + 1):
+        # Backoff exponencial: 5-8s na 1ª, 10-14s na 2ª, 20-26s na 3ª
+        delay = random.uniform(5, 8) * (2 ** (tentativa - 1))
+        if tentativa > 1:
+            print(f"  🔄 Retry {tentativa}/{tentativas} Pollinations (aguardando {delay:.0f}s)...")
+        time.sleep(delay)
+        try:
+            prompt_enc = urllib.parse.quote(prompt_imagem)
+            url = POLLINATIONS_URL.format(prompt=prompt_enc, w=SLIDE_W, h=SLIDE_H)
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0"
+            })
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                data = resp.read()
+            if len(data) < 1000:
+                raise ValueError("Resposta muito pequena — provável erro")
+            with open(caminho, "wb") as f:
+                f.write(data)
+            Image.open(caminho).verify()
+            return True
+        except Exception as e:
+            if tentativa < tentativas:
+                print(f"  ⚠️  Pollinations tentativa {tentativa} falhou ({e}), tentando novamente...")
+            else:
+                print(f"  ⚠️  Pollinations falhou após {tentativas} tentativas ({e}), usando slide gradiente.")
+    return False
 
 
 def gerar_slide(
@@ -134,8 +143,25 @@ def gerar_slide(
         img = img.convert("RGBA")
         img = Image.alpha_composite(img, overlay).convert("RGB")
     else:
-        # Fallback: slide de cor sólida
-        img = Image.new("RGB", (SLIDE_W, SLIDE_H), color=BG_COLOR)
+        # Fallback: gradiente colorido cinematográfico em vez de cor sólida preta
+        import random as _rnd
+        paletas = [
+            [(10, 20, 60), (40, 10, 80)],    # azul-roxo
+            [(60, 10, 10), (20, 40, 10)],    # vermelho-verde escuro
+            [(10, 40, 60), (5, 15, 45)],     # azul petróleo
+            [(40, 20, 5),  (60, 40, 10)],    # âmbar escuro
+            [(15, 10, 50), (50, 10, 30)],    # índigo-vinho
+        ]
+        cor_a, cor_b = _rnd.choice(paletas)
+        img = Image.new("RGB", (SLIDE_W, SLIDE_H))
+        pixels = img.load()
+        for y in range(SLIDE_H):
+            t = y / SLIDE_H
+            r = int(cor_a[0] * (1 - t) + cor_b[0] * t)
+            g = int(cor_a[1] * (1 - t) + cor_b[1] * t)
+            b = int(cor_a[2] * (1 - t) + cor_b[2] * t)
+            for x in range(SLIDE_W):
+                pixels[x, y] = (r, g, b)
 
     draw = ImageDraw.Draw(img)
 
@@ -195,6 +221,8 @@ def montar_video(
         fps=FPS,
         codec="libx264",
         audio_codec="aac",
+        bitrate="2000k",    # bitrate mínimo para qualidade visual aceitável
+        audio_bitrate="128k",
         logger=None,
     )
     video_final.close()
