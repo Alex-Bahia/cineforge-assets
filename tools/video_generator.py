@@ -94,14 +94,21 @@ def _find_font(size: int) -> ImageFont.ImageFont:
 
 def buscar_imagem_ia(prompt_imagem: str, caminho: Path) -> bool:
     """Busca imagem da Pollinations.ai (gratuito, sem chave). Retorna True se OK."""
+    import time, random
+    # Aguarda entre requests para evitar rate-limit 402
+    time.sleep(random.uniform(2, 4))
     try:
         prompt_enc = urllib.parse.quote(prompt_imagem)
         url = POLLINATIONS_URL.format(prompt=prompt_enc, w=SLIDE_W, h=SLIDE_H)
-        req = urllib.request.Request(url, headers={"User-Agent": "CineForge/1.0"})
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            with open(caminho, "wb") as f:
-                f.write(resp.read())
-        # Verifica se é imagem válida
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; CineForge/1.0)"
+        })
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = resp.read()
+        if len(data) < 1000:
+            raise ValueError("Resposta muito pequena — provável erro")
+        with open(caminho, "wb") as f:
+            f.write(data)
         Image.open(caminho).verify()
         return True
     except Exception as e:
@@ -173,11 +180,12 @@ def montar_video(
     clips = []
     for slide_path, audio_path in zip(slides, audios):
         audio = AudioFileClip(str(audio_path))
-        img_clip = (
-            ImageClip(str(slide_path))
-            .set_duration(audio.duration + 0.5)
-            .set_audio(audio)
-        )
+        base = ImageClip(str(slide_path))
+        # MoviePy 2.x usa with_duration/with_audio; 1.x usa set_duration/set_audio
+        if hasattr(base, 'with_duration'):
+            img_clip = base.with_duration(audio.duration + 0.5).with_audio(audio)
+        else:
+            img_clip = base.set_duration(audio.duration + 0.5).set_audio(audio)
         clips.append(img_clip)
 
     video_final = concatenate_videoclips(clips, method="compose")
