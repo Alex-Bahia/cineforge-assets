@@ -1,6 +1,6 @@
 """
 Frankenstein Video Generator
-Pipeline: Google Sheets → Claude roteiro → edge-tts → Pillow slides → MoviePy MP4
+Pipeline: Google Sheets → Claude roteiro → Pollinations.ai imagem → edge-tts → MoviePy MP4
 100% gratuito, roda na VPS Hermes sem APIs pagas.
 """
 
@@ -10,12 +10,14 @@ import sys
 import textwrap
 import tempfile
 import shutil
+import urllib.request
+import urllib.parse
 from pathlib import Path
 from typing import Optional
 
 # ── Dependências (todas listadas em requirements.txt) ─────────────────────────
 try:
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter
     _PIL_OK = True
 except ImportError:
     _PIL_OK = False
@@ -47,6 +49,10 @@ FPS = int(os.getenv("VIDEO_FPS", "30"))
 BG_COLOR = tuple(int(x) for x in os.getenv("SLIDE_BG", "15,15,25").split(","))
 TEXT_COLOR = tuple(int(x) for x in os.getenv("SLIDE_TEXT", "240,240,255").split(","))
 ACCENT_COLOR = tuple(int(x) for x in os.getenv("SLIDE_ACCENT", "80,160,255").split(","))
+
+# Pollinations.ai — API de imagem 100% gratuita, sem chave
+POLLINATIONS_URL = "https://image.pollinations.ai/prompt/{prompt}?width={w}&height={h}&nologo=true&model=flux"
+USE_AI_IMAGES = os.getenv("USE_AI_IMAGES", "true").lower() == "true"
 
 
 def check_dependencies() -> bool:
@@ -80,15 +86,44 @@ def _find_font(size: int) -> ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
+def buscar_imagem_ia(prompt_imagem: str, caminho: Path) -> bool:
+    """Busca imagem da Pollinations.ai (gratuito, sem chave). Retorna True se OK."""
+    try:
+        prompt_enc = urllib.parse.quote(prompt_imagem)
+        url = POLLINATIONS_URL.format(prompt=prompt_enc, w=SLIDE_W, h=SLIDE_H)
+        req = urllib.request.Request(url, headers={"User-Agent": "CineForge/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            with open(caminho, "wb") as f:
+                f.write(resp.read())
+        # Verifica se é imagem válida
+        Image.open(caminho).verify()
+        return True
+    except Exception as e:
+        print(f"  ⚠️  Pollinations falhou ({e}), usando slide texto.")
+        return False
+
+
 def gerar_slide(
     titulo: str,
     corpo: str,
     indice: int,
     total: int,
     caminho: Path,
+    imagem_fundo: Optional[Path] = None,
 ) -> None:
-    """Gera um slide PNG com título e corpo de texto."""
-    img = Image.new("RGB", (SLIDE_W, SLIDE_H), color=BG_COLOR)
+    """Gera slide PNG. Se imagem_fundo fornecida, usa como fundo com overlay de texto."""
+    if imagem_fundo and imagem_fundo.exists():
+        # Modo IA: imagem de fundo + overlay escuro + texto
+        img = Image.open(imagem_fundo).convert("RGB").resize((SLIDE_W, SLIDE_H))
+
+        # Overlay escuro semitransparente para legibilidade
+        overlay = Image.new("RGBA", (SLIDE_W, SLIDE_H), (0, 0, 0, 170))
+        img = img.convert("RGBA")
+        img = Image.alpha_composite(img, overlay).convert("RGB")
+    else:
+        # Fallback: slide de cor sólida
+        img = Image.new("RGB", (SLIDE_W, SLIDE_H), color=BG_COLOR)
+
     draw = ImageDraw.Draw(img)
 
     # Barra superior com acento
@@ -98,15 +133,18 @@ def gerar_slide(
     fonte_num = _find_font(32)
     draw.text((60, 40), f"{indice}/{total}", font=fonte_num, fill=ACCENT_COLOR)
 
-    # Título
+    # Título com sombra para contraste sobre imagem
     fonte_titulo = _find_font(72)
     titulo_wrapped = "\n".join(textwrap.wrap(titulo, width=38))
+    # Sombra
+    draw.text((63, 123), titulo_wrapped, font=fonte_titulo, fill=(0, 0, 0))
     draw.text((60, 120), titulo_wrapped, font=fonte_titulo, fill=TEXT_COLOR)
 
-    # Corpo
+    # Corpo com sombra
     fonte_corpo = _find_font(44)
     corpo_wrapped = "\n".join(textwrap.wrap(corpo, width=60))
-    draw.text((60, 320), corpo_wrapped, font=fonte_corpo, fill=(*TEXT_COLOR[:3], 200))
+    draw.text((63, 323), corpo_wrapped, font=fonte_corpo, fill=(0, 0, 0))
+    draw.text((60, 320), corpo_wrapped, font=fonte_corpo, fill=TEXT_COLOR)
 
     # Barra inferior
     draw.rectangle([(0, SLIDE_H - 6), (SLIDE_W, SLIDE_H)], fill=ACCENT_COLOR)
@@ -169,22 +207,36 @@ async def gerar_video_frankenstein(
 
     try:
         total = len(roteiro)
-        print(f"🎬 Gerando {total} slides para: {topico}")
+        print(f"🎬 Gerando {total} cenas para: {topico}")
 
         for i, cena in enumerate(roteiro, start=1):
             slide_path = tmpdir / f"slide_{i:03d}.png"
             audio_path = tmpdir / f"audio_{i:03d}.mp3"
+            img_ia_path = tmpdir / f"img_ia_{i:03d}.jpg"
 
-            # Slide visual
+            # Imagem de IA via Pollinations (gratuito)
+            imagem_fundo = None
+            if USE_AI_IMAGES:
+                prompt_img = cena.get("prompt_imagem") or (
+                    f"{cena.get('titulo', topico)}, {topico}, "
+                    "cinematic photography, high quality, 4K, realistic"
+                )
+                print(f"  🎨 Buscando imagem IA {i}/{total}...")
+                if buscar_imagem_ia(prompt_img, img_ia_path):
+                    imagem_fundo = img_ia_path
+                    print(f"  ✅ Imagem IA {i}/{total}")
+
+            # Slide com imagem de fundo (ou fallback texto)
             gerar_slide(
                 titulo=cena.get("titulo", f"Parte {i}"),
                 corpo=cena.get("corpo", ""),
                 indice=i,
                 total=total,
                 caminho=slide_path,
+                imagem_fundo=imagem_fundo,
             )
             slides.append(slide_path)
-            print(f"  ✅ Slide {i}/{total}")
+            print(f"  🖼️  Slide {i}/{total}")
 
             # Narração
             narracao = cena.get("narracao") or cena.get("corpo", "")
@@ -216,21 +268,25 @@ def roteiro_exemplo(topico: str) -> list[dict]:
             "titulo": f"O que é {topico}?",
             "corpo": f"Vamos entender tudo sobre {topico} de forma simples e direta.",
             "narracao": f"Você sabe o que é {topico}? Neste vídeo vou te explicar tudo de forma simples.",
+            "prompt_imagem": f"{topico}, concept art, vibrant colors, cinematic, 4K",
         },
         {
             "titulo": "Por que isso importa?",
             "corpo": "Entender esse tema pode mudar a forma como você vê o mundo.",
             "narracao": "Mas por que isso é tão importante? Veja só o que a ciência diz sobre isso.",
+            "prompt_imagem": f"importance of {topico}, dramatic lighting, professional photography",
         },
         {
             "titulo": "Como aplicar no dia a dia",
             "corpo": "3 passos práticos que você pode começar hoje mesmo.",
             "narracao": "Agora, veja como você pode aplicar esse conhecimento no seu dia a dia com apenas três passos.",
+            "prompt_imagem": f"person applying {topico} in daily life, realistic, natural light",
         },
         {
             "titulo": "Conclusão",
             "corpo": "Agora você sabe! Compartilhe esse vídeo com quem precisa ver isso.",
             "narracao": "E aí, gostou? Se esse conteúdo foi útil, compartilhe com um amigo e não esqueça de se inscrever!",
+            "prompt_imagem": f"{topico} success results, inspiring, bright colors, motivational",
         },
     ]
 
