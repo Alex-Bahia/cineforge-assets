@@ -29,10 +29,16 @@ except ImportError:
     _EDGETTS_OK = False
 
 try:
-    from moviepy.editor import (
-        ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip,
-        TextClip, ColorClip,
-    )
+    try:
+        from moviepy.editor import (
+            ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip,
+            TextClip, ColorClip,
+        )
+    except ImportError:
+        from moviepy import (
+            ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip,
+            TextClip, ColorClip,
+        )
     _MOVIEPY_OK = True
 except ImportError:
     _MOVIEPY_OK = False
