@@ -121,13 +121,14 @@ class DarkContentScorer:
 
     def _init_client(self):
         try:
-            import google.generativeai as genai  # type: ignore
-            genai.configure(api_key=self.api_key)
-            return genai
+            from google import genai  # type: ignore
+            from google.genai import types as genai_types  # type: ignore
+            client = genai.Client(api_key=self.api_key)
+            return client
         except ImportError:
             log.error(
-                "[DarkContentScorer] google-generativeai not installed. "
-                "Run: pip install google-generativeai"
+                "[DarkContentScorer] google-genai not installed. "
+                "Run: pip install google-genai"
             )
             return None
 
@@ -136,20 +137,21 @@ class DarkContentScorer:
         Send the scoring prompt to Gemini and parse JSON response.
         Uses Google Search grounding when use_grounding=True.
         """
-        genai = self._client
-        tools = ["google_search_retrieval"] if self.use_grounding else []
+        from google.genai import types as genai_types  # type: ignore
+        client = self._client
 
-        model = genai.GenerativeModel(
-            model_name=self.model,
-            tools=tools if tools else None,
-            generation_config=genai.GenerationConfig(
-                temperature=0.4,
-                max_output_tokens=1024,
-            ),
-        )
+        tools = [genai_types.Tool(google_search=genai_types.GoogleSearch())] if self.use_grounding else None
 
         prompt = self._build_scoring_prompt(topic)
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model=self.model,
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                temperature=0.4,
+                max_output_tokens=1024,
+                tools=tools,
+            ),
+        )
         raw = response.text.strip()
 
         # Strip markdown code fences if present
