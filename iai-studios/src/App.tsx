@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Globe from './components/Globe'
 import ModuleCard from './components/ModuleCard'
+import AuthScreen from './AuthScreen'
+import { useAuth } from './AuthContext'
 
 declare global {
   interface Window {
@@ -748,7 +750,38 @@ const MODULE_PANELS = [
 
 // ── Main App ──────────────────────────────────────────────────────────────
 
+// ── User Badge ────────────────────────────────────────────────────────────────
+function UserBadge() {
+  const { user, logout } = useAuth()
+  if (!user) return null
+  const planColors: Record<string, string> = {
+    free: '#506080', creator: '#50a0ff', pro: '#a0d080', studio: '#ffd060',
+  }
+  const color = planColors[user.plan] || '#506080'
+  return (
+    <div className="p-auto" style={{
+      position: 'fixed', top: 12, right: 16, zIndex: 9999,
+      display: 'flex', alignItems: 'center', gap: 8,
+      background: 'rgba(0,0,0,0.7)', border: `1px solid ${color}40`,
+      borderRadius: 8, padding: '4px 10px',
+    }}>
+      <span style={{ fontSize: 10, color, fontWeight: 900, letterSpacing: '0.1em' }}>
+        {user.plan.toUpperCase()}
+      </span>
+      <span style={{ fontSize: 10, color: '#607090' }}>|</span>
+      <span style={{ fontSize: 10, color: '#8090b0' }}>{user.name}</span>
+      <button onClick={logout} style={{
+        fontSize: 9, color: '#405060', cursor: 'pointer',
+        background: 'none', border: 'none', fontFamily: 'inherit',
+        letterSpacing: '0.1em', textTransform: 'uppercase',
+      }}>sair</button>
+    </div>
+  )
+}
+
 export default function App() {
+  const { user, loading } = useAuth()
+  const [showAuth, setShowAuth] = useState(false)
   const [stage, setStage] = useState(0)
   const [activeModule, setActiveModule] = useState<number | null>(null)
   const [videoFrame, setVideoFrame] = useState(1)
@@ -801,6 +834,26 @@ export default function App() {
 
   return (
     <main className="cockpit-ultimate">
+      {/* Auth overlay */}
+      {showAuth && <AuthScreen onSuccess={() => setShowAuth(false)} />}
+      {/* User badge (top-right) */}
+      <UserBadge />
+      {/* Login button when not authenticated */}
+      {!user && !showAuth && (
+        <button
+          className="p-auto"
+          onClick={() => setShowAuth(true)}
+          style={{
+            position: 'fixed', top: 12, right: 16, zIndex: 9998,
+            background: 'rgba(0,0,0,0.7)', border: '1px solid #1a3a5c',
+            borderRadius: 8, padding: '5px 14px', cursor: 'pointer',
+            fontSize: 10, color: '#50a0ff', fontFamily: 'inherit',
+            letterSpacing: '0.15em', textTransform: 'uppercase',
+          }}
+        >
+          ENTRAR / CADASTRAR
+        </button>
+      )}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Orbitron:wght@900&display=swap');
         .cockpit-ultimate { position: fixed; inset: 0; color: #00FF41; font-family: 'Orbitron', sans-serif; text-transform: uppercase; overflow: hidden; }
