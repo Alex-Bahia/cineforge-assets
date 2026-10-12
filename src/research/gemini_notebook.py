@@ -86,21 +86,23 @@ class GeminiNotebook:
         sources: list[str] | None = None,
         title: str = "CineForge Research Notebook",
         gemini_api_key: str = "",
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-2.5-flash",
         use_grounding: bool = True,
         max_sources: int = 20,
     ) -> None:
         import sys
         sys.path.insert(0, str(Path(__file__).parent.parent.parent))
         from config.settings import GEMINI_API_KEY as cfg_key
-        import google.generativeai as genai
+        from google import genai  # type: ignore
+        from google.genai import types as genai_types  # type: ignore
 
         self._genai = genai
+        self._genai_types = genai_types
         self._api_key = gemini_api_key or cfg_key
         if not self._api_key:
             raise ValueError("GEMINI_API_KEY not set — add it to .env")
 
-        genai.configure(api_key=self._api_key)
+        self._client = genai.Client(api_key=self._api_key)
 
         self.title = title
         self.model_name = model
@@ -201,34 +203,13 @@ class GeminiNotebook:
 
         Returns a NotebookResult with .answer, .citations and .grounded flag.
         """
-        genai = self._genai
-
-        # ── Build generation config ─────────────────────────────────────────
-        gen_config = genai.GenerationConfig(
-            temperature=0.4,
-            max_output_tokens=4096,
-            response_mime_type="text/plain",
-        )
+        genai_types = self._genai_types
+        client = self._client
 
         # ── Grounding tool ──────────────────────────────────────────────────
-        tools = []
+        tools = None
         if self.use_grounding:
-            tools.append(genai.protos.Tool(
-                google_search=genai.protos.GoogleSearch()
-            ))
-
-        model = genai.GenerativeModel(
-            model_name=self.model_name,
-            generation_config=gen_config,
-            tools=tools if tools else None,
-            system_instruction=(
-                "You are an expert research analyst. "
-                "Answer questions using the provided source documents as your primary knowledge base. "
-                "When sources are insufficient, use your general knowledge and grounded web search. "
-                "Always cite your sources with [Source N] references. "
-                "Be factual, detailed and structured. Respond in the same language as the question."
-            ),
-        )
+            tools = [genai_types.Tool(google_search=genai_types.GoogleSearch())]
 
         # ── Compose prompt ──────────────────────────────────────────────────
         context_block = (
@@ -247,7 +228,23 @@ class GeminiNotebook:
         log.info("Querying Gemini notebook: %r (grounding=%s)", question[:80], self.use_grounding)
 
         try:
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=genai_types.GenerateContentConfig(
+                    system_instruction=(
+                        "You are an expert research analyst. "
+                        "Answer questions using the provided source documents as your primary knowledge base. "
+                        "When sources are insufficient, use your general knowledge and grounded web search. "
+                        "Always cite your sources with [Source N] references. "
+                        "Be factual, detailed and structured. Respond in the same language as the question."
+                    ),
+                    temperature=0.4,
+                    max_output_tokens=4096,
+                    response_mime_type="text/plain",
+                    tools=tools,
+                ),
+            )
             answer_text = response.text
 
             # Extract citations from grounding metadata if available

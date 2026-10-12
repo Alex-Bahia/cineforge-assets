@@ -169,28 +169,27 @@ class NotebookLMBridge:
         Grounding is available in the free tier of Google AI Studio.
         """
         try:
-            import google.generativeai as genai  # type: ignore
+            from google import genai  # type: ignore
+            from google.genai import types as genai_types  # type: ignore
         except ImportError:
-            log.error("[NotebookLMBridge] google-generativeai not installed.")
+            log.error("[NotebookLMBridge] google-genai not installed. Run: pip install google-genai")
             return EnrichedResearch(original_topic=topic, refined_topic=topic)
 
-        genai.configure(api_key=self.gemini_api_key)
-
-        # Gemini 2.0 Flash with Google Search tool (grounding)
-        model = genai.GenerativeModel(
-            model_name="gemini-2.0-flash-exp",
-            tools=["google_search_retrieval"],   # enables web grounding
-            generation_config=genai.GenerationConfig(
-                temperature=0.7,
-                max_output_tokens=4096,
-                response_mime_type="application/json",
-            ),
-        )
+        client = genai.Client(api_key=self.gemini_api_key)
 
         prompt = _build_research_prompt(topic)
 
         try:
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+                config=genai_types.GenerateContentConfig(
+                    temperature=0.7,
+                    max_output_tokens=4096,
+                    response_mime_type="application/json",
+                    tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
+                ),
+            )
             raw = response.text.strip()
             # Strip code fences
             if raw.startswith("```"):

@@ -4,7 +4,8 @@ import logging
 import sys
 from pathlib import Path
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import GEMINI_API_KEY, GEMINI_MODEL, GEMINI_MAX_TOKENS, GEMINI_TEMPERATURE
@@ -54,16 +55,7 @@ def generate_script(
 
     system_prompt = get_system_prompt(niche, language)
 
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        model_name=GEMINI_MODEL,
-        system_instruction=system_prompt,
-        generation_config=genai.GenerationConfig(
-            max_output_tokens=GEMINI_MAX_TOKENS,
-            temperature=GEMINI_TEMPERATURE,
-            response_mime_type="application/json",
-        ),
-    )
+    client = genai.Client(api_key=GEMINI_API_KEY)
 
     prompt = get_script_prompt(
         topic=topic,
@@ -77,7 +69,16 @@ def generate_script(
     )
 
     log.info("Calling Gemini for topic: %s [%s/%s]", topic, niche, language)
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=prompt,
+        config=genai_types.GenerateContentConfig(
+            system_instruction=system_prompt,
+            max_output_tokens=GEMINI_MAX_TOKENS,
+            temperature=GEMINI_TEMPERATURE,
+            response_mime_type="application/json",
+        ),
+    )
 
     raw = response.text.strip()
     if raw.startswith("```"):
@@ -106,16 +107,16 @@ def generate_script(
 
 def generate_title_variants(topic: str, language: str = "pt-BR") -> list[str]:
     """Generate 5 alternative title options in the target language."""
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        model_name=GEMINI_MODEL,
-        generation_config=genai.GenerationConfig(
+    client = genai.Client(api_key=GEMINI_API_KEY)
+    prompt = get_title_variants_prompt(topic=topic, language=language)
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=prompt,
+        config=genai_types.GenerateContentConfig(
             response_mime_type="application/json",
             temperature=1.0,
         ),
     )
-    prompt = get_title_variants_prompt(topic=topic, language=language)
-    response = model.generate_content(prompt)
     data = json.loads(response.text)
     return data.get("titulos", [])
 

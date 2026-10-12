@@ -60,7 +60,7 @@ SUBTITLE_STROKE_WIDTH = 3
 SUBTITLE_POSITION   = ("center", 0.75)                            # 75% from top
 
 # ── Gemini Model ───────────────────────────────────────────────────────────────
-GEMINI_MODEL       = "gemini-2.0-flash-exp"
+GEMINI_MODEL       = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_MAX_TOKENS  = 8192
 GEMINI_TEMPERATURE = 0.9
 
