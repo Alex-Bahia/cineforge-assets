@@ -24,7 +24,7 @@ brand_fonts:
 - transition_in: fade
 - status: outline
 - voiceover: "Excelência é um detalhe que se sente."
-- focal: public/rolex-hero.webp
+- focal: public/watch-hero.webp
 - poster: 1.5s
 - src: compositions/frames/01-rolex-hero.html
 
@@ -37,7 +37,7 @@ Abertura fria com o relógio como herói absoluto. Câmera em push-in ultralento
 - transition_in: cut
 - status: outline
 - voiceover: "No pulso, cada segundo ganha outro significado."
-- focal: public/rolex-dial-reflection.webp
+- focal: public/watch-hero.webp
 - poster: 1s
 - src: compositions/frames/02-rolex-dial.html
 
@@ -50,7 +50,7 @@ Corte direto para o macro. O reflexo da mulher no mostrador conecta produto e cl
 - transition_in: cut
 - status: outline
 - voiceover: "Descubra joias que transformam brilho em exclusividade."
-- focal: public/gloves-rolex.webp
+- focal: public/watch-hero.webp
 - poster: 1s
 - src: compositions/frames/03-gloves-rolex.html
 
@@ -141,7 +141,7 @@ Close mais dramático da peça. O diamante faiscando sob a lupa é o pico visual
 - transition_in: crossfade
 - status: outline
 - voiceover: "Fale conosco pelo WhatsApp."
-- focal: public/consultation-rolex.webp
+- focal: public/watch-hero.webp
 - poster: 1s
 - src: compositions/frames/10-evaluation.html
 
@@ -167,7 +167,7 @@ O momento da transação. Atmosfera íntima, privativa. Luz quente e baixa suger
 - transition_in: crossfade
 - status: outline
 - voiceover: ""
-- focal: public/rolex-hero-final.webp
+- focal: public/watch-hero.webp
 - poster: 1.5s
 - src: compositions/frames/12-cta.html
 
