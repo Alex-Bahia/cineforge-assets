@@ -94,7 +94,7 @@ class HermesHandler(BaseHTTPRequestHandler):
             self.send_json(404, {"erro": f"script não encontrado: {script}"})
             return
 
-        cmd = ["python3", "-I", script_path] + [str(a) for a in args]
+        cmd = ["python3", script_path] + [str(a) for a in args]
         print(f"[Hermes] Executando: {' '.join(cmd)}")
 
         try:
