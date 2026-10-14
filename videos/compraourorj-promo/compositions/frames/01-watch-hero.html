@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1920,height=1080"/>
+<title>Frame 01 — Watch Hero</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0e0e0e}
+.scene{position:absolute;inset:0}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,#1a1400 0%,#0a0a00 50%,#000 100%)}
+.watch-wrap{position:absolute;right:10%;top:50%;transform:translateY(-50%);width:580px;height:780px;opacity:0}
+.watch-img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 60px rgba(184,134,11,0.4))}
+.text-block{position:absolute;left:10%;top:50%;transform:translateY(-50%);opacity:0}
+.eyebrow{font-family:Lato,sans-serif;font-weight:300;font-size:16px;letter-spacing:6px;text-transform:uppercase;color:#B8860B;margin-bottom:24px}
+.headline{font-family:'Playfair Display',serif;font-size:72px;line-height:1.1;color:#F5F0E8;margin-bottom:20px}
+.headline em{font-style:italic;color:#D4AF37}
+.divider{width:60px;height:1px;background:#B8860B;margin-bottom:20px;transform-origin:left}
+.sub{font-family:Lato,sans-serif;font-weight:300;font-size:20px;color:rgba(245,240,232,0.6);letter-spacing:2px}
+.gold-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#B8860B,transparent);opacity:0}
+</style>
+</head>
+<body>
+<div class="scene" id="f01">
+  <div class="bg"></div>
+  <div class="watch-wrap" id="watch">
+    <img class="watch-img" src="../../public/watch-hero.webp" alt="Relógio de luxo"/>
+  </div>
+  <div class="text-block" id="txt">
+    <div class="eyebrow">Alex Joias · Copacabana</div>
+    <h1 class="headline">Excelência<br>é um detalhe<br>que se <em>sente.</em></h1>
+    <div class="divider" id="div"></div>
+    <div class="sub">Desde 1984 · Sala 603</div>
+  </div>
+  <div class="gold-line" id="gl"></div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#watch", { opacity:0, x:60 }, { opacity:1, x:0, duration:1.2, ease:"power2.out" }, 0)
+  .fromTo("#txt",   { opacity:0, x:-40 }, { opacity:1, x:0, duration:1.0, ease:"power2.out" }, 0.3)
+  .fromTo("#div",   { scaleX:0 }, { scaleX:1, duration:0.6, ease:"power2.out" }, 0.8)
+  .fromTo("#gl",    { opacity:0 }, { opacity:1, duration:0.4 }, 2.4)
+  .to("#watch",     { scale:1.03, duration:3, ease:"none" }, 0);
+window.__timelines["f01"] = tl;
+</script>
+</body>
+</html>
