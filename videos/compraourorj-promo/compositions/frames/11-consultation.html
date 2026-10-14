@@ -17,7 +17,7 @@
       background: #080808;
       font-family: 'Lato', sans-serif;
     }
-    .scene { position: absolute; inset: 0; }
+    #root { position: absolute; inset: 0; }
 
     /* Background image: dark atmospheric */
     .bg-img {
@@ -152,18 +152,13 @@
       border-right: 1px solid rgba(212,175,55,0.35);
     }
 
-    /* Bottom divider */
+    /* Bottom divider — animated via scaleX */
     .bottom-divider {
       position: absolute;
       bottom: 72px;
       left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
-      overflow: hidden;
-    }
-    .bottom-divider-inner {
+      transform: translateX(-50%) scaleX(0);
+      transform-origin: center center;
       width: 800px;
       height: 1px;
       background: linear-gradient(to right, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
@@ -171,7 +166,7 @@
   </style>
 </head>
 <body>
-<div class="scene" id="f11">
+<div id="root" data-composition-id="f11">
   <div class="bg-img"></div>
   <div class="vignette"></div>
 
@@ -206,9 +201,7 @@
   </div>
 
   <!-- Bottom gold divider -->
-  <div class="bottom-divider" id="bottomDivider">
-    <div class="bottom-divider-inner"></div>
-  </div>
+  <div class="bottom-divider" id="bottomDivider"></div>
 </div>
 
 <script>
@@ -293,10 +286,10 @@ tl.to(countUp4, {
   }
 }, 0.5);
 
-// 1.5: bottom divider draws from center
+// 1.5: bottom divider draws from center via scaleX
 tl.fromTo("#bottomDivider",
-  { width: 0 },
-  { width: 800, duration: 0.7, ease: "power2.inOut" },
+  { scaleX: 0 },
+  { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
   1.5
 );
 

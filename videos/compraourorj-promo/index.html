@@ -1,55 +1,82 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
-        overflow: hidden;
-        background: #0a0a0a;
-      }
-      #root {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-      }
-      #title {
-        color: #f4f4f5;
-        font-size: 72px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
-      }
-    </style>
-  </head>
-  <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
-    >
-      <h1 id="title" class="clip" data-start="0" data-duration="10" data-track-index="0">Title</h1>
-    </div>
-    <script>
-      const tl = gsap.timeline({ paused: true });
-      // Example: tl.fromTo("#title", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 0);
-      window.__timelines["main"] = tl;
-      tl.seek(0);
-    </script>
-  </body>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920,height=1080"/>
+  <title>Alex Joias · Compra Ouro RJ — Promo 30s</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+    .clip{position:absolute;inset:0;width:1920px;height:1080px}
+  </style>
+</head>
+<body>
+  <div
+    id="root"
+    data-composition-id="main"
+    data-start="0"
+    data-duration="30"
+    data-width="1920"
+    data-height="1080"
+  >
+    <!-- Frame 01 — Abertura Rolex/Cartier Hero (0–3s) -->
+    <div class="clip" data-composition-src="compositions/frames/01-watch-hero.html"
+         data-start="0" data-duration="3" data-track-index="0"></div>
+
+    <!-- Frame 02 — Close Mostrador com raios de luz (3–5s) -->
+    <div class="clip" data-composition-src="compositions/frames/02-rolex-dial.html"
+         data-start="3" data-duration="2" data-track-index="0"></div>
+
+    <!-- Frame 03 — Mãos enluvadas com partículas douradas (5–7s) -->
+    <div class="clip" data-composition-src="compositions/frames/03-gloves-rolex.html"
+         data-start="5" data-duration="2" data-track-index="0"></div>
+
+    <!-- Frame 04 — Mulher Lobby: shimmer sweep + bokeh (7–10s) -->
+    <div class="clip" data-composition-src="compositions/frames/04-woman-lobby.html"
+         data-start="7" data-duration="3" data-track-index="0"></div>
+
+    <!-- Frame 05 — Abertura da caixa: bezel ring + clip-path reveal (10–12.5s) -->
+    <div class="clip" data-composition-src="compositions/frames/05-box-opening.html"
+         data-start="10" data-duration="2.5" data-track-index="0"></div>
+
+    <!-- Frame 06 — Coleção: tickers + cards luxury (12.5–15s) -->
+    <div class="clip" data-composition-src="compositions/frames/06-collection.html"
+         data-start="12.5" data-duration="2.5" data-track-index="0"></div>
+
+    <!-- Frame 07 — Pesagem: balança SVG + display LCD (15–17.5s) -->
+    <div class="clip" data-composition-src="compositions/frames/07-weighing.html"
+         data-start="15" data-duration="2.5" data-track-index="0"></div>
+
+    <!-- Frame 08 — XRF: scan line + HUD data readout (17.5–20s) -->
+    <div class="clip" data-composition-src="compositions/frames/08-xrf.html"
+         data-start="17.5" data-duration="2.5" data-track-index="0"></div>
+
+    <!-- Frame 09 — Diamante SVG com sparkles + raios de dispersão (20–22s) -->
+    <div class="clip" data-composition-src="compositions/frames/09-diamond.html"
+         data-start="20" data-duration="2" data-track-index="0"></div>
+
+    <!-- Frame 10 — Avaliação: loupe + HUD + WhatsApp (22–24s) -->
+    <div class="clip" data-composition-src="compositions/frames/10-evaluation.html"
+         data-composition-id="f10"
+         data-start="22" data-duration="2" data-track-index="0"></div>
+
+    <!-- Frame 11 — Consulta: stats count-up + shimmer cards (24–26s) -->
+    <div class="clip" data-composition-src="compositions/frames/11-consultation.html"
+         data-composition-id="f11"
+         data-start="24" data-duration="2" data-track-index="0"></div>
+
+    <!-- Frame 12 — CTA Final: phone + WhatsApp + particle rain (26–30s) -->
+    <div class="clip" data-composition-src="compositions/frames/12-cta.html"
+         data-composition-id="f12"
+         data-start="26" data-duration="4" data-track-index="0"></div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines["main"] = tl;
+    tl.seek(0);
+  </script>
+</body>
 </html>

@@ -17,7 +17,7 @@
       background: #000;
       font-family: 'Lato', sans-serif;
     }
-    .scene { position: absolute; inset: 0; }
+    #root { position: absolute; inset: 0; }
 
     /* Deep amber radial BG */
     .bg-radial {
@@ -119,12 +119,14 @@
       width: 680px;
     }
 
-    /* Gold top line */
+    /* Gold top line — animated via scaleX */
     .cta-line-top {
-      width: 0;
+      width: 380px;
       height: 1px;
       background: linear-gradient(to right, #D4AF37 60%, transparent);
       margin-bottom: 28px;
+      transform: scaleX(0);
+      transform-origin: left center;
     }
 
     .cta-eyebrow {
@@ -219,12 +221,14 @@
       opacity: 0;
     }
 
-    /* Gold bottom line */
+    /* Gold bottom line — animated via scaleX */
     .cta-line-bottom {
-      width: 0;
+      width: 380px;
       height: 1px;
       background: linear-gradient(to right, #D4AF37 60%, transparent);
       margin-top: 28px;
+      transform: scaleX(0);
+      transform-origin: left center;
     }
 
     /* Full-frame light flash */
@@ -238,7 +242,7 @@
   </style>
 </head>
 <body>
-<div class="scene" id="f12">
+<div id="root" data-composition-id="f12">
   <div class="bg-radial"></div>
 
   <!-- Particles -->
@@ -335,10 +339,10 @@ tl.to("#lightFlash",
   0.68
 );
 
-// 0.5: CTA top line draws
+// 0.5: CTA top line draws via scaleX
 tl.fromTo("#ctaLineTop",
-  { width: 0 },
-  { width: 380, duration: 0.5, ease: "power2.inOut" },
+  { scaleX: 0 },
+  { scaleX: 1, duration: 0.5, ease: "power2.inOut" },
   0.5
 );
 
@@ -382,10 +386,10 @@ tl.fromTo("#addressLine",
   1.4
 );
 
-// 1.6: bottom gold line draws
+// 1.6: bottom gold line draws via scaleX
 tl.fromTo("#ctaLineBottom",
-  { width: 0 },
-  { width: 380, duration: 0.45, ease: "power2.inOut" },
+  { scaleX: 0 },
+  { scaleX: 1, duration: 0.45, ease: "power2.inOut" },
   1.6
 );
 
