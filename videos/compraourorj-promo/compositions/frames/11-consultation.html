@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920,height=1080"/>
+  <title>Frame 11 — Luxo, Confiança e Exclusividade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #080808;
+      font-family: 'Lato', sans-serif;
+    }
+    .scene { position: absolute; inset: 0; }
+
+    /* Background image: dark atmospheric */
+    .bg-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('../../public/gold-bg.webp');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.3) saturate(0.8);
+    }
+    /* Vignette overlay */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+    }
+
+    /* Header area */
+    .header {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      opacity: 0;
+    }
+    .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #B8860B;
+      margin-bottom: 16px;
+    }
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 400;
+      line-height: 1.18;
+      color: #F5F0E8;
+    }
+    .headline em { font-style: italic; color: #D4AF37; }
+
+    /* Cards row */
+    .cards-row {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -38%);
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    /* Individual stat card */
+    .stat-card {
+      width: 380px;
+      height: 220px;
+      background: rgba(10,10,10,0.88);
+      border-top: 3px solid #D4AF37;
+      box-shadow:
+        0 0 40px rgba(212,175,55,0.12),
+        0 0 80px rgba(212,175,55,0.05),
+        inset 0 1px 0 rgba(212,175,55,0.08);
+      padding: 36px 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.88) translateY(24px);
+    }
+
+    /* Card shimmer — diagonal white sweep */
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255,255,255,0.06) 50%,
+        transparent 70%
+      );
+      transform: skewX(-15deg);
+      animation: cardShimmer 2s ease forwards;
+      animation-play-state: paused;
+    }
+    .stat-card.shimmer-active::after {
+      animation-play-state: running;
+    }
+    @keyframes cardShimmer {
+      0%   { left: -120%; }
+      100% { left: 140%; }
+    }
+    /* Staggered delay per card */
+    .stat-card:nth-child(1)::after { animation-delay: 0s; }
+    .stat-card:nth-child(2)::after { animation-delay: 0.15s; }
+    .stat-card:nth-child(3)::after { animation-delay: 0.30s; }
+    .stat-card:nth-child(4)::after { animation-delay: 0.45s; }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 400;
+      font-style: italic;
+      color: #D4AF37;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(245,240,232,0.75);
+      letter-spacing: 0.06em;
+      line-height: 1.35;
+    }
+    /* Card accent corner */
+    .card-corner {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 18px;
+      height: 18px;
+      border-top: 1px solid rgba(212,175,55,0.35);
+      border-right: 1px solid rgba(212,175,55,0.35);
+    }
+
+    /* Bottom divider */
+    .bottom-divider {
+      position: absolute;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
+      overflow: hidden;
+    }
+    .bottom-divider-inner {
+      width: 800px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
+    }
+  </style>
+</head>
+<body>
+<div class="scene" id="f11">
+  <div class="bg-img"></div>
+  <div class="vignette"></div>
+
+  <!-- Header -->
+  <div class="header" id="header">
+    <div class="eyebrow">Alex Joias · Compra Ouro RJ</div>
+    <h1 class="headline">Luxo, confiança e <em>exclusividade.</em></h1>
+  </div>
+
+  <!-- 4 stat cards -->
+  <div class="cards-row" id="cardsRow">
+    <div class="stat-card" id="card1">
+      <div class="card-corner"></div>
+      <div class="stat-value" id="val1">0</div>
+      <div class="stat-label">Clientes Atendidos</div>
+    </div>
+    <div class="stat-card" id="card2">
+      <div class="card-corner"></div>
+      <div class="stat-value" id="val2">R$ 0</div>
+      <div class="stat-label">em transações/mês</div>
+    </div>
+    <div class="stat-card" id="card3">
+      <div class="card-corner"></div>
+      <div class="stat-value" id="val3">0 ★</div>
+      <div class="stat-label">Avaliações Google</div>
+    </div>
+    <div class="stat-card" id="card4">
+      <div class="card-corner"></div>
+      <div class="stat-value" id="val4">0</div>
+      <div class="stat-label">anos de Tradição</div>
+    </div>
+  </div>
+
+  <!-- Bottom gold divider -->
+  <div class="bottom-divider" id="bottomDivider">
+    <div class="bottom-divider-inner"></div>
+  </div>
+</div>
+
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+// 0: header fades in from above
+tl.fromTo("#header",
+  { opacity: 0, y: -22 },
+  { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+  0
+);
+
+// 0.3: cards stagger scale in
+tl.fromTo(["#card1", "#card2", "#card3", "#card4"],
+  { opacity: 0, scale: 0.88, y: 24 },
+  {
+    opacity: 1, scale: 1, y: 0,
+    duration: 0.55, stagger: 0.12,
+    ease: "power3.out",
+    onComplete: function() {
+      // Trigger shimmer on all cards
+      ["card1","card2","card3","card4"].forEach(function(id) {
+        document.getElementById(id).classList.add("shimmer-active");
+      });
+    }
+  },
+  0.3
+);
+
+// 0.5: count-up animations for each stat
+var countUp1 = { val: 0 };
+var countUp2 = { val: 0 };
+var countUp3 = { val: 0 };
+var countUp4 = { val: 0 };
+
+tl.to(countUp1, {
+  val: 15000,
+  duration: 1.5,
+  ease: "power2.out",
+  onUpdate: function() {
+    var n = Math.round(countUp1.val);
+    if (n >= 15000) {
+      document.getElementById("val1").innerHTML = "15.000+";
+    } else {
+      document.getElementById("val1").innerHTML = n.toLocaleString("pt-BR");
+    }
+  }
+}, 0.5);
+
+tl.to(countUp2, {
+  val: 2,
+  duration: 1.5,
+  ease: "power2.out",
+  onUpdate: function() {
+    var n = countUp2.val.toFixed(1);
+    if (parseFloat(n) >= 2) {
+      document.getElementById("val2").innerHTML = "R$&thinsp;2M+";
+    } else {
+      document.getElementById("val2").innerHTML = "R$&thinsp;" + n + "M";
+    }
+  }
+}, 0.5);
+
+tl.to(countUp3, {
+  val: 99,
+  duration: 1.5,
+  ease: "power2.out",
+  onUpdate: function() {
+    var n = Math.round(countUp3.val);
+    document.getElementById("val3").innerHTML = n + " ★";
+  }
+}, 0.5);
+
+tl.to(countUp4, {
+  val: 41,
+  duration: 1.5,
+  ease: "power2.out",
+  onUpdate: function() {
+    var n = Math.round(countUp4.val);
+    document.getElementById("val4").innerHTML = n;
+  }
+}, 0.5);
+
+// 1.5: bottom divider draws from center
+tl.fromTo("#bottomDivider",
+  { width: 0 },
+  { width: 800, duration: 0.7, ease: "power2.inOut" },
+  1.5
+);
+
+window.__timelines["f11"] = tl;
+</script>
+</body>
+</html>
