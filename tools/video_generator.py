@@ -75,7 +75,7 @@ def check_dependencies() -> bool:
     return True
 
 
-def _find_font(size: int) -> ImageFont.ImageFont:
+def _find_font(size: int):
     """Tenta fontes do sistema; fallback para default."""
     candidates = [
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
