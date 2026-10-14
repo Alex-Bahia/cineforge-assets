@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "66d2e0dd-f2dc-446b-9c50-66e390034d0a",
-  "currentRevision": "41fb5ea4-1c23-4bd0-9a6d-4375e80d0bf8",
+  "currentRevision": "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0",
   "pendingChanges": false,
   "files": {
     "AGENTS.md": {
@@ -41,44 +41,44 @@
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/56/56d7b380a4c98a35016f6fa67ce4886ff04c264ffe5b75a261d199263f9fac21"
     },
     "compositions/frames/01-watch-hero.html": {
-      "hash": "ee9b808f6474bd3a39de7ff2703f01e6bfe4eb8c131393e2e3e95386221519b2",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ee/ee9b808f6474bd3a39de7ff2703f01e6bfe4eb8c131393e2e3e95386221519b2"
+      "hash": "ee6959ced5051e40f1b627189bf3e0fce201729f165385ce773646de8917bddd",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ee/ee6959ced5051e40f1b627189bf3e0fce201729f165385ce773646de8917bddd"
     },
     "compositions/frames/02-rolex-dial.html": {
-      "hash": "df25913b4b87b046b64e5378d11922dcc1bb6ec54dc37feb8f2c000175ce972a",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/df/df25913b4b87b046b64e5378d11922dcc1bb6ec54dc37feb8f2c000175ce972a"
+      "hash": "bbf80283519cb9f7e5e9352fd78f39909e6185f047f8ae23f9ce662a560b0ba2",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/bb/bbf80283519cb9f7e5e9352fd78f39909e6185f047f8ae23f9ce662a560b0ba2"
     },
     "compositions/frames/03-gloves-rolex.html": {
-      "hash": "f5aaa172683577a5cbb96c2da62faa84086aa78b2e6747978c461f4ed81cc067",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/f5/f5aaa172683577a5cbb96c2da62faa84086aa78b2e6747978c461f4ed81cc067"
+      "hash": "c59bed6ab2c7bf16e11acd7ddb060974e8200a664ec913dda0650dfb3d8091d3",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/c5/c59bed6ab2c7bf16e11acd7ddb060974e8200a664ec913dda0650dfb3d8091d3"
     },
     "compositions/frames/04-woman-lobby.html": {
-      "hash": "98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/98/98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8"
+      "hash": "405a36bbd8fd7832f0f1e80b43494069f9511d703e60aa5be71b2f554e0036d0",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/40/405a36bbd8fd7832f0f1e80b43494069f9511d703e60aa5be71b2f554e0036d0"
     },
     "compositions/frames/05-box-opening.html": {
-      "hash": "868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/86/868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6"
+      "hash": "32230e0044fb39e948eb192571bd37549e62fda28d20e421dcb845cbe2726728",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/32/32230e0044fb39e948eb192571bd37549e62fda28d20e421dcb845cbe2726728"
     },
     "compositions/frames/06-collection.html": {
-      "hash": "5087f356913c7a420e5ef3755232e87fa5b2b4ef24008d36bb2e9c5e6484cad6",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/50/5087f356913c7a420e5ef3755232e87fa5b2b4ef24008d36bb2e9c5e6484cad6"
+      "hash": "bc106560c99d52407a7dd886ba8b722f690c79ff835857b3780f4d23bf0fa098",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/bc/bc106560c99d52407a7dd886ba8b722f690c79ff835857b3780f4d23bf0fa098"
     },
     "compositions/frames/07-weighing.html": {
-      "hash": "dd1ac4993c16bdaaa3cec5ad487b70828ca2caa2846de71a74b65bbe1cf5de9b",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/dd/dd1ac4993c16bdaaa3cec5ad487b70828ca2caa2846de71a74b65bbe1cf5de9b"
+      "hash": "846f692da4081cca5f921ea8cdc76fccbceddd3fa8fea8211a87baef9b201f80",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/84/846f692da4081cca5f921ea8cdc76fccbceddd3fa8fea8211a87baef9b201f80"
     },
     "compositions/frames/08-xrf.html": {
-      "hash": "6c4e6cd9378a7243f43d866a2f88099a74d959f5f6f58f0d5dfbea726dd85cfc",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/6c/6c4e6cd9378a7243f43d866a2f88099a74d959f5f6f58f0d5dfbea726dd85cfc"
+      "hash": "cf822885cd5d32e38f49708c1949eae53857b8796233d4f2f50d286e97571d4c",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/cf/cf822885cd5d32e38f49708c1949eae53857b8796233d4f2f50d286e97571d4c"
     },
     "compositions/frames/10-evaluation.html": {
-      "hash": "080aace2a07407e268f105219c45a90a17e3e7626698a90acdd56f46e3e4c5c7",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/08/080aace2a07407e268f105219c45a90a17e3e7626698a90acdd56f46e3e4c5c7"
+      "hash": "8c02bb93b77f436ed7edf70b67b18a5f7288d44ad0dc2878f41b1a898f745e8f",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/8c/8c02bb93b77f436ed7edf70b67b18a5f7288d44ad0dc2878f41b1a898f745e8f"
     },
     "compositions/frames/11-consultation.html": {
-      "hash": "ca233868d0edadb0fa345acfa69d25cd2adcc9612e13d3a9bbbf8e4294bf06f1",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ca/ca233868d0edadb0fa345acfa69d25cd2adcc9612e13d3a9bbbf8e4294bf06f1"
+      "hash": "454ff5702890f01f91f3e562c3d6b5b4682fdd1dfac77e22e60d14711f4f145d",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/45/454ff5702890f01f91f3e562c3d6b5b4682fdd1dfac77e22e60d14711f4f145d"
     },
     "frame.md": {
       "hash": "4c9950e47e7773dd436386b0b7e7d15361b21fc13e5431f0669bd45ee4b680db",
@@ -89,16 +89,16 @@
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/44/44d4e8dcefebce0a13f5afa82aa270b0b19a1d3f82e434f92616010cee775dc4"
     },
     "index.html": {
-      "hash": "95799b6b830925fc0f99cd370341de9afff3c2ec18a9fe3f8ea988ea980a3ca1",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/95/95799b6b830925fc0f99cd370341de9afff3c2ec18a9fe3f8ea988ea980a3ca1"
+      "hash": "c5f6242e9b72d8a518d4268e57034fd880afca2778698c1d0dd5281c8d3d245a",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/c5/c5f6242e9b72d8a518d4268e57034fd880afca2778698c1d0dd5281c8d3d245a"
     },
     "meta.json": {
       "hash": "07034574d606fc0a19d6fe15b4420ef2f578d45f68cd9c4df4b7b2926a967866",
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/07/07034574d606fc0a19d6fe15b4420ef2f578d45f68cd9c4df4b7b2926a967866"
     },
     "package.json": {
-      "hash": "604de5959a7032d559891d4db3247aa5c076ba5e69fe89e22516e18c30857082",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/60/604de5959a7032d559891d4db3247aa5c076ba5e69fe89e22516e18c30857082"
+      "hash": "d91cfc6d6854c47b5b4a6cbdd1094e6ed5cbd66ccd76d9e014b1c0848d2c35fd",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/d9/d91cfc6d6854c47b5b4a6cbdd1094e6ed5cbd66ccd76d9e014b1c0848d2c35fd"
     },
     "public/gold-bg.webp": {
       "hash": "75b8bfd44d681613738a6bbdf64baae054e1f0e1213c378f8ffbf93c9d7b6f22",
@@ -113,12 +113,16 @@
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/d8/d887e0203148325cdb8797eddd0dc957783d3e380b77089b0bdb4a13770d107b"
     },
     "compositions/frames/09-diamond.html": {
-      "hash": "4c9b564407342a610823f919d7179ad0b54641bedcd6708e12fbcc8add959176",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/4c/4c9b564407342a610823f919d7179ad0b54641bedcd6708e12fbcc8add959176"
+      "hash": "fb798e92f3043776a82cd60c879bb7afdd43eecd11d06bac180764246455ffa0",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/fb/fb798e92f3043776a82cd60c879bb7afdd43eecd11d06bac180764246455ffa0"
     },
     "compositions/frames/12-cta.html": {
-      "hash": "2f085d67264a131c24b81d47313fc426f65ae54a8a6882f8a43bf1aa182cc5ec",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2f/2f085d67264a131c24b81d47313fc426f65ae54a8a6882f8a43bf1aa182cc5ec"
+      "hash": "5410088a5454c8e91b43b66e41715c57882bcdbd6bf3f5e970d72cc3c46e1b34",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/54/5410088a5454c8e91b43b66e41715c57882bcdbd6bf3f5e970d72cc3c46e1b34"
+    },
+    "package-lock.json": {
+      "hash": "ae461a6cfd2840c48d0db17a312a906da5e3e5a0c83351a725e4aca9d841e85c",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ae/ae461a6cfd2840c48d0db17a312a906da5e3e5a0c83351a725e4aca9d841e85c"
     }
   },
   "revisions": {
@@ -287,19 +291,89 @@
           "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/4c/4c9b564407342a610823f919d7179ad0b54641bedcd6708e12fbcc8add959176"
         }
       }
+    },
+    "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1791950483698,
+      "endedAt": 1791950483726,
+      "files": {
+        "compositions/frames/01-watch-hero.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ee/ee9b808f6474bd3a39de7ff2703f01e6bfe4eb8c131393e2e3e95386221519b2",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ee/ee6959ced5051e40f1b627189bf3e0fce201729f165385ce773646de8917bddd"
+        },
+        "compositions/frames/02-rolex-dial.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/df/df25913b4b87b046b64e5378d11922dcc1bb6ec54dc37feb8f2c000175ce972a",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/bb/bbf80283519cb9f7e5e9352fd78f39909e6185f047f8ae23f9ce662a560b0ba2"
+        },
+        "compositions/frames/03-gloves-rolex.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/f5/f5aaa172683577a5cbb96c2da62faa84086aa78b2e6747978c461f4ed81cc067",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/c5/c59bed6ab2c7bf16e11acd7ddb060974e8200a664ec913dda0650dfb3d8091d3"
+        },
+        "compositions/frames/04-woman-lobby.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/98/98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/40/405a36bbd8fd7832f0f1e80b43494069f9511d703e60aa5be71b2f554e0036d0"
+        },
+        "compositions/frames/05-box-opening.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/86/868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/32/32230e0044fb39e948eb192571bd37549e62fda28d20e421dcb845cbe2726728"
+        },
+        "compositions/frames/06-collection.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/50/5087f356913c7a420e5ef3755232e87fa5b2b4ef24008d36bb2e9c5e6484cad6",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/bc/bc106560c99d52407a7dd886ba8b722f690c79ff835857b3780f4d23bf0fa098"
+        },
+        "compositions/frames/07-weighing.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/dd/dd1ac4993c16bdaaa3cec5ad487b70828ca2caa2846de71a74b65bbe1cf5de9b",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/84/846f692da4081cca5f921ea8cdc76fccbceddd3fa8fea8211a87baef9b201f80"
+        },
+        "compositions/frames/08-xrf.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/6c/6c4e6cd9378a7243f43d866a2f88099a74d959f5f6f58f0d5dfbea726dd85cfc",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/cf/cf822885cd5d32e38f49708c1949eae53857b8796233d4f2f50d286e97571d4c"
+        },
+        "compositions/frames/09-diamond.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/4c/4c9b564407342a610823f919d7179ad0b54641bedcd6708e12fbcc8add959176",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/fb/fb798e92f3043776a82cd60c879bb7afdd43eecd11d06bac180764246455ffa0"
+        },
+        "compositions/frames/10-evaluation.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/08/080aace2a07407e268f105219c45a90a17e3e7626698a90acdd56f46e3e4c5c7",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/8c/8c02bb93b77f436ed7edf70b67b18a5f7288d44ad0dc2878f41b1a898f745e8f"
+        },
+        "compositions/frames/11-consultation.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ca/ca233868d0edadb0fa345acfa69d25cd2adcc9612e13d3a9bbbf8e4294bf06f1",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/45/454ff5702890f01f91f3e562c3d6b5b4682fdd1dfac77e22e60d14711f4f145d"
+        },
+        "compositions/frames/12-cta.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2f/2f085d67264a131c24b81d47313fc426f65ae54a8a6882f8a43bf1aa182cc5ec",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/54/5410088a5454c8e91b43b66e41715c57882bcdbd6bf3f5e970d72cc3c46e1b34"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/95/95799b6b830925fc0f99cd370341de9afff3c2ec18a9fe3f8ea988ea980a3ca1",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/c5/c5f6242e9b72d8a518d4268e57034fd880afca2778698c1d0dd5281c8d3d245a"
+        },
+        "package-lock.json": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/ae/ae461a6cfd2840c48d0db17a312a906da5e3e5a0c83351a725e4aca9d841e85c"
+        },
+        "package.json": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/60/604de5959a7032d559891d4db3247aa5c076ba5e69fe89e22516e18c30857082",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/d9/d91cfc6d6854c47b5b4a6cbdd1094e6ed5cbd66ccd76d9e014b1c0848d2c35fd"
+        }
+      }
     }
   },
   "checks": {
     "latest": {
-      "revision": "41fb5ea4-1c23-4bd0-9a6d-4375e80d0bf8",
-      "id": "1a4e019b-7791-40e7-9835-f9a315c6f288"
+      "revision": "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0",
+      "id": "4be685ae-2377-4088-a8da-572deaf7d991"
     },
     "revisions": {
       "890a515d-336a-41fd-9bf8-6492ffffb88f": [
         {
           "id": "83b845df-da1e-46e0-acce-64b800b0c2a7",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/83b845df-da1e-46e0-acce-64b800b0c2a7.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -321,14 +395,15 @@
           "revision": "890a515d-336a-41fd-9bf8-6492ffffb88f",
           "inputFingerprint": "b33be6b64f6c2235e60f99fdc755d69116136ba8fe44b825a30355bdd5788a7d",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         }
       ],
       "c93fb28e-e081-468a-aa1e-b4c384aa482b": [
         {
           "id": "1bcf0b14-7034-4a4e-b3e2-dfec3892828a",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/1bcf0b14-7034-4a4e-b3e2-dfec3892828a.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -350,14 +425,15 @@
           "revision": "c93fb28e-e081-468a-aa1e-b4c384aa482b",
           "inputFingerprint": "ebda37aa11b123be91bbe274d189f283a623c95af86abf09d6640adb7e02ad71",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         }
       ],
       "44a8a2b5-6723-4af0-8b2e-131ff7eb60d8": [
         {
           "id": "9c1920fe-ab80-4405-b602-21eaabb0cd7b",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/9c1920fe-ab80-4405-b602-21eaabb0cd7b.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -379,12 +455,13 @@
           "revision": "44a8a2b5-6723-4af0-8b2e-131ff7eb60d8",
           "inputFingerprint": "943748b126cd30d43b1ec060d8dc5668e68b68d7a19c6368b40becfeb9b02e0e",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         },
         {
           "id": "4ee1aea6-6dd8-4293-b4e3-192f1ae48dcc",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/4ee1aea6-6dd8-4293-b4e3-192f1ae48dcc.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -406,12 +483,13 @@
           "revision": "44a8a2b5-6723-4af0-8b2e-131ff7eb60d8",
           "inputFingerprint": "943748b126cd30d43b1ec060d8dc5668e68b68d7a19c6368b40becfeb9b02e0e",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         },
         {
           "id": "54b264d8-08de-4cd3-9f71-786de8186081",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/54b264d8-08de-4cd3-9f71-786de8186081.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -433,12 +511,13 @@
           "revision": "44a8a2b5-6723-4af0-8b2e-131ff7eb60d8",
           "inputFingerprint": "943748b126cd30d43b1ec060d8dc5668e68b68d7a19c6368b40becfeb9b02e0e",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         },
         {
           "id": "77b6d2ab-ae9a-4208-8e2f-a99f2f1fe468",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/77b6d2ab-ae9a-4208-8e2f-a99f2f1fe468.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -460,14 +539,15 @@
           "revision": "44a8a2b5-6723-4af0-8b2e-131ff7eb60d8",
           "inputFingerprint": "943748b126cd30d43b1ec060d8dc5668e68b68d7a19c6368b40becfeb9b02e0e",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         }
       ],
       "64fc36ff-37ac-4b39-ae75-feb17f024dc2": [
         {
           "id": "7bf08d9f-9629-4976-bdbd-0d5b7e9dfd47",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/7bf08d9f-9629-4976-bdbd-0d5b7e9dfd47.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -489,12 +569,13 @@
           "revision": "64fc36ff-37ac-4b39-ae75-feb17f024dc2",
           "inputFingerprint": "d9ca63eca241f98041c340bb99c779a0ffc6d62eb3532ae546c082989be86eb7",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         },
         {
           "id": "70efc2d0-f6fa-4e92-a586-0ee5468f2d48",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/70efc2d0-f6fa-4e92-a586-0ee5468f2d48.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -516,12 +597,13 @@
           "revision": "64fc36ff-37ac-4b39-ae75-feb17f024dc2",
           "inputFingerprint": "d9ca63eca241f98041c340bb99c779a0ffc6d62eb3532ae546c082989be86eb7",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         },
         {
           "id": "9d4fd6f3-bf63-4fdf-9204-7d04e8b9989b",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/9d4fd6f3-bf63-4fdf-9204-7d04e8b9989b.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -543,14 +625,15 @@
           "revision": "64fc36ff-37ac-4b39-ae75-feb17f024dc2",
           "inputFingerprint": "d9ca63eca241f98041c340bb99c779a0ffc6d62eb3532ae546c082989be86eb7",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         }
       ],
       "89514775-b6e9-4947-94a7-ca1263f88abb": [
         {
           "id": "35de11f5-e126-48fc-9849-4e9a1d01acf2",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/35de11f5-e126-48fc-9849-4e9a1d01acf2.json",
           "metadata": {
             "ok": false,
             "browserSkipped": true,
@@ -572,14 +655,15 @@
           "revision": "89514775-b6e9-4947-94a7-ca1263f88abb",
           "inputFingerprint": "2ee17021a22b4acf05b7ba0b5bed8f993902a5a6d363af8a5d7d3f86962e948a",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
         }
       ],
       "41fb5ea4-1c23-4bd0-9a6d-4375e80d0bf8": [
         {
           "id": "1a4e019b-7791-40e7-9835-f9a315c6f288",
           "scope": "project",
-          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/1a4e019b-7791-40e7-9835-f9a315c6f288.json",
           "metadata": {
             "ok": false,
             "browserSkipped": false,
@@ -600,6 +684,37 @@
           "contentHash": "0bd8f719e37354e7561ac7bd539b2ba5eda638fee41ecc8c870ee960f7f283db",
           "revision": "41fb5ea4-1c23-4bd0-9a6d-4375e80d0bf8",
           "inputFingerprint": "2b798aab5a5548986d79a4e0544ae310f56d3f3b81097d20c85e220cba69e718",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "530be3f4-daaf-4980-ab5c-17246d729bb3"
+        }
+      ],
+      "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0": [
+        {
+          "id": "4be685ae-2377-4088-a8da-572deaf7d991",
+          "scope": "project",
+          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/4be685ae-2377-4088-a8da-572deaf7d991.json",
+          "metadata": {
+            "ok": false,
+            "browserSkipped": true,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1791950488047,
+          "contentHash": "4d96315ce0dcf738a9d1be10d153a14b93b19a66f904aebd045536c983c73548",
+          "revision": "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0",
+          "inputFingerprint": "3166f11f76f472be1eaa1f06b2adecdc8c6d307862a339cdfc728bc2d29af699",
           "inputScope": "local-project-files",
           "attribution": "recorded-revision"
         }
@@ -639,5 +754,18 @@
     "latest": null,
     "revisions": {},
     "unversioned": []
-  }
+  },
+  "renders": {
+    "latest": {
+      "id": "530be3f4-daaf-4980-ab5c-17246d729bb3",
+      "completedAt": 1791950705967,
+      "output": "/home/user/cineforge-assets/videos/compraourorj-promo/renders/compraourorj-promo_2026-10-14_04-02-19.mp4",
+      "status": "completed",
+      "revision": "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0"
+    },
+    "retainedRevisions": [
+      "a63a0d81-5eb5-49a9-a35e-ed08ac38e1f0"
+    ]
+  },
+  "pendingArtifactCleanup": []
 }
