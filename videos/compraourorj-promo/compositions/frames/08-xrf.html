@@ -19,7 +19,7 @@
       font-family: 'Lato', sans-serif;
     }
 
-    .frame {
+    #root {
       position: relative;
       width: 1920px;
       height: 1080px;
@@ -28,7 +28,7 @@
     }
 
     /* subtle vignette */
-    .frame::before {
+    #root::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -41,7 +41,7 @@
     .scan-line {
       position: absolute;
       top: 0;
-      left: -6px;
+      left: 0;
       width: 6px;
       height: 100%;
       z-index: 50;
@@ -143,7 +143,6 @@
       border-color: rgba(212,175,55,0);
       border-style: solid;
       border-width: 0;
-      transition: opacity 0.3s;
     }
     .bracket.tl { top: -10px; left: -10px; border-top-width: 2px; border-left-width: 2px; }
     .bracket.tr { top: -10px; right: -10px; border-top-width: 2px; border-right-width: 2px; }
@@ -171,7 +170,6 @@
       color: #D4AF37;
       margin-bottom: 28px;
       opacity: 0;
-      transform: translateX(40px);
     }
 
     .headline {
@@ -181,7 +179,6 @@
       color: #F5F0E8;
       margin-bottom: 56px;
       opacity: 0;
-      transform: translateX(40px);
     }
 
     .headline em {
@@ -200,7 +197,6 @@
       align-items: flex-start;
       gap: 14px;
       opacity: 0;
-      transform: translateX(30px);
     }
 
     .spec-bullet {
@@ -240,7 +236,7 @@
   </style>
 </head>
 <body>
-  <div class="frame">
+  <div class="frame" id="root" data-composition-id="f08">
 
     <!-- Scan line -->
     <div class="scan-line" id="scanLine"></div>
@@ -316,8 +312,10 @@
     const brackets    = ["bTL","bTR","bBL","bBR"].map(id => document.getElementById(id));
 
     // ── 1. Scan line sweeps left → right (0 → 2s) ──────────────────────────
-    tl.to(scanLine, {
-      left: 1926,
+    tl.fromTo(scanLine, {
+      x: -6
+    }, {
+      x: 1926,
       duration: 2,
       ease: "power1.inOut"
     }, 0);
@@ -330,12 +328,16 @@
     }, 0);
 
     // ── 2. Text slides in from right at 0.5s ───────────────────────────────
-    tl.to(eyebrow, {
+    tl.fromTo(eyebrow, {
+      opacity: 0, x: 40
+    }, {
       opacity: 1, x: 0,
       duration: 0.5, ease: "power2.out"
     }, 0.5);
 
-    tl.to(headline, {
+    tl.fromTo(headline, {
+      opacity: 0, x: 40
+    }, {
       opacity: 1, x: 0,
       duration: 0.6, ease: "power2.out"
     }, 0.65);
@@ -354,7 +356,9 @@
     }, 0.82);
 
     // ── 4. Spec lines stagger in at 1.0s ───────────────────────────────────
-    tl.to(specs, {
+    tl.fromTo(specs, {
+      opacity: 0, x: 30
+    }, {
       opacity: 1, x: 0,
       duration: 0.45, ease: "power2.out",
       stagger: 0.18

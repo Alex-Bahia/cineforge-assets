@@ -164,7 +164,6 @@
       padding: 28px 32px;
       position: relative;
       opacity: 0;
-      transform: scale(0.95);
       overflow: hidden;
     }
 
@@ -244,6 +243,7 @@
   </style>
 </head>
 <body>
+<div data-composition-id="f06">
   <!-- Background -->
   <div class="bg"></div>
   <div class="vignette"></div>
@@ -330,7 +330,10 @@
     }, 0.1);
 
     // Cards stagger in
-    tl.to(["#card-0", "#card-1", "#card-2", "#card-3"], {
+    tl.fromTo(["#card-0", "#card-1", "#card-2", "#card-3"], {
+      opacity: 0,
+      scale: 0.95
+    }, {
       opacity: 1,
       scale: 1,
       duration: 0.45,
@@ -348,5 +351,6 @@
     // Auto-play
     tl.play();
   </script>
+</div>
 </body>
 </html>

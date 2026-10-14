@@ -20,7 +20,7 @@
     }
 
     /* ── Scene container ── */
-    .scene {
+    #root {
       position: relative;
       width: 1920px;
       height: 1080px;
@@ -44,7 +44,6 @@
       object-fit: cover;
       object-position: center 70%;
       transform-origin: center 70%;
-      transform: scale(3);
       will-change: transform, opacity;
       opacity: 0;
     }
@@ -129,7 +128,6 @@
       left: 110px;
       max-width: 540px;
       opacity: 0;
-      transform: translateY(28px);
       will-change: opacity, transform;
     }
 
@@ -178,7 +176,7 @@
   </style>
 </head>
 <body>
-  <div class="scene">
+  <div class="scene" id="root" data-composition-id="f02">
 
     <!-- Watch photo -->
     <div class="watch-wrap">
@@ -272,10 +270,14 @@
     const raysGroup = document.getElementById("raysGroup");
 
     tl
-      // Watch fades in, scale from 1.1 → 1.0 (already 3× in CSS, GSAP operates on top)
-      .to(".watch-img", {
+      // Watch fades in, scale from 3 → 2.85 (dial-area de-zoom)
+      .fromTo(".watch-img", {
+        opacity: 0,
+        scale: 3,
+        transformOrigin: "center 70%"
+      }, {
         opacity: 1,
-        scale: 2.85,        // slight de-zoom: CSS transform-origin 70% keeps dial in view
+        scale: 2.85,
         transformOrigin: "center 70%",
         duration: 2.2,
         ease: "power2.out"
@@ -297,7 +299,10 @@
       }, 0)
 
       // Text slides up and fades in
-      .to(".text-block", {
+      .fromTo(".text-block", {
+        opacity: 0,
+        y: 28
+      }, {
         opacity: 1,
         y: 0,
         duration: 0.9,

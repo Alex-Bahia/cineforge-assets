@@ -93,7 +93,6 @@
       color: var(--accent);
       text-transform: uppercase;
       opacity: 0;
-      transform: translateX(-30px);
     }
 
     .headline-left {
@@ -103,7 +102,6 @@
       color: var(--cream);
       line-height: 1.15;
       opacity: 0;
-      transform: translateX(-30px);
     }
     .headline-left em {
       font-style: italic;
@@ -116,7 +114,6 @@
       flex-direction: column;
       gap: 14px;
       opacity: 0;
-      transform: translateX(-20px);
     }
     .bullet-item {
       display: flex;
@@ -278,6 +275,7 @@
   </style>
 </head>
 <body>
+<div data-composition-id="f07">
   <!-- Background layers -->
   <div class="bg-grid"></div>
   <div class="bg-grid-v"></div>
@@ -397,21 +395,21 @@
     }, 0.2);
 
     // 3. Left text slides in
-    tl.to(".eyebrow-left", {
+    tl.fromTo(".eyebrow-left", { opacity: 0, x: -30 }, {
       opacity: 1,
       x: 0,
       duration: 0.45,
       ease: "power2.out"
     }, 0.25);
 
-    tl.to(".headline-left", {
+    tl.fromTo(".headline-left", { opacity: 0, x: -30 }, {
       opacity: 1,
       x: 0,
       duration: 0.5,
       ease: "power2.out"
     }, 0.38);
 
-    tl.to(".bullet-list", {
+    tl.fromTo(".bullet-list", { opacity: 0, x: -20 }, {
       opacity: 1,
       x: 0,
       duration: 0.45,
@@ -457,5 +455,6 @@
     // Auto-play
     tl.play();
   </script>
+</div>
 </body>
 </html>

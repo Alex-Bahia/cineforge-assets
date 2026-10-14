@@ -20,7 +20,7 @@
     }
 
     /* ── Scene ── */
-    .scene {
+    #root {
       position: relative;
       width: 1920px;
       height: 1080px;
@@ -135,7 +135,6 @@
       position: absolute;
       bottom: 80px;
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
       text-align: center;
       max-width: 860px;
       opacity: 0;
@@ -163,7 +162,6 @@
       position: absolute;
       bottom: 60px;
       left: 50%;
-      transform: translateX(-50%) scaleX(0);
       width: 180px;
       height: 1px;
       background: linear-gradient(90deg, transparent, #B8860B, transparent);
@@ -173,7 +171,7 @@
   </style>
 </head>
 <body>
-  <div class="scene">
+  <div class="scene" id="root" data-composition-id="f03">
 
     <!-- Background shimmer -->
     <div class="bg-shimmer"></div>
@@ -231,7 +229,12 @@
       )
 
       // Text fades in at 0.5s
-      .to(".text-block", {
+      .fromTo(".text-block", {
+        xPercent: -50,
+        opacity: 0,
+        y: 20
+      }, {
+        xPercent: -50,
         opacity: 1,
         y: 0,
         transformOrigin: "center bottom",
@@ -240,7 +243,11 @@
       }, 0.5)
 
       // Gold rule sweeps in
-      .to(".gold-rule", {
+      .fromTo(".gold-rule", {
+        xPercent: -50,
+        scaleX: 0
+      }, {
+        xPercent: -50,
         scaleX: 1,
         duration: 0.8,
         ease: "power2.inOut"

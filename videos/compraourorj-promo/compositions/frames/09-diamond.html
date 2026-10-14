@@ -19,7 +19,7 @@
       font-family: 'Lato', sans-serif;
     }
 
-    .frame {
+    #root {
       position: relative;
       width: 1920px;
       height: 1080px;
@@ -54,7 +54,6 @@
       align-items: center;
       justify-content: center;
       transform-origin: center center;
-      transform: scale(0.2);
       opacity: 0;
       flex-shrink: 0;
       /* push up a bit to make room for text */
@@ -152,7 +151,6 @@
       color: #F5F0E8;
       text-align: center;
       opacity: 0;
-      transform: translateY(20px);
       margin-top: 32px;
       flex-shrink: 0;
     }
@@ -175,7 +173,7 @@
     }
 
     /* vignette */
-    .frame::after {
+    #root::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -186,7 +184,7 @@
   </style>
 </head>
 <body>
-  <div class="frame">
+  <div class="frame" id="root" data-composition-id="f09">
 
     <!-- Background glow -->
     <div class="bg-glow" id="bgGlow"></div>
@@ -482,17 +480,21 @@
     tl.to(bgGlow, {
       opacity: 0.75,
       duration: 0.6, ease: "power1.inOut",
-      yoyo: true, repeat: -1
+      yoyo: true, repeat: 1
     }, 0.8);
 
     // ── 2. Diamond scales in (0.2s) ────────────────────────────
-    tl.to(diamondWrap, {
+    tl.fromTo(diamondWrap, {
+      scale: 0.2, opacity: 0
+    }, {
       scale: 1, opacity: 1,
       duration: 0.7, ease: "back.out(1.5)"
     }, 0.2);
 
     // ── 3. Text fades in (0.5s) ────────────────────────────────
-    tl.to(headline, {
+    tl.fromTo(headline, {
+      opacity: 0, y: 20
+    }, {
       opacity: 1, y: 0,
       duration: 0.6, ease: "power2.out"
     }, 0.5);
@@ -523,7 +525,7 @@
     tl.to(diamondWrap, {
       y: -8,
       duration: 1.5, ease: "power1.inOut",
-      yoyo: true, repeat: -1
+      yoyo: true, repeat: 0
     }, 1.0);
 
     // Auto-play
