@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=1920,height=1080"/>
+  <title>Frame 06 — Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    :root {
+      --dark: #1A1A1A;
+      --accent: #B8860B;
+      --gold: #D4AF37;
+      --cream: #F5F0E8;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* ── Background ── */
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('../../public/gold-bg.webp');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.35) saturate(1.2);
+    }
+
+    /* subtle vignette on top of bg */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.65) 100%);
+      pointer-events: none;
+    }
+
+    /* ── Tickers ── */
+    .ticker-wrap {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-top {
+      top: 0;
+      height: 48px;
+      background: rgba(0,0,0,0.55);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      display: flex;
+      align-items: center;
+    }
+    .ticker-bottom {
+      bottom: 0;
+      height: 48px;
+      background: rgba(0,0,0,0.55);
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-track {
+      display: inline-flex;
+      white-space: nowrap;
+    }
+    .ticker-top .ticker-track {
+      animation: scroll-left 20s linear infinite;
+    }
+    .ticker-bottom .ticker-track {
+      animation: scroll-right 24s linear infinite;
+    }
+
+    .ticker-track span {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      padding: 0 32px;
+      text-transform: uppercase;
+    }
+    .ticker-track .dot {
+      color: var(--accent);
+      padding: 0 4px;
+      letter-spacing: 0;
+    }
+
+    @keyframes scroll-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes scroll-right {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* ── Center layout ── */
+    .center-content {
+      position: absolute;
+      inset: 48px 48px 48px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    /* headline above the cards */
+    .headline-block {
+      text-align: center;
+      opacity: 0;
+    }
+    .headline-block .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      letter-spacing: 0.35em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .headline-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+    .headline-block h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* ── Cards grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 360px);
+      grid-template-rows: repeat(2, 200px);
+      gap: 24px;
+    }
+
+    .card {
+      width: 360px;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 32px;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.95);
+      overflow: hidden;
+    }
+
+    /* top-left gold accent line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--gold);
+    }
+    /* subtle inner glow */
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--gold);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .card-category {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: var(--cream);
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+    }
+
+    /* ── Gold separator line ── */
+    .gold-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 1px;
+      height: 60%;
+      background: linear-gradient(to bottom, transparent, rgba(212,175,55,0.25) 30%, rgba(212,175,55,0.25) 70%, transparent);
+      pointer-events: none;
+    }
+
+    /* ── Bottom tagline ── */
+    .tagline {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.3em;
+      color: rgba(245,240,232,0.5);
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background -->
+  <div class="bg"></div>
+  <div class="vignette"></div>
+
+  <!-- Ticker Top -->
+  <div class="ticker-wrap ticker-top">
+    <div class="ticker-track">
+      <span>ROLEX</span><span class="dot">·</span>
+      <span>CARTIER</span><span class="dot">·</span>
+      <span>PATEK PHILIPPE</span><span class="dot">·</span>
+      <span>AUDEMARS PIGUET</span><span class="dot">·</span>
+      <span>VACHERON CONSTANTIN</span><span class="dot">·</span>
+      <span>IWC</span><span class="dot">·</span>
+      <span>ROLEX</span><span class="dot">·</span>
+      <span>CARTIER</span><span class="dot">·</span>
+      <span>PATEK PHILIPPE</span><span class="dot">·</span>
+      <span>AUDEMARS PIGUET</span><span class="dot">·</span>
+      <span>VACHERON CONSTANTIN</span><span class="dot">·</span>
+      <span>IWC</span><span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- Ticker Bottom -->
+  <div class="ticker-wrap ticker-bottom">
+    <div class="ticker-track">
+      <span>DIAMANTES GIA</span><span class="dot">·</span>
+      <span>OURO 18K</span><span class="dot">·</span>
+      <span>JOIAS FINAS</span><span class="dot">·</span>
+      <span>BARRAS 999.9</span><span class="dot">·</span>
+      <span>MOEDAS IMPERIAIS</span><span class="dot">·</span>
+      <span>DIAMANTES GIA</span><span class="dot">·</span>
+      <span>OURO 18K</span><span class="dot">·</span>
+      <span>JOIAS FINAS</span><span class="dot">·</span>
+      <span>BARRAS 999.9</span><span class="dot">·</span>
+      <span>MOEDAS IMPERIAIS</span><span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- Center content -->
+  <div class="center-content">
+    <div class="headline-block">
+      <div class="eyebrow">Atendimento Personalizado · Cuidado e Confiança</div>
+      <h2>O que <em>avaliamos</em> e compramos</h2>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card" id="card-0">
+        <div class="card-icon">Relógios</div>
+        <div class="card-name">Relógios de Luxo</div>
+        <div class="card-category">Rolex · Cartier · Patek Philippe</div>
+      </div>
+      <div class="card" id="card-1">
+        <div class="card-icon">Joias</div>
+        <div class="card-name">Joias &amp; Diamantes</div>
+        <div class="card-category">Certificados GIA e IGI</div>
+      </div>
+      <div class="card" id="card-2">
+        <div class="card-icon">Metais</div>
+        <div class="card-name">Ouro 18k &amp; 24k</div>
+        <div class="card-category">Barras · Moedas · Peças</div>
+      </div>
+      <div class="card" id="card-3">
+        <div class="card-icon">Tecnologia</div>
+        <div class="card-name">Avaliação XRF</div>
+        <div class="card-category">Cotação LBMA em tempo real</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tagline">Alex Joias · Compra Ouro RJ</div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines["f06"] = tl;
+
+    // Headline fades in
+    tl.to(".headline-block", {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    }, 0.1);
+
+    // Cards stagger in
+    tl.to(["#card-0", "#card-1", "#card-2", "#card-3"], {
+      opacity: 1,
+      scale: 1,
+      duration: 0.45,
+      ease: "back.out(1.5)",
+      stagger: 0.15
+    }, 0.3);
+
+    // Tagline
+    tl.to(".tagline", {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power1.out"
+    }, 1.1);
+
+    // Auto-play
+    tl.play();
+  </script>
+</body>
+</html>

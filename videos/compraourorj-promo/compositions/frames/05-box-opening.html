@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>Frame 05 — Box Opening</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0e0e0e;
+    }
+
+    /* ── Background glow ── */
+    #bg-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 70% 60% at 50% 50%,
+        rgba(184, 134, 11, 0.28) 0%,
+        rgba(212, 175, 55, 0.12) 30%,
+        rgba(60, 35, 0, 0.18) 60%,
+        transparent 80%
+      );
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    /* ── SVG canvas (ring, burst, bezel) ── */
+    #fx-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* ── Logo wrapper — clip-path reveal ── */
+    #logo-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 380px;
+      height: 380px;
+      clip-path: circle(0% at 50% 50%);
+      will-change: clip-path;
+    }
+
+    #logo-img {
+      width: 380px;
+      height: 380px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ── Text block ── */
+    #text-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, calc(-50% + 260px));
+      text-align: center;
+      opacity: 0;
+      will-change: opacity, transform;
+    }
+
+    .main-quote {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 40px;
+      line-height: 1.3;
+      color: #F5F0E8;
+    }
+
+    .main-quote em {
+      font-style: italic;
+      color: #D4AF37;
+    }
+
+    .sub-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: #B8860B;
+      margin-top: 20px;
+    }
+
+    /* ── Rotating ring animation ── */
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    #ring-group {
+      transform-origin: 960px 540px;
+      animation: rotateRing 18s linear infinite;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    /* ── Burst lines ── */
+    .burst-line {
+      transform-origin: 960px 540px;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background radial glow -->
+  <div id="bg-glow"></div>
+
+  <!-- SVG layer: ring + burst + tick marks -->
+  <svg id="fx-canvas" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Glow filter for burst lines -->
+      <filter id="gold-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <!-- Stronger glow for ring -->
+      <filter id="ring-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- ── Rotating bezel ring with tick marks ── -->
+    <g id="ring-group" filter="url(#ring-glow)">
+      <!-- Outer ring stroke -->
+      <circle cx="960" cy="540" r="260" fill="none"
+              stroke="#D4AF37" stroke-width="2" opacity="0.7"/>
+      <!-- Inner ring stroke -->
+      <circle cx="960" cy="540" r="248" fill="none"
+              stroke="#B8860B" stroke-width="1" opacity="0.4"/>
+
+      <!-- 60 tick marks around the ring (like a watch bezel) -->
+      <!-- Major ticks every 30° (12 ticks), minor ticks every 6° (48 ticks) -->
+      <!-- Generated at fixed angles using transform rotate -->
+      <!-- Major ticks (longer) -->
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(0   960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(30  960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(60  960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(90  960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(120 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(150 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(180 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(210 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(240 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(270 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(300 960 540)"/>
+      <line x1="960" y1="282" x2="960" y2="296" stroke="#D4AF37" stroke-width="2.5" transform="rotate(330 960 540)"/>
+      <!-- Minor ticks (shorter) -->
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(6   960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(12  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(18  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(24  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(36  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(42  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(48  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(54  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(66  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(72  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(78  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(84  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(96  960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(102 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(108 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(114 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(126 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(132 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(138 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(144 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(156 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(162 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(168 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(174 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(186 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(192 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(198 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(204 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(216 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(222 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(228 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(234 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(246 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(252 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(258 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(264 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(276 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(282 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(288 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(294 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(306 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(312 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(318 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(324 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(336 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(342 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(348 960 540)"/>
+      <line x1="960" y1="283" x2="960" y2="292" stroke="#B8860B" stroke-width="1.2" transform="rotate(354 960 540)"/>
+    </g>
+
+    <!-- ── Diamond burst — 8 lines radiating from center ── -->
+    <!-- Each line is a thin golden spoke, scale-in via GSAP -->
+    <!-- 0°  -->
+    <line id="burst-0" class="burst-line"
+          x1="960" y1="540" x2="960" y2="220"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+    <!-- 45°  -->
+    <line id="burst-1" class="burst-line"
+          x1="960" y1="540" x2="1186" y2="314"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+    <!-- 90°  -->
+    <line id="burst-2" class="burst-line"
+          x1="960" y1="540" x2="1280" y2="540"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleX(0);"/>
+    <!-- 135° -->
+    <line id="burst-3" class="burst-line"
+          x1="960" y1="540" x2="1186" y2="766"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+    <!-- 180° -->
+    <line id="burst-4" class="burst-line"
+          x1="960" y1="540" x2="960" y2="860"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+    <!-- 225° -->
+    <line id="burst-5" class="burst-line"
+          x1="960" y1="540" x2="734" y2="766"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+    <!-- 270° -->
+    <line id="burst-6" class="burst-line"
+          x1="960" y1="540" x2="640" y2="540"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleX(0);"/>
+    <!-- 315° -->
+    <line id="burst-7" class="burst-line"
+          x1="960" y1="540" x2="734" y2="314"
+          stroke="#D4AF37" stroke-width="1.5" opacity="0" filter="url(#gold-glow)"
+          style="transform-origin: 960px 540px; transform: scaleY(0);"/>
+
+    <!-- ── Ambient inner glow circle (pulsing subtle ring) ── -->
+    <circle cx="960" cy="540" r="200" fill="none"
+            stroke="#D4AF37" stroke-width="1" opacity="0.15">
+      <animate attributeName="opacity" values="0.08;0.20;0.08" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="r"       values="195;205;195"    dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+
+  <!-- Logo with clip-path reveal -->
+  <div id="logo-wrap">
+    <img id="logo-img" src="../../public/logo-maison.webp" alt="Alex Joias" />
+  </div>
+
+  <!-- Text block -->
+  <div id="text-wrap">
+    <p class="main-quote">Porque estilo também é saber <em>escolher.</em></p>
+    <p class="sub-label">Alex Joias · Coleção Exclusiva</p>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines["f05"] = tl;
+
+    const bgGlow   = document.getElementById('bg-glow');
+    const ringGroup= document.getElementById('ring-group');
+    const logoWrap = document.getElementById('logo-wrap');
+    const textWrap = document.getElementById('text-wrap');
+    const bursts   = document.querySelectorAll('.burst-line');
+
+    // 0s — bg glow pulses in
+    tl.to(bgGlow, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0);
+
+    // 0.1s — ring fades in (CSS rotation already running)
+    tl.to(ringGroup, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.1);
+
+    // 0.3s — logo clip-path reveal circle(0% → 100%)
+    tl.to(logoWrap, {
+      clipPath: 'circle(100% at 50% 50%)',
+      duration: 1.5,
+      ease: 'power3.inOut'
+    }, 0.3);
+
+    // 0.6s — burst lines scale out from center, staggered
+    // For each burst line we animate scale from 0 to 1 and opacity 0 to 1
+    // Using individual tweens with stagger offset
+    bursts.forEach(function(line, i) {
+      const isHorizontal = (i === 2 || i === 6);
+      const prop = isHorizontal ? { scaleX: 1 } : { scaleY: 1 };
+      tl.fromTo(line,
+        { opacity: 0, ...( isHorizontal ? { scaleX: 0 } : { scaleY: 0 } ) },
+        { opacity: 0.8, ...prop, duration: 0.5, ease: 'power2.out' },
+        0.6 + i * 0.06
+      );
+    });
+
+    // 1.4s — text fades up in
+    tl.fromTo(textWrap,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+      1.4
+    );
+  </script>
+</body>
+</html>

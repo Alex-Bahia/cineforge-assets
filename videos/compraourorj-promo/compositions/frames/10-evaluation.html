@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920,height=1080"/>
+  <title>Frame 10 — Avaliação Especializada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0a0a0a;
+      font-family: 'Lato', sans-serif;
+    }
+    .scene { position: absolute; inset: 0; }
+    .bg-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 55% 65% at 32% 50%, rgba(184,134,11,0.10) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .watch-wrap {
+      position: absolute;
+      left: 160px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 460px;
+      height: 620px;
+      opacity: 0;
+    }
+    .watch-img {
+      width: 460px;
+      height: 620px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+    .watch-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(212,175,55,0.15);
+      mix-blend-mode: overlay;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    /* Loupe effect */
+    .loupe {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 2px solid #D4AF37;
+      top: 50%;
+      left: 46%;
+      transform: translate(-50%, -56%) scale(0);
+      box-shadow:
+        0 0 28px rgba(212,175,55,0.65),
+        0 0 56px rgba(212,175,55,0.28),
+        inset 0 0 18px rgba(212,175,55,0.08);
+      backdrop-filter: brightness(1.22) contrast(1.1);
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .loupe-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.03);
+    }
+    .loupe-cross-h {
+      position: absolute;
+      top: 50%;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: rgba(212,175,55,0.28);
+      transform: translateY(-50%);
+    }
+    .loupe-cross-v {
+      position: absolute;
+      left: 50%;
+      top: 12%;
+      bottom: 12%;
+      width: 1px;
+      background: rgba(212,175,55,0.28);
+      transform: translateX(-50%);
+    }
+    /* HUD labels */
+    .hud-label {
+      position: absolute;
+      font-family: 'Lato', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.13em;
+      color: #D4AF37;
+      opacity: 0;
+      white-space: nowrap;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hud-dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #D4AF37;
+      flex-shrink: 0;
+    }
+    .hud-dash { color: rgba(212,175,55,0.45); margin-right: 2px; }
+    /* Label positions relative to .watch-wrap */
+    #hud1 { top: 48px; left: -8px; }
+    #hud2 { top: 158px; right: -200px; }
+    #hud3 { bottom: 198px; left: 4px; }
+    #hud4 { bottom: 100px; left: 80px; }
+    /* Connector lines */
+    .hud-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(to right, rgba(212,175,55,0.45), transparent);
+      opacity: 0;
+    }
+    #hline1 { top: 52px; left: 4px; width: 70px; }
+    #hline2 { top: 162px; right: -90px; width: 55px; transform: scaleX(-1); transform-origin: right; }
+    #hline3 { bottom: 202px; left: 10px; width: 80px; }
+    /* Right text block */
+    .text-block {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%) translateX(60px);
+      opacity: 0;
+      max-width: 700px;
+    }
+    .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #B8860B;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: #B8860B;
+    }
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.15;
+      color: #F5F0E8;
+      margin-bottom: 34px;
+    }
+    .headline em { font-style: italic; color: #D4AF37; }
+    .divider {
+      width: 420px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(184,134,11,0.6), transparent);
+      margin-bottom: 28px;
+    }
+    .phone-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .wa-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(37,211,102,1);
+      flex-shrink: 0;
+      opacity: 0;
+      box-shadow: 0 0 8px rgba(37,211,102,0.6);
+    }
+    @keyframes waPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(37,211,102,0.5); }
+      50%       { transform: scale(1.4); box-shadow: 0 0 18px rgba(37,211,102,0.85), 0 0 36px rgba(37,211,102,0.25); }
+    }
+    .wa-dot.active { animation: waPulse 1.5s ease-in-out infinite; }
+    .phone-number {
+      font-family: 'Lato', sans-serif;
+      font-size: 38px;
+      font-weight: 300;
+      color: #D4AF37;
+      letter-spacing: 0.04em;
+    }
+    .avaliacao {
+      font-family: 'Lato', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: #F5F0E8;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<div class="scene" id="f10">
+  <div class="bg-glow"></div>
+
+  <div class="watch-wrap" id="watchWrap">
+    <img src="../../public/watch-hero.webp" alt="Relógio de luxo" class="watch-img"/>
+    <div class="watch-overlay"></div>
+
+    <div class="loupe" id="loupe">
+      <div class="loupe-inner"></div>
+      <div class="loupe-cross-h"></div>
+      <div class="loupe-cross-v"></div>
+    </div>
+
+    <div class="hud-label" id="hud1"><span class="hud-dot"></span><span class="hud-dash">—</span>Caliber: 1847 MC</div>
+    <div class="hud-label" id="hud2"><span class="hud-dot"></span><span class="hud-dash">—</span>Case: 18k Rose Gold</div>
+    <div class="hud-label" id="hud3"><span class="hud-dot"></span><span class="hud-dash">—</span>Movement: Automatic</div>
+    <div class="hud-label" id="hud4"><span class="hud-dot"></span><span class="hud-dash">—</span>Ref: W7100041</div>
+    <div class="hud-line" id="hline1"></div>
+    <div class="hud-line" id="hline2"></div>
+    <div class="hud-line" id="hline3"></div>
+  </div>
+
+  <div class="text-block" id="textBlock">
+    <div class="eyebrow">Avaliação Especializada</div>
+    <h1 class="headline">Fale conosco<br>pelo <em>WhatsApp</em></h1>
+    <div class="divider"></div>
+    <div class="phone-wrap">
+      <div class="wa-dot" id="waDot"></div>
+      <div class="phone-number">(21) 96944-7766</div>
+    </div>
+    <div class="avaliacao">Avaliação Gratuita</div>
+  </div>
+</div>
+
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+// 0: watch fades in from left with slight drift
+tl.fromTo("#watchWrap",
+  { opacity: 0, x: -30 },
+  { opacity: 1, x: 0, duration: 0.75, ease: "power2.out" },
+  0
+);
+
+// 0.2: text block slides in from right
+tl.fromTo("#textBlock",
+  { opacity: 0, x: 60 },
+  { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
+  0.2
+);
+
+// 0.3: loupe scales in with a bounce
+tl.fromTo("#loupe",
+  { scale: 0 },
+  { scale: 1, duration: 0.55, ease: "back.out(1.6)" },
+  0.3
+);
+
+// 0.5: HUD labels stagger in
+tl.fromTo(["#hud1", "#hud2", "#hud3", "#hud4"],
+  { opacity: 0, x: -8 },
+  { opacity: 0.75, x: 0, duration: 0.38, stagger: 0.16, ease: "power2.out" },
+  0.5
+);
+tl.fromTo(["#hline1", "#hline2", "#hline3"],
+  { opacity: 0, scaleX: 0 },
+  { opacity: 1, scaleX: 1, duration: 0.3, stagger: 0.14, ease: "power2.out" },
+  0.55
+);
+
+// 0.8: WhatsApp dot fades in, then pulses
+tl.fromTo("#waDot",
+  { opacity: 0, scale: 0.5 },
+  {
+    opacity: 1, scale: 1, duration: 0.32, ease: "back.out(2)",
+    onComplete: function() {
+      document.getElementById("waDot").classList.add("active");
+    }
+  },
+  0.8
+);
+
+window.__timelines["f10"] = tl;
+</script>
+</body>
+</html>
