@@ -192,9 +192,35 @@ def gerar_slide(
 
 
 async def gerar_audio(texto: str, caminho: Path) -> None:
-    """Gera narração MP3 via edge-tts (Microsoft, gratuito)."""
-    communicate = edge_tts.Communicate(texto, VOICE)
-    await communicate.save(str(caminho))
+    """Gera narração MP3 — tenta edge-tts, fallback para gTTS (funciona em VPS)."""
+    # Tenta edge-tts primeiro
+    if _EDGETTS_OK:
+        try:
+            communicate = edge_tts.Communicate(texto, VOICE)
+            await communicate.save(str(caminho))
+            return
+        except Exception as e:
+            print(f"  ⚠️  edge-tts falhou ({e}), tentando gTTS...")
+
+    # Fallback: gTTS (Google, funciona em VPS)
+    try:
+        from gtts import gTTS
+        tts = gTTS(text=texto, lang="pt", slow=False)
+        tts.save(str(caminho))
+        return
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"  ⚠️  gTTS falhou ({e}), usando silêncio...")
+
+    # Último fallback: silêncio sintético via ffmpeg
+    import subprocess as sp
+    duracao = max(3, len(texto) // 15)
+    sp.run(
+        ["ffmpeg", "-y", "-f", "lavfi", "-i", f"anullsrc=r=44100:cl=mono",
+         "-t", str(duracao), "-q:a", "9", "-acodec", "libmp3lame", str(caminho)],
+        capture_output=True, check=True,
+    )
 
 
 def montar_video(
