@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Space+Grotesk:wght@600&display=swap" />
+  <script src="/public/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; }
+    #frame {
+      width: 1920px; height: 1080px;
+      container-type: size;
+      position: relative;
+      overflow: hidden;
+      background: #1A1A1A;
+    }
+    .clip {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    #bg { background: #1A1A1A; }
+    #content {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3cqw 3.6cqw;
+      gap: 0.5cqw;
+    }
+    #eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4cqw;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #E8000E;
+      opacity: 0;
+    }
+    #line1 {
+      font-family: 'Shrikhand', cursive;
+      font-size: 11.5cqw;
+      line-height: 0.88;
+      color: #FFFFFF;
+      opacity: 0;
+    }
+    #line2 {
+      font-family: 'Shrikhand', cursive;
+      font-size: 13.5cqw;
+      line-height: 0.85;
+      color: #E8000E;
+      opacity: 0;
+    }
+    #progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 0.5cqw;
+      background: #E8000E;
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+  <div id="frame" data-composition-id="01-hook" data-start="0" data-duration="5" data-width="1920" data-height="1080">
+    <div id="bg" class="clip" data-start="0" data-duration="5" data-track-index="0"></div>
+    <div id="content" class="clip" data-start="0" data-duration="5" data-track-index="1">
+      <div id="eyebrow">Outubro 2026</div>
+      <div id="line1">MENGÃO</div>
+      <div id="line2">EM CHAMAS</div>
+    </div>
+    <div id="progress" class="clip" data-start="0" data-duration="5" data-track-index="2"></div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#eyebrow", { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.2)
+      .fromTo("#line1", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.5)
+      .fromTo("#line2", { opacity: 0, rotation: -4, y: 20 }, { opacity: 1, rotation: -4, y: 0, duration: 0.6, ease: "back.out(1.2)" }, 0.9)
+      .to("#progress", { width: "100%", duration: 5, ease: "none" }, 0);
+
+    window.__timelines["01-hook"] = tl;
+  </script>
+</body>
+</html>

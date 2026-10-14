@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "historyId": "e617c934-2c4a-4dc1-ba0e-ee336b44d3f1",
+  "currentRevision": "d4e7c309-230f-49f1-851e-4bbca8722cec",
+  "pendingChanges": false,
+  "files": {
+    "AGENTS.md": {
+      "hash": "1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/1d/1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5"
+    },
+    "BRIEF.md": {
+      "hash": "a8fc7d98b0e786efa469da44a1d1b3116eaf38914452e3e148637b23a5751f32",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/a8/a8fc7d98b0e786efa469da44a1d1b3116eaf38914452e3e148637b23a5751f32"
+    },
+    "CLAUDE.md": {
+      "hash": "1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/1d/1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5"
+    },
+    "STORYBOARD.md": {
+      "hash": "14d03abee68925fa2e629825f05924b6ad050c1d7f7d5d898d490c3b997b0cc5",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/14/14d03abee68925fa2e629825f05924b6ad050c1d7f7d5d898d490c3b997b0cc5"
+    },
+    "capture/extracted/tokens.json": {
+      "hash": "2aaeac7fa28b8420178eb56f5130e028d433c907be2a57ea8b5d554ff0468d0a",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/2a/2aaeac7fa28b8420178eb56f5130e028d433c907be2a57ea8b5d554ff0468d0a"
+    },
+    "capture/extracted/visible-text.txt": {
+      "hash": "598816e0516d6712e10bc869119617efbe62121887e2b4e4b7b0fa781722fd7b",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/59/598816e0516d6712e10bc869119617efbe62121887e2b4e4b7b0fa781722fd7b"
+    },
+    "compositions/frames/01-hook.html": {
+      "hash": "938f5890e0dfba7a80d7dfdd48bc2a09ee111aa757401dbc50db1fb938162763",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/93/938f5890e0dfba7a80d7dfdd48bc2a09ee111aa757401dbc50db1fb938162763"
+    },
+    "compositions/frames/02-brasileirao.html": {
+      "hash": "88809f70535e85cb7fd42ef1c89a0a655db1fe1e505cfe50364a236690890c57",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/88/88809f70535e85cb7fd42ef1c89a0a655db1fe1e505cfe50364a236690890c57"
+    },
+    "compositions/frames/03-libertadores.html": {
+      "hash": "9ad796fa4ec366cec79b6b8636343c4c0316311107c590fc2647d6275d5d23a0",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/9a/9ad796fa4ec366cec79b6b8636343c4c0316311107c590fc2647d6275d5d23a0"
+    },
+    "compositions/frames/04-arbitragem.html": {
+      "hash": "bb9991ca0641a6e854d3acba5cb7ebcf18e20ae6e94b587ac3349afe9b2e7ac5",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/bb/bb9991ca0641a6e854d3acba5cb7ebcf18e20ae6e94b587ac3349afe9b2e7ac5"
+    },
+    "compositions/frames/05-encerramento.html": {
+      "hash": "7f127d9fdef11a9b0b098294ecef2d557c5ed05ffe331b8599d696f6f2e0eb3e",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/7f/7f127d9fdef11a9b0b098294ecef2d557c5ed05ffe331b8599d696f6f2e0eb3e"
+    },
+    "frame.md": {
+      "hash": "2e155e78d7eb647c0c342ab1cdfe46774c4a59c4a86c6c5c846aa543e9b058c3",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/2e/2e155e78d7eb647c0c342ab1cdfe46774c4a59c4a86c6c5c846aa543e9b058c3"
+    },
+    "hyperframes.json": {
+      "hash": "9313260261b6e431830877ee35083331270bc6b9a32d50650abe2bd58bdf558d",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/93/9313260261b6e431830877ee35083331270bc6b9a32d50650abe2bd58bdf558d"
+    },
+    "index.html": {
+      "hash": "20eb4bd406d8225bc84f9fa5bb16f411bb06752d121c433aac9f3f90515e3097",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/20/20eb4bd406d8225bc84f9fa5bb16f411bb06752d121c433aac9f3f90515e3097"
+    },
+    "meta.json": {
+      "hash": "907c5851db2d0a6da6a4a98784f295a62e6fc2bff364269fbc6e27bfb63df4ab",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/90/907c5851db2d0a6da6a4a98784f295a62e6fc2bff364269fbc6e27bfb63df4ab"
+    },
+    "package.json": {
+      "hash": "d9296f1f32e5c8eb9e0622f9f4cfe60b751a2c4c0dfad9ee5f8c110661c143fe",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/d9/d9296f1f32e5c8eb9e0622f9f4cfe60b751a2c4c0dfad9ee5f8c110661c143fe"
+    },
+    "package-lock.json": {
+      "hash": "f2359244d8a46ee58962c48ed06c0f001740190677dc6ad10bb29ef04b0828e8",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/f2/f2359244d8a46ee58962c48ed06c0f001740190677dc6ad10bb29ef04b0828e8"
+    },
+    "public/gsap.min.js": {
+      "hash": "c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280",
+      "content": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/c1/c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280"
+    }
+  },
+  "revisions": {
+    "d2407e0e-10fa-4636-8a83-817e60ead0cc": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1791944188131,
+      "endedAt": 1791944188143,
+      "files": {
+        "compositions/frames/01-hook.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/dc/dc2c4601b280671323331aea806daa843d353235527f4b83c3e05f5f073cec02",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/94/9449ea848a26a14df0c5a6c3b8496c79c3260b1dae15fe04c262c909948403c6"
+        },
+        "compositions/frames/02-brasileirao.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/d5/d584fce1751f17779b85596eb7a482a77c00d88632147740fc0cc1b5edb0a40d",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/21/213f96012af7a32fa7d0ad041b5b5fe8f243228bf2ce12222a2312f006764412"
+        },
+        "compositions/frames/03-libertadores.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/20/20694e48f7ce3d4de5027ca7a2b43a1907b225969312ae7cb69fdf1987ce0d58",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/39/3938d1fb0070a2bdb6e0155a089b670c0ed4687c8fd2982f809859fdfe0e4490"
+        },
+        "compositions/frames/04-arbitragem.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/5e/5e66d85a73e967ce4665b1eff5f5b7143fac68a6f850582170eff67c9f2a0c8b",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/fd/fde9f95b694b3b08fd1d145e4afe272ada115cdc214fae1caf86cadb574c01cc"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/44/44769aad54cb1cd5d2ce5cf2054fd6408ea256b5544ef13f27946144a64aef53",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/f9/f9ee8018d0f6a57275d2876efdbd4658b1c5d79f48478a8ac0a6071bf4875e46"
+        }
+      }
+    },
+    "d4e7c309-230f-49f1-851e-4bbca8722cec": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1791944280975,
+      "endedAt": 1791944280994,
+      "files": {
+        "compositions/frames/01-hook.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/94/9449ea848a26a14df0c5a6c3b8496c79c3260b1dae15fe04c262c909948403c6",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/93/938f5890e0dfba7a80d7dfdd48bc2a09ee111aa757401dbc50db1fb938162763"
+        },
+        "compositions/frames/02-brasileirao.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/21/213f96012af7a32fa7d0ad041b5b5fe8f243228bf2ce12222a2312f006764412",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/88/88809f70535e85cb7fd42ef1c89a0a655db1fe1e505cfe50364a236690890c57"
+        },
+        "compositions/frames/03-libertadores.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/39/3938d1fb0070a2bdb6e0155a089b670c0ed4687c8fd2982f809859fdfe0e4490",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/9a/9ad796fa4ec366cec79b6b8636343c4c0316311107c590fc2647d6275d5d23a0"
+        },
+        "compositions/frames/04-arbitragem.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/fd/fde9f95b694b3b08fd1d145e4afe272ada115cdc214fae1caf86cadb574c01cc",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/bb/bb9991ca0641a6e854d3acba5cb7ebcf18e20ae6e94b587ac3349afe9b2e7ac5"
+        },
+        "compositions/frames/05-encerramento.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/93/93b1dde6a9fff26fc724be92d97e44e42cf8f9c40ec4f629e7eae5499f3deb85",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/7f/7f127d9fdef11a9b0b098294ecef2d557c5ed05ffe331b8599d696f6f2e0eb3e"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/f9/f9ee8018d0f6a57275d2876efdbd4658b1c5d79f48478a8ac0a6071bf4875e46",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/20/20eb4bd406d8225bc84f9fa5bb16f411bb06752d121c433aac9f3f90515e3097"
+        },
+        "package-lock.json": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/f2/f2359244d8a46ee58962c48ed06c0f001740190677dc6ad10bb29ef04b0828e8"
+        },
+        "package.json": {
+          "before": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/7e/7e3fdfabf5f16bab4481c7c138359ca9b81ed06070a0a5be8238ba1c345f04a8",
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/d9/d9296f1f32e5c8eb9e0622f9f4cfe60b751a2c4c0dfad9ee5f8c110661c143fe"
+        },
+        "public/gsap.min.js": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/e617c934-2c4a-4dc1-ba0e-ee336b44d3f1/blobs/c1/c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "162f296b-2397-4aa3-b720-ff193f0fd80a"
+    },
+    "revisions": {
+      "d2407e0e-10fa-4636-8a83-817e60ead0cc": [
+        {
+          "id": "cb857186-9aea-42c5-83ef-d5b1541e3f5b",
+          "scope": "project",
+          "metadata": {
+            "ok": false,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1791944203022,
+          "contentHash": "206e43c56f86ab007b5012fda18e42e11aad511e89f251911b35b2623eb862d9",
+          "revision": "d2407e0e-10fa-4636-8a83-817e60ead0cc",
+          "inputFingerprint": "e655fd8040b3b8836afc341190f8f2c2c70da055456b1cfe63dccf9630ebeb0e",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "c163e3e7-4ff5-4f6f-803b-a6529463b5c7"
+        }
+      ]
+    },
+    "unversioned": [
+      {
+        "id": "162f296b-2397-4aa3-b720-ff193f0fd80a",
+        "scope": "project",
+        "report": "/home/user/cineforge-assets/videos/flamengo-noticias-outubro-2026/.hyperframes/artifacts/checks/162f296b-2397-4aa3-b720-ff193f0fd80a.json",
+        "metadata": {
+          "ok": false,
+          "browserSkipped": true,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1791944033740,
+        "contentHash": "1f213b9e1266ae9e154e8e3799bc4deb3ff520e9d54dfef619037c2a88d7e31b",
+        "revision": null,
+        "inputFingerprint": "47e238baa9bff0d27810b250f61600a63f804a68125bab13a4e16b9c59f2e9c0",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "c163e3e7-4ff5-4f6f-803b-a6529463b5c7",
+      "completedAt": 1791944338771,
+      "output": "/home/user/cineforge-assets/videos/flamengo-noticias-outubro-2026/renders/flamengo-noticias-outubro-2026_2026-10-14_02-18-00.mp4",
+      "status": "completed",
+      "revision": "d4e7c309-230f-49f1-851e-4bbca8722cec"
+    },
+    "retainedRevisions": [
+      "d4e7c309-230f-49f1-851e-4bbca8722cec"
+    ]
+  },
+  "pendingArtifactCleanup": []
+}

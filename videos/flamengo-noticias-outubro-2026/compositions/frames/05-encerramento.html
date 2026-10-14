@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Space+Grotesk:wght@600&display=swap" />
+  <script src="/public/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; }
+    #frame {
+      width: 1920px; height: 1080px;
+      container-type: size;
+      position: relative;
+      overflow: hidden;
+      background: #E8000E;
+    }
+    .clip {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    #bg { background: #E8000E; }
+    #content {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      padding: 3cqw 3.6cqw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5cqw;
+      text-align: center;
+    }
+    #trophies {
+      font-size: 7cqw;
+      line-height: 1;
+      letter-spacing: 1.5cqw;
+      opacity: 0;
+    }
+    #semana {
+      font-family: 'Shrikhand', cursive;
+      font-size: 13.5cqw;
+      line-height: 0.85;
+      color: #FFFFFF;
+      text-shadow: 2px 2px 0 rgba(28,20,16,.25), 4px 4px 0 rgba(28,20,16,.2), 6px 6px 0 rgba(28,20,16,.15);
+      transform: rotate(-5deg);
+      opacity: 0;
+    }
+    #decisiva {
+      font-family: 'Shrikhand', cursive;
+      font-size: 11.5cqw;
+      line-height: 0.88;
+      color: #FFFFFF;
+      text-shadow: 2px 2px 0 rgba(28,20,16,.25), 4px 4px 0 rgba(28,20,16,.2), 6px 6px 0 rgba(28,20,16,.15);
+      opacity: 0;
+    }
+    #subtitulo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2cqw;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      opacity: 0;
+    }
+    #logo {
+      font-family: 'Shrikhand', cursive;
+      font-size: 3.3cqw;
+      color: #FFFFFF;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      margin-top: 1cqw;
+    }
+    #progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 0.5cqw;
+      background: #1A1A1A;
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+  <div id="frame" data-composition-id="05-encerramento" data-start="0" data-duration="6" data-width="1920" data-height="1080">
+    <div id="bg" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+    <div id="content" class="clip" data-start="0" data-duration="6" data-track-index="1">
+      <div id="trophies">🏆🏆</div>
+      <div id="semana">SEMANA</div>
+      <div id="decisiva">DECISIVA</div>
+      <div id="subtitulo">2 Títulos em Jogo</div>
+      <div id="logo">FLAMENGO</div>
+    </div>
+    <div id="progress" class="clip" data-start="0" data-duration="6" data-track-index="2"></div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#trophies", { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.3)
+      .to("#semana", { opacity: 1, duration: 0.5, ease: "back.out(1.2)" }, 1.0)
+      .to("#decisiva", { opacity: 1, duration: 0.4, ease: "power3.out" }, 1.8)
+      .to("#subtitulo", { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.8)
+      .to("#logo", { opacity: 1, duration: 0.5, ease: "power2.out" }, 4.0)
+      .to("#logo", { opacity: 0, duration: 0.6, ease: "power2.in" }, 5.2)
+      .to("#progress", { width: "100%", duration: 6, ease: "none" }, 0);
+
+    window.__timelines["05-encerramento"] = tl;
+  </script>
+</body>
+</html>
