@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920,height=1080"/>
+  <title>Frame 12 — CTA Final</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #000;
+      font-family: 'Lato', sans-serif;
+    }
+    .scene { position: absolute; inset: 0; }
+
+    /* Deep amber radial BG */
+    .bg-radial {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, #1a0f00 0%, #0a0500 50%, #000 100%);
+    }
+
+    /* --- Gold particle rain (deterministic, no Math.random) --- */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: #D4AF37;
+    }
+    /* 24 particles with deterministic positions and staggered animations */
+    @keyframes drift0  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.55} 90%{opacity:0.3} 100%{transform:translateY(1120px) translateX(8px);opacity:0} }
+    @keyframes drift1  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.4}  90%{opacity:0.2} 100%{transform:translateY(1120px) translateX(-12px);opacity:0} }
+    @keyframes drift2  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.65} 90%{opacity:0.4} 100%{transform:translateY(1120px) translateX(15px);opacity:0} }
+    @keyframes drift3  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.35} 90%{opacity:0.15}100%{transform:translateY(1120px) translateX(-6px);opacity:0} }
+    @keyframes drift4  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.5}  90%{opacity:0.3} 100%{transform:translateY(1120px) translateX(10px);opacity:0} }
+    @keyframes drift5  { 0%{transform:translateY(-20px) translateX(0px);opacity:0} 10%{opacity:0.6}  90%{opacity:0.35}100%{transform:translateY(1120px) translateX(-9px);opacity:0} }
+    @keyframes floatA  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+    @keyframes floatB  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-26px)} }
+    @keyframes floatC  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    /* Falling particles left zone */
+    .p0  { width:3px; height:3px; left:48px;   top:-20px; animation:drift0 7.2s 0.0s linear infinite; }
+    .p1  { width:4px; height:4px; left:132px;  top:-20px; animation:drift1 8.5s 0.6s linear infinite; }
+    .p2  { width:3px; height:3px; left:220px;  top:-20px; animation:drift2 6.8s 1.1s linear infinite; }
+    .p3  { width:5px; height:5px; left:310px;  top:-20px; animation:drift3 9.0s 0.3s linear infinite; }
+    .p4  { width:3px; height:3px; left:390px;  top:-20px; animation:drift4 7.6s 1.8s linear infinite; }
+    .p5  { width:4px; height:4px; left:470px;  top:-20px; animation:drift5 8.1s 0.9s linear infinite; }
+    .p6  { width:3px; height:3px; left:550px;  top:-20px; animation:drift0 7.9s 2.2s linear infinite; }
+    .p7  { width:5px; height:5px; left:640px;  top:-20px; animation:drift1 6.5s 0.5s linear infinite; }
+    .p8  { width:3px; height:3px; left:720px;  top:-20px; animation:drift2 8.8s 1.4s linear infinite; }
+    .p9  { width:4px; height:4px; left:800px;  top:-20px; animation:drift3 7.3s 0.1s linear infinite; }
+    /* Right zone particles */
+    .p10 { width:3px; height:3px; left:1450px; top:-20px; animation:drift4 7.0s 0.7s linear infinite; }
+    .p11 { width:4px; height:4px; left:1530px; top:-20px; animation:drift5 8.4s 1.6s linear infinite; }
+    .p12 { width:3px; height:3px; left:1610px; top:-20px; animation:drift0 7.7s 2.4s linear infinite; }
+    .p13 { width:5px; height:5px; left:1680px; top:-20px; animation:drift1 6.9s 0.2s linear infinite; }
+    .p14 { width:3px; height:3px; left:1750px; top:-20px; animation:drift2 8.2s 1.0s linear infinite; }
+    .p15 { width:4px; height:4px; left:1820px; top:-20px; animation:drift3 9.1s 0.8s linear infinite; }
+    .p16 { width:3px; height:3px; left:1880px; top:-20px; animation:drift4 7.4s 1.9s linear infinite; }
+    /* Floating ambient particles */
+    .p17 { width:3px; height:3px; left:120px;  top:240px; opacity:0.4; animation:floatA 5.5s 0.0s ease-in-out infinite; }
+    .p18 { width:4px; height:4px; left:360px;  top:480px; opacity:0.3; animation:floatB 6.2s 1.0s ease-in-out infinite; }
+    .p19 { width:3px; height:3px; left:580px;  top:720px; opacity:0.5; animation:floatC 4.8s 0.5s ease-in-out infinite; }
+    .p20 { width:5px; height:5px; left:200px;  top:860px; opacity:0.25;animation:floatA 7.0s 1.5s ease-in-out infinite; }
+    .p21 { width:3px; height:3px; left:1500px; top:340px; opacity:0.4; animation:floatB 5.8s 0.3s ease-in-out infinite; }
+    .p22 { width:4px; height:4px; left:1720px; top:620px; opacity:0.35;animation:floatC 6.6s 1.2s ease-in-out infinite; }
+    .p23 { width:3px; height:3px; left:1840px; top:820px; opacity:0.3; animation:floatA 5.2s 0.8s ease-in-out infinite; }
+
+    /* Watch hero — right side */
+    .watch-wrap {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 540px;
+      height: 720px;
+      opacity: 0;
+    }
+    .watch-img {
+      width: 540px;
+      height: 720px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      filter: drop-shadow(0 0 80px rgba(212,175,55,0.6)) drop-shadow(0 0 160px rgba(184,134,11,0.3));
+    }
+
+    /* Logo — top left */
+    .logo-wrap {
+      position: absolute;
+      left: 80px;
+      top: 60px;
+      width: 180px;
+      height: 180px;
+      opacity: 0;
+    }
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* CTA block — left half, vertically centered */
+    .cta-block {
+      position: absolute;
+      left: 80px;
+      top: 50%;
+      transform: translateY(-46%);
+      width: 680px;
+    }
+
+    /* Gold top line */
+    .cta-line-top {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, #D4AF37 60%, transparent);
+      margin-bottom: 28px;
+    }
+
+    .cta-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #D4AF37;
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+
+    /* Phone number with gold shimmer */
+    .phone-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 400;
+      color: #F5F0E8;
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+      opacity: 0;
+      position: relative;
+      display: inline-block;
+    }
+    /* Gold shimmer sweep on phone number */
+    @keyframes phoneShimmer {
+      0%   { background-position: -600px center; }
+      60%  { background-position: 800px center; }
+      100% { background-position: 800px center; }
+    }
+    .phone-number.shimmer-on {
+      background: linear-gradient(
+        90deg,
+        #F5F0E8 30%,
+        #D4AF37 45%,
+        #fff8d0 50%,
+        #D4AF37 55%,
+        #F5F0E8 70%
+      );
+      background-size: 600px 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: phoneShimmer 2.2s 0.2s ease forwards;
+    }
+
+    /* WhatsApp button */
+    .wa-button {
+      width: 360px;
+      height: 62px;
+      background: #25D366;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: scale(0.9);
+      box-shadow: 0 4px 30px rgba(37,211,102,0.35), 0 0 60px rgba(37,211,102,0.1);
+    }
+    .wa-button-text {
+      font-family: 'Lato', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.03em;
+    }
+    .wa-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    /* Simple SVG WhatsApp icon embedded */
+
+    .brand-line {
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      color: #D4AF37;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      opacity: 0;
+    }
+    .address-line {
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(245,240,232,0.5);
+      letter-spacing: 0.06em;
+      opacity: 0;
+    }
+
+    /* Gold bottom line */
+    .cta-line-bottom {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, #D4AF37 60%, transparent);
+      margin-top: 28px;
+    }
+
+    /* Full-frame light flash */
+    .light-flash {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(212,175,55,0.28) 0%, transparent 60%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<div class="scene" id="f12">
+  <div class="bg-radial"></div>
+
+  <!-- Particles -->
+  <div class="particles">
+    <div class="particle p0"></div>
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+    <div class="particle p6"></div>
+    <div class="particle p7"></div>
+    <div class="particle p8"></div>
+    <div class="particle p9"></div>
+    <div class="particle p10"></div>
+    <div class="particle p11"></div>
+    <div class="particle p12"></div>
+    <div class="particle p13"></div>
+    <div class="particle p14"></div>
+    <div class="particle p15"></div>
+    <div class="particle p16"></div>
+    <div class="particle p17"></div>
+    <div class="particle p18"></div>
+    <div class="particle p19"></div>
+    <div class="particle p20"></div>
+    <div class="particle p21"></div>
+    <div class="particle p22"></div>
+    <div class="particle p23"></div>
+  </div>
+
+  <!-- Light flash overlay -->
+  <div class="light-flash" id="lightFlash"></div>
+
+  <!-- Watch hero right -->
+  <div class="watch-wrap" id="watchWrap">
+    <img src="../../public/watch-hero.webp" alt="Relógio de luxo" class="watch-img" id="watchImg"/>
+  </div>
+
+  <!-- Logo top-left -->
+  <div class="logo-wrap" id="logoWrap">
+    <img src="../../public/logo-maison.webp" alt="Alex Joias" />
+  </div>
+
+  <!-- CTA block left -->
+  <div class="cta-block" id="ctaBlock">
+    <div class="cta-line-top" id="ctaLineTop"></div>
+    <div class="cta-eyebrow" id="ctaEyebrow">Avaliação Gratuita</div>
+    <div class="phone-number" id="phoneNumber">(21) 96944-7766</div>
+    <div class="wa-button" id="waButton">
+      <!-- WhatsApp icon inline SVG -->
+      <svg class="wa-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#fff" d="M16 2.667C8.636 2.667 2.667 8.636 2.667 16c0 2.346.617 4.546 1.695 6.455L2 30l7.747-2.328A13.27 13.27 0 0 0 16 29.333C23.364 29.333 29.333 23.364 29.333 16S23.364 2.667 16 2.667Zm0 2.666a10.627 10.627 0 0 1 10.667 10.667A10.627 10.627 0 0 1 16 26.667a10.6 10.6 0 0 1-5.493-1.534l-.39-.237-4.05 1.217 1.24-3.942-.26-.408A10.594 10.594 0 0 1 5.333 16 10.627 10.627 0 0 1 16 5.333Zm-3.36 5.334c-.208 0-.547.078-.833.39-.286.312-1.094 1.068-1.094 2.604s1.12 3.02 1.276 3.23c.156.208 2.188 3.49 5.365 4.753 2.656 1.048 3.198.84 3.776.788.578-.052 1.87-.764 2.13-1.502.26-.738.26-1.37.182-1.502-.078-.13-.286-.208-.598-.364-.312-.156-1.87-.922-2.156-1.028-.286-.104-.494-.156-.703.156-.208.312-.807 1.028-.99 1.236-.182.208-.364.234-.676.078-.312-.156-1.318-.486-2.511-1.55-.928-.828-1.554-1.85-1.737-2.162-.182-.312-.02-.48.137-.635.14-.14.312-.364.468-.546.156-.182.208-.312.312-.52.104-.208.052-.39-.026-.546-.078-.156-.703-1.694-.963-2.318-.254-.61-.51-.52-.703-.53-.182-.01-.39-.01-.598-.01Z"/>
+      </svg>
+      <span class="wa-button-text">Fale pelo WhatsApp</span>
+    </div>
+    <div class="brand-line" id="brandLine">Alex Joias · Compra Ouro RJ</div>
+    <div class="address-line" id="addressLine">Av. N.S. de Copacabana, 647 · Sala 603 · Desde 1984</div>
+    <div class="cta-line-bottom" id="ctaLineBottom"></div>
+  </div>
+</div>
+
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+// 0: watch slides in from right
+tl.fromTo("#watchWrap",
+  { opacity: 0, x: 80 },
+  { opacity: 1, x: 0, duration: 0.9, ease: "power2.out" },
+  0
+);
+
+// 0 to 3s: watch very slow push-in scale
+tl.to("#watchImg",
+  { scale: 1.05, duration: 3, ease: "none" },
+  0
+);
+
+// 0.3: logo fades in
+tl.fromTo("#logoWrap",
+  { opacity: 0, scale: 0.92 },
+  { opacity: 0.95, scale: 1, duration: 0.5, ease: "power2.out" },
+  0.3
+);
+
+// 0.5: dramatic light flash from left
+tl.fromTo("#lightFlash",
+  { opacity: 0 },
+  { opacity: 1, duration: 0.18, ease: "power4.out" },
+  0.5
+);
+tl.to("#lightFlash",
+  { opacity: 0, duration: 0.4, ease: "power2.in" },
+  0.68
+);
+
+// 0.5: CTA top line draws
+tl.fromTo("#ctaLineTop",
+  { width: 0 },
+  { width: 380, duration: 0.5, ease: "power2.inOut" },
+  0.5
+);
+
+// 0.6: eyebrow fades in
+tl.fromTo("#ctaEyebrow",
+  { opacity: 0, y: 12 },
+  { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+  0.6
+);
+
+// 0.8: phone number fades in, then shimmer starts
+tl.fromTo("#phoneNumber",
+  { opacity: 0, y: 16 },
+  {
+    opacity: 1, y: 0, duration: 0.5, ease: "power2.out",
+    onComplete: function() {
+      document.getElementById("phoneNumber").classList.add("shimmer-on");
+    }
+  },
+  0.8
+);
+
+// 1.0: WhatsApp button scales in
+tl.fromTo("#waButton",
+  { opacity: 0, scale: 0.88 },
+  { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" },
+  1.0
+);
+
+// 1.2: brand line
+tl.fromTo("#brandLine",
+  { opacity: 0, y: 10 },
+  { opacity: 1, y: 0, duration: 0.38, ease: "power2.out" },
+  1.2
+);
+
+// 1.4: address line
+tl.fromTo("#addressLine",
+  { opacity: 0 },
+  { opacity: 1, duration: 0.38, ease: "power2.out" },
+  1.4
+);
+
+// 1.6: bottom gold line draws
+tl.fromTo("#ctaLineBottom",
+  { width: 0 },
+  { width: 380, duration: 0.45, ease: "power2.inOut" },
+  1.6
+);
+
+window.__timelines["f12"] = tl;
+</script>
+</body>
+</html>

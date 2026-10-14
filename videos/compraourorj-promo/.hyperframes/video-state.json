@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "66d2e0dd-f2dc-446b-9c50-66e390034d0a",
-  "currentRevision": null,
+  "currentRevision": "890a515d-336a-41fd-9bf8-6492ffffb88f",
   "pendingChanges": false,
   "files": {
     "AGENTS.md": {
@@ -53,12 +53,12 @@
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/42/427941551415067876c96c4585460849420f625796b29b40f11f571a53023421"
     },
     "compositions/frames/04-woman-lobby.html": {
-      "hash": "2e7fff40f447be981f294363c74973a66a505bb44f683a1b0f42859a58d6db0e",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2e/2e7fff40f447be981f294363c74973a66a505bb44f683a1b0f42859a58d6db0e"
+      "hash": "98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/98/98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8"
     },
     "compositions/frames/05-box-opening.html": {
-      "hash": "2a1d9d2a469eff6823b824b8fdfc658f757e2c401674f4a83732e69de12054df",
-      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2a/2a1d9d2a469eff6823b824b8fdfc658f757e2c401674f4a83732e69de12054df"
+      "hash": "868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/86/868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6"
     },
     "compositions/frames/06-collection.html": {
       "hash": "6d1dfad222bd2b9236844505f01bccb57d048a3e597ac479eb48625e1a2ff711",
@@ -111,15 +111,81 @@
     "public/watch-hero.webp": {
       "hash": "d887e0203148325cdb8797eddd0dc957783d3e380b77089b0bdb4a13770d107b",
       "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/d8/d887e0203148325cdb8797eddd0dc957783d3e380b77089b0bdb4a13770d107b"
+    },
+    "compositions/frames/09-diamond.html": {
+      "hash": "db0bcd95d5e3abbe7045d09a5484346b949c64cf631521da6553f40d06e16a6b",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/db/db0bcd95d5e3abbe7045d09a5484346b949c64cf631521da6553f40d06e16a6b"
+    },
+    "compositions/frames/12-cta.html": {
+      "hash": "90d27158098ffe0a5b63fe2881e93aa4a3f32813b462d6a635ffc3734ea4d9f4",
+      "content": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/90/90d27158098ffe0a5b63fe2881e93aa4a3f32813b462d6a635ffc3734ea4d9f4"
     }
   },
-  "revisions": {},
+  "revisions": {
+    "890a515d-336a-41fd-9bf8-6492ffffb88f": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1791947171171,
+      "endedAt": 1791947171182,
+      "files": {
+        "compositions/frames/04-woman-lobby.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2e/2e7fff40f447be981f294363c74973a66a505bb44f683a1b0f42859a58d6db0e",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/98/98958c5ace8e2e79788fccf013a55e9eb6e377803d2f84ef75e82a9088ada5b8"
+        },
+        "compositions/frames/05-box-opening.html": {
+          "before": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/2a/2a1d9d2a469eff6823b824b8fdfc658f757e2c401674f4a83732e69de12054df",
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/86/868bf3b9fa22642bb197dabd4e3d2553ca5c486982bb1c727ba4907509cc5aa6"
+        },
+        "compositions/frames/09-diamond.html": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/db/db0bcd95d5e3abbe7045d09a5484346b949c64cf631521da6553f40d06e16a6b"
+        },
+        "compositions/frames/12-cta.html": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/66d2e0dd-f2dc-446b-9c50-66e390034d0a/blobs/90/90d27158098ffe0a5b63fe2881e93aa4a3f32813b462d6a635ffc3734ea4d9f4"
+        }
+      }
+    }
+  },
   "checks": {
     "latest": {
-      "revision": null,
-      "id": "fc8ca2f8-8df7-4049-8ba3-cde03281bd4d"
+      "revision": "890a515d-336a-41fd-9bf8-6492ffffb88f",
+      "id": "83b845df-da1e-46e0-acce-64b800b0c2a7"
     },
-    "revisions": {},
+    "revisions": {
+      "890a515d-336a-41fd-9bf8-6492ffffb88f": [
+        {
+          "id": "83b845df-da1e-46e0-acce-64b800b0c2a7",
+          "scope": "project",
+          "report": "/home/user/cineforge-assets/videos/compraourorj-promo/.hyperframes/artifacts/checks/83b845df-da1e-46e0-acce-64b800b0c2a7.json",
+          "metadata": {
+            "ok": false,
+            "browserSkipped": true,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1791947171833,
+          "contentHash": "6550cf07a95862e612a21dbfa4355cf06a5c6aa05a5d405af8803b5e319ee78a",
+          "revision": "890a515d-336a-41fd-9bf8-6492ffffb88f",
+          "inputFingerprint": "b33be6b64f6c2235e60f99fdc755d69116136ba8fe44b825a30355bdd5788a7d",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
     "unversioned": [
       {
         "id": "fc8ca2f8-8df7-4049-8ba3-cde03281bd4d",
