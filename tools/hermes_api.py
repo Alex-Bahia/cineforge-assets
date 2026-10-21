@@ -103,7 +103,7 @@ class HermesHandler(BaseHTTPRequestHandler):
                 cwd=BASE_DIR,
                 capture_output=True,
                 text=True,
-                timeout=1800,  # 30 min máx
+                timeout=600,  # 10 min máx
             )
             self.send_json(200, {
                 "ok": resultado.returncode == 0,
@@ -112,7 +112,7 @@ class HermesHandler(BaseHTTPRequestHandler):
                 "stderr": resultado.stderr[-2000:],
             })
         except subprocess.TimeoutExpired:
-            self.send_json(408, {"erro": "timeout após 30 minutos"})
+            self.send_json(408, {"erro": "timeout após 10 minutos"})
         except Exception as e:
             self.send_json(500, {"erro": str(e)})
 
