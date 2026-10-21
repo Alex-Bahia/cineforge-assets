@@ -3,16 +3,22 @@ VideoRouter — roteamento inteligente entre provedores de geração de vídeo.
 
 Hierarquia de provedores por qualidade/custo (outubro 2026):
   Tier 1 Ultra     → Veo3.1 via fal.ai ($0.40-0.60/seg) — hero clips premium
-  Tier 2 Premium   → Kling 3.0 via fal.ai ($0.084/seg) — dark/finance padrão
-  Tier 3 Budget    → LTX-2.5 Fast via fal.ai ($0.04/seg) — volume alto
-  Tier 4 Free      → Wan 2.1 via fal.ai ($0.04/seg) — kids/education
+  Tier 2 Premium   → Kling 3.0 REST API ($0.084/seg) — dark/finance padrão
+  Tier 3a Hero     → RunPod Wan2.2 pod persistente ($0.02/seg) — hero/cinemático, zero cold start
+  Tier 3b Bulk     → RunPod LTX serverless ($0.03/seg) — volume alto antes do fal.ai
+  Tier 4 Budget    → LTX-2.5 Fast via fal.ai ($0.04/seg) — fallback budget
   Fallback         → Higgsfield MCP — sem quota, pago por uso
 
 Roteamento por nicho:
-  finance_dark  → Tier 2 (Kling) para cenas padrão, Tier 1 (Veo3) para hero 20%
-  dark          → Tier 2 (Kling) ou Tier 3 (LTX)
-  kids          → Tier 4 (Wan) ou Tier 3 (LTX)
-  tech/education → Tier 3 (LTX Fast) como padrão
+  finance_dark  → Tier 2 (Kling) padrão, Tier 1 (Veo3) hero 20%
+  dark          → Tier 2 (Kling) → Tier 3a (Wan2.2 hero) → Tier 3b (LTX serverless)
+  kids          → Tier 2 (Kling) → Tier 3b (LTX serverless)
+  tech/education → Tier 2 (Kling) → Tier 3b (LTX serverless)
+
+Variáveis de ambiente RunPod:
+  RUNPOD_API_KEY            — chave de API RunPod (habilita Tier 3b)
+  RUNPOD_LTX_ENDPOINT_ID   — endpoint serverless LTX (Tier 3b)
+  RUNPOD_WAN22_POD_URL      — URL do pod persistente Wan2.2 (Tier 3a)
 """
 import logging
 from dataclasses import dataclass
@@ -83,6 +89,7 @@ class VideoRouter:
         self._veo3 = None
         self._kling = None
         self._fal = None
+        self._runpod = None
         self._higgsfield_available = False
 
         self._init_providers()
@@ -105,6 +112,12 @@ class VideoRouter:
             self._fal = get_fal_provider()
         except Exception:
             self._fal = None
+
+        try:
+            from .runpod_provider import get_runpod_provider
+            self._runpod = get_runpod_provider()
+        except Exception:
+            pass
 
     def _is_hero_scene(self, scene: dict, scene_index: int, total_scenes: int) -> bool:
         emotion = scene.get("emocao", "").lower()
@@ -190,6 +203,38 @@ class VideoRouter:
                 cost = self._kling.cost_per_second(tier) * duration
                 log.info("VideoRouter: scene %d via Kling %s ($%.3f)", scene_id, tier, cost)
                 return VideoGenerationResult(path=result, provider_used=f"kling_{tier}", cost_estimate=cost, scene_id=scene_id)
+
+        # Verificar se é cena hero (reutilizado nos blocos RunPod)
+        is_hero = self._is_hero_scene(scene, scene_id, total_scenes)
+
+        # Try RunPod Wan2.2 pod persistente (hero/cinemático, zero cold start)
+        if self._runpod and self._runpod.is_wan22_available():
+            if is_hero or force_provider == "wan22":
+                result = self._runpod.generate_wan22_pod(
+                    prompt=prompt,
+                    duration_seconds=duration,
+                    scene_id=scene_id,
+                    video_id=video_id,
+                    output_dir=output_dir,
+                )
+                if result:
+                    cost = self._runpod.cost_estimate_wan22(duration)
+                    log.info("VideoRouter: scene %d via RunPod Wan2.2 ($%.3f)", scene_id, cost)
+                    return VideoGenerationResult(path=result, provider_used="runpod_wan22", cost_estimate=cost, scene_id=scene_id)
+
+        # Try RunPod LTX serverless (bulk/volume, antes do fal.ai)
+        if self._runpod and self._runpod.is_ltx_available() and force_provider != "wan22":
+            result = self._runpod.generate_ltx_serverless(
+                prompt=prompt,
+                duration_seconds=duration,
+                scene_id=scene_id,
+                video_id=video_id,
+                output_dir=output_dir,
+            )
+            if result:
+                cost = self._runpod.cost_estimate_ltx(duration)
+                log.info("VideoRouter: scene %d via RunPod LTX serverless ($%.3f)", scene_id, cost)
+                return VideoGenerationResult(path=result, provider_used="runpod_ltx", cost_estimate=cost, scene_id=scene_id)
 
         # Try fal.ai as fallback (LTX Fast — mais barato, ~$0.04/s)
         if self._fal and self._fal.is_available():
