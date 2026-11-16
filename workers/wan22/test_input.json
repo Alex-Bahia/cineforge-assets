@@ -1,0 +1,13 @@
+{
+  "input": {
+    "global_caption": "A young woman in a yellow raincoat walks through a neon-lit rainy street at night, original character, cinematic style, shallow depth of field, wet pavement reflecting pink and cyan signs. This scene contains 2 shots.",
+    "shot_captions": [
+      "Wide shot: the woman in the yellow raincoat walks toward the camera, rain falling, neon reflections ripple on the wet pavement.",
+      "Close-up: the woman's face under the yellow hood, water dripping from the brim, calm focused eyes, soft neon rim light."
+    ],
+    "num_frames": 81,
+    "shot_cut_frames": [],
+    "seed": 42,
+    "output_path": "testes/wan22_teste_81f.mp4"
+  }
+}
