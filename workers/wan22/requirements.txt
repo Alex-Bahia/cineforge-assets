@@ -1,0 +1,21 @@
+# Dependências do worker Wan 2.2 (Python 3.10, linux/amd64). Versões fixas para builds
+# reproduzíveis; transitivas em constraints.txt. torch 2.6.0+cu124 é instalado antes, no
+# Dockerfile (índice oficial do PyTorch). Nada de flash-attn: o diffusers usa o SDPA do torch.
+#
+# diffusers 0.35.0 foi a primeira versão no PyPI com o Wan 2.2 (transformer_2,
+# boundary_ratio, guidance_scale_2, expand_timesteps); 0.36.0 mantém a mesma API e roda em
+# Python 3.10 (as versões >= 0.42 exigem Python 3.11).
+runpod==2.2.1
+diffusers==0.36.0
+transformers==4.46.3
+accelerate==1.10.1
+huggingface-hub==0.35.3
+safetensors==0.5.3
+tokenizers==0.20.3
+ftfy==6.3.1
+sentencepiece==0.2.0
+protobuf==5.29.5
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+numpy==1.26.4
+pillow==10.4.0
